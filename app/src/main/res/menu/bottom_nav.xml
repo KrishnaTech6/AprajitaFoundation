@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/dashboard"
+        android:title="Dashboard"
+        android:icon="@drawable/baseline_dashboard"/>
+    <item android:id="@+id/events"
+        android:title="Events"
+        android:icon="@drawable/baseline_event_24"/>
+    <item android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/baseline_profile"/>
+
+</menu>
