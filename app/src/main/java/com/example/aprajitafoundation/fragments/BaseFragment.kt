@@ -60,30 +60,28 @@ open class BaseFragment : Fragment() {
              Log.e("ShareError", "Error sharing link: ${e.message}", e)
              showToast("Unable to share download link")
          }
-
-//            val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
-//            val apkFile = File(packageInfo.applicationInfo.sourceDir)
-//
-//            val uri = FileProvider.getUriForFile(
-//                requireContext(),
-//                "${requireContext().packageName}.provider",
-//                apkFile
-//            )
-//
-//            val intent = Intent(Intent.ACTION_SEND).apply {
-//                type = "application/vnd.android.package-archive"
-//                putExtra(Intent.EXTRA_STREAM, uri)
-//                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            }
-//
-//            try {
-//                startActivity(Intent.createChooser(intent, "Share APK"))
-//            } catch (e: Exception) {
-//                Log.e("ShareError", "Error sharing APK", e)
-//                showToast("Unable to share APK")
-//            }
-
    }
+
+    fun openEmail(email: String){
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:$email")
+        }
+
+        // Check if there is an email client available to handle the intent
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            try {
+                startActivity(Intent.createChooser(intent, "Share Download Link"))
+            } catch (e: Exception) {
+                Log.e("ShareError", "Error sharing link: ${e.message}", e)
+                showToast("Unable to open email")
+            }
+        } else {
+            // Handle the case where no email clients are installed
+            // You could show a Toast or Snackbar here to inform the user
+            showToast("No email apps installed")
+        }
+
+    }
 
     private fun startIntentWithPackage(uri: Uri, packageName: String): Boolean {
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {

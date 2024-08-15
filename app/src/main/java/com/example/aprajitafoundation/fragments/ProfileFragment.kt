@@ -43,6 +43,10 @@ class ProfileFragment : BaseFragment() {
             shareLink(Constants.apkLink)
         }
 
+        binding.llEmail.setOnClickListener {
+            openEmail(Constants.email)
+        }
+
         return binding.root
     }
 }
