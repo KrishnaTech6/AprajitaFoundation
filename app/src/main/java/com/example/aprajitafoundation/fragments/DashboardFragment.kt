@@ -78,7 +78,7 @@ class DashboardFragment : BaseFragment() {
         binding.rvImageItem.setHasFixedSize(true)
 
         //new Recycler view presentation in main layout
-        //recyclerItemView(imageItem)
+        recyclerItemView(imageItem)
 
 
         //To chat with

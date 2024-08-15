@@ -34,6 +34,12 @@ class ImageEventAdapter(private val context: Context, private val items: List<Sl
 
         holder.textView.text = item.title ?: ""
 
+        if (item.title.isNullOrBlank()){
+            holder.textView.visibility = View.GONE
+        }else{
+            holder.textView.visibility = View.VISIBLE
+        }
+
         holder.itemView.setOnClickListener {
             // Implement the on-click action
             // Example: Toast showing the item title
