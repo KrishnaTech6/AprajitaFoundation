@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.activities.MainActivity
+import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
@@ -45,6 +47,11 @@ class ProfileFragment : BaseFragment() {
 
         binding.llEmail.setOnClickListener {
             openEmail(Constants.email)
+        }
+
+        binding.llDonate.setOnClickListener {
+            val intent=  Intent(requireActivity(), PaymentActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root

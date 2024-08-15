@@ -65,6 +65,7 @@ open class BaseFragment : Fragment() {
     fun openEmail(email: String){
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:$email")
+            setPackage("com.google.android.gm")
         }
 
         // Check if there is an email client available to handle the intent
@@ -72,12 +73,11 @@ open class BaseFragment : Fragment() {
             try {
                 startActivity(Intent.createChooser(intent, "Share Download Link"))
             } catch (e: Exception) {
-                Log.e("ShareError", "Error sharing link: ${e.message}", e)
+                Log.e("EmailError", "Error sharing link: ${e.message}", e)
                 showToast("Unable to open email")
             }
         } else {
             // Handle the case where no email clients are installed
-            // You could show a Toast or Snackbar here to inform the user
             showToast("No email apps installed")
         }
 
