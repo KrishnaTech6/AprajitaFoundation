@@ -1,20 +1,29 @@
 package com.example.aprajitafoundation.fragments
 
+import android.app.Dialog
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
 import java.io.File
 import java.io.IOException
 
 open class BaseFragment : Fragment() {
+
+
+    private lateinit var mProgressDialog: Dialog
 
     fun openWhatsApp(phoneNumber: String) {
         val uri = Uri.parse("https://wa.me/$phoneNumber")
@@ -100,6 +109,16 @@ open class BaseFragment : Fragment() {
     fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
+    fun showDialogProgress(){
+        mProgressDialog = Dialog(requireContext())
+        mProgressDialog.setContentView(R.layout.progress_bar)
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+        mProgressDialog.show()
+    }
+
+    fun hideProgressDialog() = mProgressDialog.dismiss()
 
 //    private fun copyApkToExternalStorage(): File? {
 //        val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
