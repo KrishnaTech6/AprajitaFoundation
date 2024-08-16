@@ -46,7 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="A NGO for women and kids Empowerment"
+                        android:text="@string/aprajita_subheading"
                         android:layout_marginStart="10dp"
                         android:textSize="10sp"
                         android:textColor="@color/black"/>

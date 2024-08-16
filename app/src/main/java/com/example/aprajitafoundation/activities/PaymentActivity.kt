@@ -1,5 +1,7 @@
 package com.example.aprajitafoundation.activities
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -7,11 +9,14 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
 import com.razorpay.Checkout
+import com.razorpay.ExternalWalletListener
+import com.razorpay.PaymentData
 import com.razorpay.PaymentResultListener
 import org.json.JSONObject
 
-class PaymentActivity : AppCompatActivity(), PaymentResultListener {
+class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWalletListener{
     private lateinit var binding: ActivityPaymentBinding
+    private lateinit var alertDialogBuilder: AlertDialog.Builder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityPaymentBinding.inflate(layoutInflater)
@@ -19,6 +24,13 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
 
         // Initialize Razorpay Checkout
         Checkout.preload(applicationContext)
+
+        alertDialogBuilder = AlertDialog.Builder(this@PaymentActivity)
+        alertDialogBuilder.setTitle("Payment Result")
+        alertDialogBuilder.setCancelable(true)
+        alertDialogBuilder.setPositiveButton("Ok"){_,_-> }
+
+
 
         // Call this function when you want to start the payment
         binding.payButton.setOnClickListener{
@@ -37,12 +49,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
 
         try {
             val options = JSONObject()
-            options.put("name", "Aprajita Foundation")
+            options.put("name", R.string.app_name)
             options.put("description", "NGO for women and child empowerment")
             options.put("image", Constants.logoLink)
             options.put("theme.color", "#F7E94E")
             options.put("currency", "INR")
-            options.put("amount", "50000") // Amount in paise (e.g., Rs 500.00)
+            options.put("amount", "${binding.paymentAmount.text}00") // Amount in paise (e.g., Rs 500.00)
             options.put("prefill.email", "user_email@example.com")
             options.put("prefill.contact", "user_contact")
 
@@ -54,11 +66,30 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
     }
 
     override fun onPaymentSuccess(p0: String?) {
-        TODO("Not yet implemented")
+        try{
+            alertDialogBuilder.setMessage("Payment Successful : Payment ID: $p0\n")
+            alertDialogBuilder.show()
+        }catch (e: java.lang.Exception){
+            e.printStackTrace()
+        }
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
-        TODO("Not yet implemented")
+        try {
+            alertDialogBuilder.setMessage("Payment Failed")
+            alertDialogBuilder.show()
+        }catch (e: java.lang.Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override fun onExternalWalletSelected(p0: String?, p1: PaymentData?) {
+        try{
+            alertDialogBuilder.setMessage("External wallet was selected : Payment Data: ${p1?.data}")
+            alertDialogBuilder.show()
+        }catch (e: java.lang.Exception){
+            e.printStackTrace()
+        }
     }
 
 }
