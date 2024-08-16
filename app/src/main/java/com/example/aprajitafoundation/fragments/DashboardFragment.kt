@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.adapter.SliderAdapter
@@ -84,6 +85,11 @@ class DashboardFragment : BaseFragment() {
         //To chat with
         binding.llWtspContact.setOnClickListener {
             openWhatsApp(Constants.phnNumber)
+        }
+
+        binding.llDonate.setOnClickListener {
+            val intent=  Intent(requireActivity(), PaymentActivity::class.java)
+            startActivity(intent)
         }
 
 

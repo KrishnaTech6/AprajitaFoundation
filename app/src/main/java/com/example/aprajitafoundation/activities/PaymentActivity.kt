@@ -4,7 +4,10 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
+import androidx.annotation.StringRes
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
@@ -14,7 +17,7 @@ import com.razorpay.PaymentData
 import com.razorpay.PaymentResultListener
 import org.json.JSONObject
 
-class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWalletListener{
+class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWalletListener, DialogInterface.OnClickListener{
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var alertDialogBuilder: AlertDialog.Builder
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +35,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
 
 
 
+
+
         // Call this function when you want to start the payment
         binding.payButton.setOnClickListener{
-            if (binding.paymentAmount.text.isNotEmpty()){
+            if (binding.paymentAmount.text.toString().isNotEmpty()){
                 startPayment()
             }else{
                 Toast.makeText(this, "Enter an amount!", Toast.LENGTH_SHORT).show()
@@ -49,7 +54,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
 
         try {
             val options = JSONObject()
-            options.put("name", R.string.app_name)
+            options.put("name", getString(R.string.app_name))
             options.put("description", "NGO for women and child empowerment")
             options.put("image", Constants.logoLink)
             options.put("theme.color", "#F7E94E")
@@ -90,6 +95,10 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
         }catch (e: java.lang.Exception){
             e.printStackTrace()
         }
+    }
+
+    override fun onClick(dialog: DialogInterface?, which: Int) {
+        finish()
     }
 
 }

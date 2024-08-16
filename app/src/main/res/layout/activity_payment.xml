@@ -53,6 +53,7 @@
                 android:id="@+id/organization_subheading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
                 android:text="@string/aprajita_subheading"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:padding="4dp" />
