@@ -79,7 +79,7 @@ class DashboardFragment : BaseFragment() {
         binding.rvImageItem.setHasFixedSize(true)
 
         //new Recycler view presentation in main layout
-        recyclerItemView(imageItem)
+//        recyclerItemView(imageItem)
 
 
         //To chat with
@@ -90,6 +90,13 @@ class DashboardFragment : BaseFragment() {
         binding.llDonate.setOnClickListener {
             val intent=  Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
+        }
+        binding.llShare.setOnClickListener {
+            shareLink(Constants.apkLink)
+        }
+
+        binding.llEmail.setOnClickListener {
+            openEmail(Constants.email)
         }
 
 
