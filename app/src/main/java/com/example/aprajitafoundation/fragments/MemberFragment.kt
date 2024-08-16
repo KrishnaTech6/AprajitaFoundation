@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentMemberBinding
 import com.example.aprajitafoundation.model.NameItem
@@ -28,6 +29,15 @@ class MemberFragment : Fragment() {
             Log.d("MemberFragment", "null")
         }else{
             Log.d("MemberFragment", "$nameItem")
+
+            binding.profileName.text = nameItem!!.Name
+            binding.profileDesignation.text = nameItem!!.designation
+
+            // Using Glide for image loading
+            Glide.with(requireActivity())
+                .load(nameItem!!.nameImageResourceId)
+                .into(binding.profilePhoto)
+
         }
 
 
