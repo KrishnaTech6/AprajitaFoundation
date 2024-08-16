@@ -4,6 +4,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgYellow"
+    android:padding="16dp"
     tools:context=".activities.PaymentActivity">
+
+    <!-- Organization Image -->
+    <ImageView
+        android:id="@+id/organization_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/organization_heading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitCenter"
+        android:elevation="4dp" />
+
+    <!-- Organization Heading -->
+    <TextView
+        android:id="@+id/organization_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aprajita Foundation"
+        android:textAppearance="?attr/textAppearanceHeadline5"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/organization_subheading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_image"
+        android:padding="8dp" />
+
+    <!-- Organization Subheading -->
+    <TextView
+        android:id="@+id/organization_subheading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="An NGO for women and children empowerment"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintBottom_toTopOf="@+id/payment_amount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_heading"
+        android:padding="4dp" />
+
+    <!-- Payment Amount TextField -->
+
+    <EditText
+        android:id="@+id/payment_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Amount (e.g. Rs.500)"
+        android:inputType="numberDecimal"
+        android:padding="16dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/organization_subheading"
+        android:layout_marginTop="16dp"
+        android:elevation="4dp" />
+
+    <!-- Pay Button -->
+    <Button
+        android:id="@+id/pay_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Donate"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment_amount"
+        android:elevation="6dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

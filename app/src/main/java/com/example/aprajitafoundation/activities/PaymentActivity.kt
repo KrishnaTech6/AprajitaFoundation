@@ -2,22 +2,32 @@ package com.example.aprajitafoundation.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
 import org.json.JSONObject
 
 class PaymentActivity : AppCompatActivity(), PaymentResultListener {
+    private lateinit var binding: ActivityPaymentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_payment)
+        binding= ActivityPaymentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Razorpay Checkout
         Checkout.preload(applicationContext)
 
         // Call this function when you want to start the payment
-        startPayment()
+        binding.payButton.setOnClickListener{
+            if (binding.paymentAmount.text.isNotEmpty()){
+                startPayment()
+            }else{
+                Toast.makeText(this, "Enter an amount!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun startPayment() {
