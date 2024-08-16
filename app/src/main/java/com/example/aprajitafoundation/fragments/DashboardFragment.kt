@@ -3,10 +3,12 @@ package com.example.aprajitafoundation.fragments
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.media.MediaMetadata
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +32,7 @@ import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.model.NameItem
 
-class DashboardFragment : BaseFragment() {
+class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var sliderAdapter: SliderAdapter
@@ -55,7 +57,6 @@ class DashboardFragment : BaseFragment() {
 
         binding = FragmentDashboardBinding.inflate(layoutInflater)
 
-
         /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
         viewPager = binding.viewPager
         sliderAdapter = SliderAdapter(requireContext(), sliderDataList)
@@ -71,7 +72,7 @@ class DashboardFragment : BaseFragment() {
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
         val imageItem = DataSource().loadNameData()
-        binding.rvItems.adapter = ImageAdapter(requireContext(), imageItem)
+        binding.rvItems.adapter = ImageAdapter(requireContext(), imageItem, this)
         binding.rvItems.setHasFixedSize(true)
 
         val imageItem2 = DataSource().loadImageData2()
@@ -108,7 +109,7 @@ class DashboardFragment : BaseFragment() {
         val newRecyclerView: RecyclerView = RecyclerView(requireContext())
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         newRecyclerView.layoutManager = layoutManager
-        newRecyclerView.adapter = ImageAdapter(requireContext(), item)
+        newRecyclerView.adapter = ImageAdapter(requireContext(), item, this)
         newRecyclerView.setHasFixedSize(true)
 
         val layoutParams= ViewGroup.MarginLayoutParams(
@@ -178,6 +179,14 @@ class DashboardFragment : BaseFragment() {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(runnable)
+    }
+
+    override fun onItemClick(nameItem: NameItem) {
+        val memberFragment = MemberFragment.newInstance(nameItem)
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, memberFragment)
+            .addToBackStack(null) // Add the transaction to the back stack
+            .commit()
     }
 
 }

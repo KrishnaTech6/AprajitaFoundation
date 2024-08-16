@@ -5,16 +5,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.fragments.MemberFragment
 import com.example.aprajitafoundation.model.NameItem
 
-class ImageAdapter(private val context: Context, private val nameItem: List<NameItem>) :
+class ImageAdapter(private val context: Context, private val nameItem: List<NameItem>,private val itemClickListener: ItemClickListener) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
+
+    interface ItemClickListener {
+        fun onItemClick(nameItem: NameItem)
+    }
 
     class ImageViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val ivImage: ImageView = view.findViewById(R.id.iv_person)
@@ -41,5 +47,10 @@ class ImageAdapter(private val context: Context, private val nameItem: List<Name
 
         holder.tvName.text = item.Name ?: ""
         holder.tvDesignation.text = item.designation ?: ""
+
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(item)
+
+        }
     }
 }
