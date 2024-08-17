@@ -10,7 +10,6 @@ class DataSource {
 
         return listOf<SlideItem>(
             SlideItem(R.drawable.apj1, "Aprajita Foundation"),
-            SlideItem(R.drawable.apj2, "Aprajita Foundation"),
             SlideItem(R.drawable.apj3, "Aprajita Foundation"),
             SlideItem(R.drawable.apj4, "Aprajita Foundation"),
             SlideItem(R.drawable.apj5, "Aprajita Foundation"),
