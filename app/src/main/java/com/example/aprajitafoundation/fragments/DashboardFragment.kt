@@ -1,27 +1,19 @@
 package com.example.aprajitafoundation.fragments
 
-import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.media.MediaMetadata
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils.replace
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.aprajitafoundation.MongoDbClass
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.adapter.ImageAdapter
@@ -30,7 +22,9 @@ import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
-import com.example.aprajitafoundation.model.NameItem
+import com.example.aprajitafoundation.model.MemberItem
+import com.mongodb.client.MongoCollection
+import org.bson.Document
 
 class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
@@ -43,7 +37,7 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     private val sliderDataList = DataSource().loadSliderData()
 
-    val imageItem = DataSource().loadNameData()
+    private  var memberList: MutableList<MemberItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +50,20 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
     ): View? {
 
         binding = FragmentDashboardBinding.inflate(layoutInflater)
+
+        val mongoDbClass = MongoDbClass()
+        mongoDbClass.initiateDb()
+
+//        // Inserting data
+//        val nameItem = MemberItem(R.drawable.apj4, "Soni Nilu Jha", "Founder")
+//        mongoDbClass.insertNameItem(nameItem)
+
+        // Retrieving data
+        val retrievedItems = mongoDbClass.getNameItems()
+        retrievedItems.forEach { item ->
+            memberList.add(item)
+        }
+
 
         /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
         viewPager = binding.viewPager
@@ -71,8 +79,8 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
-        val imageItem = DataSource().loadNameData()
-        binding.rvItems.adapter = ImageAdapter(requireContext(), imageItem, this)
+//        val imageItem = DataSource().loadNameData()
+        binding.rvItems.adapter = ImageAdapter(requireContext(), memberList, this)
         binding.rvItems.setHasFixedSize(true)
 
         val imageItem2 = DataSource().loadImageData2()
@@ -105,7 +113,7 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     }
 
-    private fun recyclerItemView(item: List<NameItem>){
+    private fun recyclerItemView(item: List<MemberItem>){
         val newRecyclerView: RecyclerView = RecyclerView(requireContext())
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         newRecyclerView.layoutManager = layoutManager
@@ -181,12 +189,12 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         handler.removeCallbacks(runnable)
     }
 
-    override fun onItemClick(nameItem: NameItem) {
-        val memberFragment = MemberFragment.newInstance(nameItem)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, memberFragment)
-            .addToBackStack(null) // Add the transaction to the back stack
-            .commit()
+    override fun onItemClick(memberItem: MemberItem) {
+//        val memberFragment = MemberFragment.newInstance(memberItem)
+//        parentFragmentManager.beginTransaction()
+//            .replace(R.id.frame_layout, memberFragment)
+//            .addToBackStack(null) // Add the transaction to the back stack
+//            .commit()
     }
 
 }

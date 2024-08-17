@@ -12,5 +12,8 @@ class Constants {
         const val email = "theaprajita16@gmail.com"
         const val rpKeyId = "rzp_test_YmqJ4kfwMuj3eh"
         const val logoLink = "https://www.theaprajita.in/logo.jpg"
+
+        //TODO: save credentials so that it does not leak
+        const val conn_string_mongodb = "mongodb+srv://Krishna67:Krishna%40123@atlascluster.kbzvfes.mongodb.net/"
     }
 }
