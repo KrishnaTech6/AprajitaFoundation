@@ -1,24 +1,15 @@
 package com.example.aprajitafoundation.fragments
 
-import android.annotation.SuppressLint
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.media.MediaMetadata
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils.replace
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -30,7 +21,7 @@ import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
-import com.example.aprajitafoundation.model.NameItem
+import com.example.aprajitafoundation.model.MemberItem
 
 class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
@@ -105,7 +96,7 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     }
 
-    private fun recyclerItemView(item: List<NameItem>){
+    private fun recyclerItemView(item: List<MemberItem>){
         val newRecyclerView: RecyclerView = RecyclerView(requireContext())
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         newRecyclerView.layoutManager = layoutManager
@@ -181,8 +172,8 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         handler.removeCallbacks(runnable)
     }
 
-    override fun onItemClick(nameItem: NameItem) {
-        val memberFragment = MemberFragment.newInstance(nameItem)
+    override fun onItemClick(memberItem: MemberItem) {
+        val memberFragment = MemberFragment.newInstance(memberItem)
         parentFragmentManager.beginTransaction()
             .replace(R.id.frame_layout, memberFragment)
             .addToBackStack(null) // Add the transaction to the back stack

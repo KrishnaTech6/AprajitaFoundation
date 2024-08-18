@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class NameItem(
+data class MemberItem(
     @DrawableRes
     val nameImageResourceId: Int,
     val Name: String,

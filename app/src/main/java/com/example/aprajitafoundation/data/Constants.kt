@@ -12,5 +12,6 @@ class Constants {
         const val email = "theaprajita16@gmail.com"
         const val rpKeyId = "rzp_test_YmqJ4kfwMuj3eh"
         const val logoLink = "https://www.theaprajita.in/logo.jpg"
+        const val serverUrl = "https://www.theaprajita.in/logo.jpg"
     }
 }

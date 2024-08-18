@@ -1,7 +1,7 @@
 package com.example.aprajitafoundation.data
 
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.model.NameItem
+import com.example.aprajitafoundation.model.MemberItem
 import com.example.aprajitafoundation.model.SlideItem
 
 class DataSource {
@@ -20,13 +20,13 @@ class DataSource {
 
     }
 
-    fun loadNameData(): List<NameItem>{ //to load image , name , title of a person
+    fun loadNameData(): List<MemberItem>{ //to load image , name , title of a person
 
-        return listOf<NameItem>(
-            NameItem(R.drawable.apj4, "Soni Nilu Jha", "Founder"),
-            NameItem(R.drawable.qwe8, "Shriya Jha", ""),
-            NameItem(R.drawable.apjname, "Dhiraj Jha", ""),
-            NameItem(R.drawable.apjname2, "", ""),
+        return listOf<MemberItem>(
+            MemberItem(R.drawable.apj4, "Soni Nilu Jha", "Founder"),
+            MemberItem(R.drawable.qwe8, "Shriya Jha", ""),
+            MemberItem(R.drawable.apjname, "Dhiraj Jha", ""),
+            MemberItem(R.drawable.apjname2, "", ""),
 
 
              )
