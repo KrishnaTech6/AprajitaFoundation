@@ -1,2 +1,3 @@
 /build
-/Constants.kt
+# Ignore Constants.kt file
+app/src/main/java/com/example/aprajitafoundation/data/Constants.kt
