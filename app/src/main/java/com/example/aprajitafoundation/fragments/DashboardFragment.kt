@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.PaymentActivity
@@ -69,6 +70,10 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         val imageItem2 = DataSource().loadImageData2()
         binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), imageItem2)
         binding.rvImageItem.setHasFixedSize(true)
+
+
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.rvImageItem.layoutManager = staggeredGridLayoutManager
 
         //new Recycler view presentation in main layout
 //        recyclerItemView(imageItem)
