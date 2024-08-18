@@ -79,22 +79,22 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 //        recyclerItemView(imageItem)
 
 
-        //To chat with
-        binding.llWtspContact.setOnClickListener {
-            openWhatsApp(Constants.phnNumber)
-        }
+//        //To chat with
+//        binding.llWtspContact.setOnClickListener {
+//            openWhatsApp(Constants.phnNumber)
+//        }
 
         binding.llDonate.setOnClickListener {
             val intent=  Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }
-        binding.llShare.setOnClickListener {
-            shareLink(Constants.apkLink)
-        }
-
-        binding.llEmail.setOnClickListener {
-            openEmail(Constants.email)
-        }
+//        binding.llShare.setOnClickListener {
+//            shareLink(Constants.apkLink)
+//        }
+//
+//        binding.llEmail.setOnClickListener {
+//            openEmail(Constants.email)
+//        }
 
 
         return binding.root

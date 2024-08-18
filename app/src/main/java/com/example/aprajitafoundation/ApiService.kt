@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation
 
+import com.example.aprajitafoundation.data.Constants
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -41,7 +42,7 @@ data class DeleteResponse(
 )
 
 object RetrofitClient {
-    private const val BASE_URL = "http://your-backend-url.com/"
+    private const val BASE_URL = Constants.serverUrl
 
     private val retrofit by lazy {
         Retrofit.Builder()
