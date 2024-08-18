@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.example.aprajitafoundation.FullScreenImageActivity
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.model.SlideItem
 
@@ -39,9 +41,10 @@ class SliderAdapter(private val context: Context, private val items: List<SlideI
         holder.textView.text = item.title ?: ""
 
         holder.itemView.setOnClickListener {
-            // Implement the on-click action
-            // Example: Toast showing the item title
-            Toast.makeText(context, "Clicked on: ${item.title}", Toast.LENGTH_SHORT).show()
+            val context = holder.itemView.context
+            val intent = Intent(context, FullScreenImageActivity::class.java)
+            intent.putExtra("IMAGE_DATA", item)
+            context.startActivity(intent)
         }
     }
 
