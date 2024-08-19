@@ -2,6 +2,16 @@
 
 This project is an Android application developed for the Aprajita Foundation. The app features a gallery where users can view, upload, and delete images. It also includes a profile section that allows users to contact the foundation through various means, make donations through Razorpay, and more.
 
+## How to Use
+
+1. **Download the App**: [Download APK](https://drive.google.com/file/d/1MdKfK8mmhE6lGTHWpNMpLOAQGzRM2hVl/view?usp=share_link)
+2. **Install the App** on your Android device.
+3. **Explore the Features**:
+    - Visit the Profile section to manage your details.
+    - Browse through the Gallery to see images.
+    - View the list of Team Members.
+    - Make a donation through the secure Razorpay gateway.
+
 ## Features
 
 - **Profile Section**:
@@ -19,6 +29,15 @@ This project is an Android application developed for the Aprajita Foundation. Th
 
 - **Payment Integration**:
   - Razorpay payment gateway integrated for handling donations.
+    
+## Technologies Used
+
+- **Kotlin**: For Android development.
+- **Retrofit**: For handling network requests.
+- **MongoDB**: Used as the primary database.
+- **Vercel**: Backend server is hosted on Vercel.
+- **Razorpay**: Integrated for handling donations.
+- **Jetpack Compose**: Used for building the UI components.
 
 ## Project Structure
 
@@ -68,6 +87,11 @@ This project is an Android application developed for the Aprajita Foundation. Th
 
 The app integrates with the Razorpay payment gateway to handle donations.
 
+## ViewModel & LiveData
+
+The app uses Android's ViewModel and LiveData components to manage UI-related data in a lifecycle-conscious way. The `DataViewModel` handles the fetching of gallery images and manages the loading state.
+
+
 ### Payment Flow
 
 1. **Initiating Payment**:
@@ -78,3 +102,6 @@ The app integrates with the Razorpay payment gateway to handle donations.
    - The payment success and failure callbacks are handled within `PaymentActivity`.
    - On payment success, a success message is displayed, and the user is navigated back to the profile.
    - On payment failure, an error message is shown to the user.
+
+
+
