@@ -2,6 +2,7 @@ package com.example.aprajitafoundation.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
@@ -37,6 +38,29 @@ class MainActivity : AppCompatActivity() {
 //        supportFragmentManager.addOnBackStackChangedListener {
 //            updateBottomNavHighlight()
 //        }
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
+
+        if (currentFragment is DashboardFragment) {
+            // Create an AlertDialog to ask the user if they want to exit
+            AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Do you really want to exit the app?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    super.onBackPressed()
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            // If it's not DashboardFragment, perform the normal back press action
+            super.onBackPressed()
+        }
     }
 
     private fun replaceFragment(fragment: Fragment){
