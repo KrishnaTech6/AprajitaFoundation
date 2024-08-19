@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation
 
 import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberItem
 import okhttp3.MultipartBody
@@ -32,6 +33,9 @@ interface GalleryApi {
 
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberItem>>
+
+    @GET("get-events")
+    suspend fun getAllEvents(): Response<List<EventModel>>
 }
 
 data class UploadResponse(

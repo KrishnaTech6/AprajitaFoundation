@@ -39,8 +39,8 @@ class EventsFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Observe the images LiveData
-        viewModel.images.observe(viewLifecycleOwner){ images ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), images)
+        viewModel.events.observe(viewLifecycleOwner){ events ->
+            val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events)
             binding.rvEvents.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
@@ -55,8 +55,8 @@ class EventsFragment : BaseFragment() {
             }
         }
 
-        // Fetch the gallery images
-        viewModel.fetchGalleryImages()
+        // Fetch the all events
+        viewModel.fetchAllEvents()
 
         return binding.root
     }
