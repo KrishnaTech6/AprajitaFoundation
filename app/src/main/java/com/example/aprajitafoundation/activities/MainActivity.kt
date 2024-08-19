@@ -2,11 +2,12 @@ package com.example.aprajitafoundation.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
-import com.example.aprajitafoundation.fragments.DashboardFragment
+import com.example.aprajitafoundation.fragments.HomeFragment
 import com.example.aprajitafoundation.fragments.EventsFragment
 import com.example.aprajitafoundation.fragments.ProfileFragment
 
@@ -17,12 +18,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(DashboardFragment(), "Home")
-        binding.bottomNavigationBar.selectedItemId = R.id.dashboard
+        replaceFragment(HomeFragment(), "Home")
+        binding.bottomNavigationBar.selectedItemId = R.id.home
 
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.dashboard -> { replaceFragment(DashboardFragment(), "Home")
+                R.id.home -> { replaceFragment(HomeFragment(), "Home")
                     true}
                 R.id.events -> {    replaceFragment(EventsFragment(), "Events")
                     true}
@@ -35,9 +36,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Add a back stack listener to handle bottom navigation highlighting
-//        supportFragmentManager.addOnBackStackChangedListener {
-//            updateBottomNavHighlight()
-//        }
+        supportFragmentManager.addOnBackStackChangedListener {
+            updateBottomNavHighlight()
+        }
     }
 
     override fun onBackPressed() {
@@ -72,17 +73,17 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(tag)
                 .commit()
         }
-
-
     }
 
-//    private fun updateBottomNavHighlight() {
-//        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
-//        when (currentFragment) {
-//            is DashboardFragment -> binding.bottomNavigationBar.selectedItemId = R.id.dashboard
-//            is EventsFragment -> binding.bottomNavigationBar.selectedItemId = R.id.events
-//            is ProfileFragment -> binding.bottomNavigationBar.selectedItemId = R.id.profile
-//        }
-//    }
+    private fun updateBottomNavHighlight() {
+        when (supportFragmentManager.findFragmentById(R.id.frame_layout)) {
+            is HomeFragment -> binding.bottomNavigationBar.selectedItemId = R.id.home
+            is EventsFragment -> binding.bottomNavigationBar.selectedItemId = R.id.events
+            is ProfileFragment -> binding.bottomNavigationBar.selectedItemId = R.id.profile
+            else -> {
+                Log.d("MainActivity","null fragment" )
+            }
+        }
+    }
 
 }

@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,15 +21,12 @@ import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.adapter.SliderAdapter
-import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberItem
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
-class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
+class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var sliderAdapter: SliderAdapter
