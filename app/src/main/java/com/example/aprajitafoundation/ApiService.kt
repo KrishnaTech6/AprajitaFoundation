@@ -2,6 +2,7 @@ package com.example.aprajitafoundation
 
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.model.MemberItem
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -27,6 +28,10 @@ interface GalleryApi {
     suspend fun deleteGalleryImage(
         @Path("id") id: String
     ): Response<DeleteResponse>
+
+
+    @GET("get-team-members")
+    suspend fun getTeamMembers(): Response <List <MemberItem>>
 }
 
 data class UploadResponse(
