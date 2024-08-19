@@ -4,16 +4,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.adapter.ImageAdapter
@@ -22,7 +26,10 @@ import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
+import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberItem
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
@@ -35,7 +42,9 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     private val sliderDataList = DataSource().loadSliderData()
 
-    val imageItem = DataSource().loadNameData()
+    private lateinit var viewModel:DataViewModel
+
+    private var imageItems: List<ImageModel> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,18 +71,40 @@ class DashboardFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         }
         createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
 
+
+        binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf())
+        binding.rvImageItem.setHasFixedSize(true)
+
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        // Observe the images LiveData
+        viewModel.images.observe(viewLifecycleOwner){ images ->
+            val imageEventAdapter= ImageEventAdapter(requireContext(), images)
+            binding.rvImageItem.adapter = imageEventAdapter
+            imageEventAdapter.notifyDataSetChanged()
+        }
+
+        // Observe the loading LiveData
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            // Handle loading state (e.g., show/hide a ProgressBar)
+            if(isLoading){
+                showDialogProgress()
+            }else{
+                hideProgressDialog()
+            }
+        }
+
+        // Fetch the gallery images
+        viewModel.fetchGalleryImages()
+
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        binding.rvImageItem.layoutManager = staggeredGridLayoutManager
+
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
         val imageItem = DataSource().loadNameData()
         binding.rvItems.adapter = ImageAdapter(requireContext(), imageItem, this)
         binding.rvItems.setHasFixedSize(true)
-
-        val imageItem2 = DataSource().loadImageData2()
-        binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), imageItem2)
-        binding.rvImageItem.setHasFixedSize(true)
-
-
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.rvImageItem.layoutManager = staggeredGridLayoutManager
 
         //new Recycler view presentation in main layout
 //        recyclerItemView(imageItem)

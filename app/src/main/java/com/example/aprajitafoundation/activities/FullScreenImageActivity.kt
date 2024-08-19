@@ -3,6 +3,7 @@ package com.example.aprajitafoundation.activities
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -31,20 +32,21 @@ class FullScreenImageActivity : AppCompatActivity() {
 
 
 
-        val imageData = intent.getParcelableExtra<SlideItem>("IMAGE_DATA")
+        val imageData = intent.getStringExtra("image_url")
+        Log.d("FullScreenImage", imageData.toString())
 
         // Using Glide for image loading
         Glide.with(this)
-            .load(imageData?.imageResourceId)
+            .load(imageData)
             .into(binding.fullScreenImageView)
 
-        binding.titleView.text = imageData?.title
-
-        if (imageData?.title.isNullOrBlank()){
-            binding.titleView.visibility = View.GONE
-        }else{
-            binding.titleView.visibility = View.VISIBLE
-        }
+//        binding.titleView.text = imageData?.title
+//
+//        if (imageData?.title.isNullOrBlank()){
+//            binding.titleView.visibility = View.GONE
+//        }else{
+//            binding.titleView.visibility = View.VISIBLE
+//        }
 
 
     }
