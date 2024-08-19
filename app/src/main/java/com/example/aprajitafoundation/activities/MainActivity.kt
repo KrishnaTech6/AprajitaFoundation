@@ -17,16 +17,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(DashboardFragment())
+        replaceFragment(DashboardFragment(), "Home")
         binding.bottomNavigationBar.selectedItemId = R.id.dashboard
 
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.dashboard -> { replaceFragment(DashboardFragment())
+                R.id.dashboard -> { replaceFragment(DashboardFragment(), "Home")
                     true}
-                R.id.events -> {    replaceFragment(EventsFragment())
+                R.id.events -> {    replaceFragment(EventsFragment(), "Events")
                     true}
-                R.id.profile -> {   replaceFragment(ProfileFragment())
+                R.id.profile -> {   replaceFragment(ProfileFragment(), "Profile")
                     true}
 
                 else -> false
@@ -41,33 +41,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
 
-        if (currentFragment is DashboardFragment) {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+        } else {
             // Create an AlertDialog to ask the user if they want to exit
             AlertDialog.Builder(this)
                 .setTitle("Exit App")
                 .setMessage("Do you really want to exit the app?")
                 .setPositiveButton("Yes") { dialog, _ ->
                     dialog.dismiss()
-                    super.onBackPressed()
                     finish()
                 }
                 .setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
                 .show()
-        } else {
-            // If it's not DashboardFragment, perform the normal back press action
-            super.onBackPressed()
         }
     }
 
-    private fun replaceFragment(fragment: Fragment){
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.frame_layout, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+    private fun replaceFragment(fragment: Fragment, tag:String){
+        val fragmentManager = supportFragmentManager
+        val existingFragment = fragmentManager.findFragmentByTag(tag)
+
+        if (existingFragment !=null){
+            fragmentManager.popBackStack(tag, 0)
+        }else{
+            fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment, tag)
+                .addToBackStack(tag)
+                .commit()
+        }
 
 
     }
