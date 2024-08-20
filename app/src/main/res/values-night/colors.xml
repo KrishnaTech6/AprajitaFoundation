@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="bgYellow">#1A1A1A</color>
+    <color name="yellow">#222121</color>
+    <color name="red">#FF6B6B</color>
+    <color name = "black">#ffffff</color>
+    <color name="circleFrame" >#ffffff</color>
+    <color name="dotColorSlider">#ffffff</color>
+
+
+</resources>

@@ -6,5 +6,7 @@
     <color name="red">#C5261B</color>
     <color name="bgYellow">#fffff5</color>
     <color name="grey">#A8A8A8</color>
+    <color name="circleFrame" >#F7E94E</color>
+    <color name="dotColorSlider">#F7E94E</color>
 
 </resources>
