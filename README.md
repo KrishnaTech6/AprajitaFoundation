@@ -43,18 +43,25 @@ This project is an Android application developed for the Aprajita Foundation. Th
 
 - **Fragments**:
   - `ProfileFragment`: Handles user interactions in the profile section, including navigation, contact options, and donation redirection.
+  - `HomeFragment`: Shows the automatic slider , members llist and gallery.
+  - `BaseFragment`: This is the parent fragment whose properties are inherited by various fragments i- showing progress , opening link function , etc.
+  - `EventsFragment`: Shows the list of events rendered from the server.
+  - `MemberFragment`: Describes about the members of the organisation.
 
 - **ViewModel**:
-  - `DataViewModel`: Manages UI-related data for the gallery. It fetches images from the server, handles loading states, and logs any errors.
+  - `DataViewModel`: Manages UI-related data for the gallery adn events. It fetches images from the server, handles loading states, and logs any errors.
 
 - **Retrofit API**:
   - `GalleryApi`: Interface defining the API endpoints for retrieving, uploading, and deleting images, as well as fetching team members.
+  - `EventsApi`: Interface defining the API endpoints for retrieving event details.
 
 - **Networking**:
   - `RetrofitClient`: Singleton object that initializes Retrofit with the base URL and provides an instance of `GalleryApi`.
 
-- **Payment Activity**:
+- **Activities**:
   - `PaymentActivity`: Manages the Razorpay payment flow, including payment initiation and handling success or failure callbacks.
+  - `MainActivity`: Manages the fragment navigation using bottom navigationbar.
+  - `SigninActivity` `LoginActivity` : Handles user login and signup
 
 ## Installation
 
@@ -82,6 +89,9 @@ This project is an Android application developed for the Aprajita Foundation. Th
 
 - **Team Members**:
   - `GET /get-team-members`: Retrieves the list of team members.
+    
+- **All Events**:
+  - `GET /get-events`: Retrieves the list of events.
 
 ## Razorpay Integration
 
