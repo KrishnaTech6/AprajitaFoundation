@@ -3,11 +3,16 @@ package com.example.aprajitafoundation.fragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.res.ResourcesCompat.ThemeCompat
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.MainActivity
 import com.example.aprajitafoundation.activities.PaymentActivity
@@ -53,7 +58,40 @@ class ProfileFragment : BaseFragment() {
             val intent=  Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }
+        binding.ivSettings.setOnClickListener{
+            Log.d("ProfileFragment", "Settings clicked")
+            popUpSetttingsMenu(it)
+        }
 
         return binding.root
+    }
+
+    private fun popUpSetttingsMenu(view: View){
+        val popupMenu= PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.settings_menu, popupMenu.menu)
+
+        val themeItem = popupMenu.menu.findItem(R.id.app_theme)
+
+
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when(menuItem.itemId){
+                R.id.sign_out ->{
+                    showToast("Sign out clicked")
+                    true}
+                R.id.app_theme ->{
+                    if(themeItem.title == "Light Mode"){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        themeItem?.title = "Dark Mode"
+                    }else if ( themeItem.title == "Dark Mode"){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        themeItem?.title = "Light Mode"
+                    }
+
+                    true}
+                else ->false
+            }
+
+        }
+        popupMenu.show()
     }
 }

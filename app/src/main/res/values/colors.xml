@@ -8,5 +8,8 @@
     <color name="grey">#A8A8A8</color>
     <color name="circleFrame" >#F7E94E</color>
     <color name="dotColorSlider">#F7E94E</color>
+    <color name="whiteMemberItemColor">#ffffff</color>
+    <color name="progressBarColor">#F7E94E</color>
+    <color name="whiteEditText">#FFFFFF</color>
 
 </resources>

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
+    android:background="@color/whiteMemberItemColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ProgressBar
@@ -11,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:indeterminateTint="@color/yellow"
+            android:indeterminateTint="@color/progressBarColor"
             style="?android:attr/smallIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

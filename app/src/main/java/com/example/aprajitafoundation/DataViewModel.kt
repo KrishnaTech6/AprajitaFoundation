@@ -24,6 +24,9 @@ class DataViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    private val _appTheme = MutableLiveData<String>()
+    val appTheme: LiveData<String> get() = _appTheme
+
     private val apiService = RetrofitClient.api
 
     fun fetchGalleryImages() {
@@ -43,6 +46,9 @@ class DataViewModel : ViewModel() {
                 _loading.value = false
             }
         }
+    }
+    fun showpopupMene(){
+
     }
 
     fun fetchAllEvents() {
