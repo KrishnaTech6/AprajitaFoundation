@@ -2,18 +2,31 @@ package com.example.aprajitafoundation.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.example.aprajitafoundation.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ImageEventAdapter(
     private val context: Context,
@@ -32,6 +45,7 @@ class ImageEventAdapter(
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val cardView: CardView = itemView as CardView
         val eventImage: ImageView = itemView.findViewById(R.id.event_image)
         val eventTitle: TextView = itemView.findViewById(R.id.event_title)
         val eventDescription: TextView = itemView.findViewById(R.id.event_description)
@@ -77,19 +91,28 @@ class ImageEventAdapter(
             }
             TYPE_EVENT -> {
                 val item = eventItems.getOrNull(position - imageItems.size)
+                val formattedDate = formatDate(item?.date)
                 val eventHolder = holder as EventViewHolder
                 Glide.with(context)
                     .load(item?.image)
+                    .thumbnail(0.1f)
                     .into(eventHolder.eventImage)
                 eventHolder.eventTitle.text = item?.title
                 eventHolder.eventDescription.text = item?.description
                 eventHolder.eventLocation.text = item?.location
-                eventHolder.eventDate.text = item?.date.toString() // Make sure date is in string format
+                eventHolder.eventDate.text = formattedDate
             }
         }
     }
 
     override fun getItemCount(): Int {
         return imageItems.size + eventItems.size
+    }
+
+    private fun formatDate(date: Date?): String {
+        return date?.let {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            dateFormat.format(it)
+        } ?: ""
     }
 }
