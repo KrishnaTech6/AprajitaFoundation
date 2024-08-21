@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation.activities
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
@@ -60,7 +62,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
             options.put("name", getString(R.string.app_name))
             options.put("description", "NGO for women and child empowerment")
             options.put("image", Constants.logoLink)
-            options.put("theme.color", "#F7E94E")
+            options.put("theme.color", getColorHex(this, R.color.yellow))
             options.put("currency", "INR")
             options.put("amount", "${binding.paymentAmount.text}00") // Amount in paise (e.g., Rs 500.00)
             options.put("prefill.email", "user_email@example.com")
@@ -71,6 +73,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun getColorHex(context: Context, colorResId: Int): String {
+        val colorInt = ContextCompat.getColor(context, colorResId)
+        return String.format("#%06X", 0xFFFFFF and colorInt)
     }
 
     override fun onPaymentSuccess(p0: String?) {

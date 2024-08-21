@@ -36,6 +36,7 @@ class ImageAdapter(private val context: Context, private var memberItem: List<Me
         // Using Glide for image loading
         Glide.with(context)
             .load(item?.image)
+            .thumbnail(0.1f)
             .into(holder.ivImage)
 
         holder.tvName.text = item.name ?: ""

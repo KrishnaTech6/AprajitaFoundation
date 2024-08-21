@@ -19,12 +19,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="4dp"
+                android:background="@color/yellow"
                 android:padding="8dp">
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/logo"
+                    android:src="@drawable/logo_12"
                     android:layout_marginStart="16dp"
                     android:layout_gravity="center_vertical"/>
 
@@ -131,6 +131,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_weight=".2"
+                        app:tint = "@color/black"
                         android:src="@drawable/donate"/>
                     <TextView
                         android:layout_width="0dp"
