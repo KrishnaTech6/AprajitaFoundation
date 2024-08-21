@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgYellow"
-    android:padding="16dp"
+    android:padding="24dp"
     tools:context=".activities.PaymentActivity">
 
     <!-- CardView containing Organization Image, Heading, and Subheading -->
@@ -15,8 +15,8 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/yellow"
         android:id="@+id/cardView"
-        app:cardElevation="4dp"
-        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="12dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -31,8 +31,8 @@
             <!-- Organization Image -->
             <ImageView
                 android:id="@+id/organization_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/logo_12"
                 android:scaleType="fitCenter"
                 android:elevation="4dp" />
@@ -46,7 +46,8 @@
                 android:textAppearance="?attr/textAppearanceHeadline5"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:padding="4dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp" />
 
             <!-- Organization Subheading -->
             <TextView
@@ -56,36 +57,118 @@
                 android:textSize="14sp"
                 android:text="@string/aprajita_subheading"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <!-- Toggle Buttons for Predefined Amounts -->
+    <RadioGroup
+        android:id="@+id/amount_toggle_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RadioButton
+            android:id="@+id/amount_100"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹100"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/toggle_button_background"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp" />
+
+        <RadioButton
+            android:id="@+id/amount_200"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹200"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/toggle_button_background"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp" />
+
+        <RadioButton
+            android:id="@+id/amount_500"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹500"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/toggle_button_background"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp" />
+
+        <RadioButton
+            android:id="@+id/amount_1000"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹1000"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/toggle_button_background"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="4dp" />
+
+        <RadioButton
+            android:id="@+id/amount_2000"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="₹2000"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@drawable/toggle_button_background"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:paddingVertical="12dp"
+            android:elevation="4dp" />
+    </RadioGroup>
 
     <!-- Payment Amount TextField -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/payment_amount_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        android:hint="Enter Amount"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/text_input_border_color"
+        app:boxStrokeErrorColor="@color/red"
+        app:boxStrokeWidth="2dp"
         app:errorEnabled="true"
         app:errorIconDrawable="@android:drawable/stat_notify_error"
         app:errorIconTint="@color/red"
         app:errorTextColor="@color/red"
-        app:boxStrokeErrorColor="@color/red"
-        app:boxStrokeWidth="2dp"
-        app:hintTextAppearance="?attr/textAppearanceSubtitle1">
+        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amount_toggle_group">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/payment_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Amount (e.g. Rs.500)"
             android:inputType="numberDecimal"
             android:padding="16dp"
             android:textSize="16sp" />

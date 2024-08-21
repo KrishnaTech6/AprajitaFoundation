@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="yellow">#FFEB3B</color>
     <color name="red">#C5261B</color>
-    <color name="bgYellow">#fffff5</color>
+    <color name="bgYellow">#ffffff</color>
     <color name="grey">#A8A8A8</color>
     <color name="circleFrame" >#FFEB3B</color>
     <color name="dotColorSlider">#FFEB3B</color>
@@ -12,8 +12,10 @@
     <color name="progressBarColor">#FFEB3B</color>
     <color name="whiteEditText">#4e576a</color>
     <color name="paymentSuccess">#3CCC42</color>
-
     <color name="selectedColor">#000000</color> <!-- Red for selected -->
     <color name="unselectedColor">#808080</color>
+    <color name="defaultColor">#E0E0E0</color>
+    <color name="selectedColorRb">#FFEB3B</color>
+    <color name="pressedColor">#808080</color>
 
 </resources>

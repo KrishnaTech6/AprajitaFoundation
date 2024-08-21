@@ -32,6 +32,19 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
         // Initialize Razorpay Checkout
         Checkout.preload(applicationContext)
 
+        // RadioGroup listener for predefined amounts
+        binding.amountToggleGroup.setOnCheckedChangeListener { _, checkedId ->
+            val selectedAmount = when (checkedId) {
+                R.id.amount_100 -> 100
+                R.id.amount_200 -> 200
+                R.id.amount_500 -> 500
+                R.id.amount_1000 -> 1000
+                R.id.amount_2000 -> 2000
+                else -> 0
+            }
+            binding.paymentAmount.setText(selectedAmount.toString())
+        }
+
 
         alertDialogBuilder = AlertDialog.Builder(this@PaymentActivity)
         alertDialogBuilder.setTitle("Payment Result")
