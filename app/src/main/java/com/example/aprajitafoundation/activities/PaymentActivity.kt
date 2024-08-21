@@ -2,6 +2,7 @@ package com.example.aprajitafoundation.activities
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,7 @@ import org.json.JSONObject
 class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWalletListener, DialogInterface.OnClickListener{
     private lateinit var binding: ActivityPaymentBinding
     private lateinit var alertDialogBuilder: AlertDialog.Builder
+    private var amount = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityPaymentBinding.inflate(layoutInflater)
@@ -27,6 +29,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
 
         // Initialize Razorpay Checkout
         Checkout.preload(applicationContext)
+
 
         alertDialogBuilder = AlertDialog.Builder(this@PaymentActivity)
         alertDialogBuilder.setTitle("Payment Result")
@@ -72,8 +75,9 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener, ExternalWall
 
     override fun onPaymentSuccess(p0: String?) {
         try{
-            alertDialogBuilder.setMessage("Payment Successful : Payment ID: $p0\n")
-            alertDialogBuilder.show()
+            val intent = Intent(this@PaymentActivity, PaymentSuccessActivity::class.java)
+            intent.putExtra("transaction_id", p0)
+            startActivity(intent)
         }catch (e: java.lang.Exception){
             e.printStackTrace()
         }

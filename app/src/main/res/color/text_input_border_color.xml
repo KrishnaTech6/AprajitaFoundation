@@ -3,5 +3,5 @@
     <!-- State when the field is active (focused) -->
     <item android:color="@color/whiteEditText" android:state_focused="true" />
     <!-- Default state (inactive, not selected) -->
-    <item android:color="@color/black" />
+    <item android:color="@color/blackEditText" />
 </selector>

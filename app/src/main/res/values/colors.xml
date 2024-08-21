@@ -11,5 +11,7 @@
     <color name="whiteMemberItemColor">#ffffff</color>
     <color name="progressBarColor">#F7E94E</color>
     <color name="whiteEditText">#FFFFFF</color>
+    <color name="paymentSuccess">#3CCC42</color>
+    <color name="blackEditText">#000000</color>
 
 </resources>
