@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +54,14 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
     ): View? {
 
         binding = FragmentDashboardBinding.inflate(layoutInflater)
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO){
+            viewModel.setAppTheme("Light Mode")
+        }else{
+            viewModel.setAppTheme("Dark Mode")
+        }
 
         /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
         viewPager = binding.viewPager
@@ -69,9 +79,6 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
         binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf())
         binding.rvImageItem.setHasFixedSize(true)
-
-        // Initialize the ViewModel
-        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner){ images ->

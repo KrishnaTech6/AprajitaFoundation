@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +31,7 @@ class ProfileFragment : BaseFragment() {
     private lateinit var viewModel: DataViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -36,6 +39,7 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
+
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
@@ -66,7 +70,7 @@ class ProfileFragment : BaseFragment() {
         }
         binding.ivSettings.setOnClickListener{
             Log.d("ProfileFragment", "Settings clicked")
-            popUpSetttingsMenu(it)
+            popUpSettingsMenu(it)
         }
 
         // Observe the app theme in onViewCreated
@@ -84,7 +88,7 @@ class ProfileFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun popUpSetttingsMenu(view: View){
+    private fun popUpSettingsMenu(view: View){
         val popupMenu= PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.settings_menu, popupMenu.menu)
 
@@ -97,6 +101,7 @@ class ProfileFragment : BaseFragment() {
                     showToast("Sign out clicked")
                     true}
                 R.id.app_theme ->{
+                    themeItem.title = viewModel.appTheme.value
                     // Set the menu item title based on the current theme
                     themeItem.title = if (viewModel.appTheme.value == "Light Mode") "Dark Mode" else "Light Mode"
 
@@ -113,4 +118,6 @@ class ProfileFragment : BaseFragment() {
         }
         popupMenu.show()
     }
+
+
 }
