@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,9 +48,11 @@ class DataViewModel : ViewModel() {
             }
         }
     }
-    fun showpopupMene(){
-
+    // ViewModel
+    fun setAppTheme(theme: String) {
+        _appTheme.value = theme
     }
+
 
     fun fetchAllEvents() {
         viewModelScope.launch {

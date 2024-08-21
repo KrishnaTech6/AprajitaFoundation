@@ -13,6 +13,8 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat.ThemeCompat
+import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.MainActivity
 import com.example.aprajitafoundation.activities.PaymentActivity
@@ -24,6 +26,7 @@ import com.example.aprajitafoundation.databinding.FragmentProfileBinding
 class ProfileFragment : BaseFragment() {
 
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var viewModel: DataViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -33,6 +36,9 @@ class ProfileFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
+
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         binding.ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
@@ -63,6 +69,18 @@ class ProfileFragment : BaseFragment() {
             popUpSetttingsMenu(it)
         }
 
+        // Observe the app theme in onViewCreated
+        viewModel.appTheme.observe(viewLifecycleOwner) { theme ->
+            // Update the theme based on the current value
+            if (theme == "Light Mode") {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            } else if (theme == "Dark Mode") {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
+
+
+
         return binding.root
     }
 
@@ -79,13 +97,14 @@ class ProfileFragment : BaseFragment() {
                     showToast("Sign out clicked")
                     true}
                 R.id.app_theme ->{
-                    if(themeItem.title == "Light Mode"){
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        themeItem?.title = "Dark Mode"
-                    }else if ( themeItem.title == "Dark Mode"){
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        themeItem?.title = "Light Mode"
-                    }
+                    // Set the menu item title based on the current theme
+                    themeItem.title = if (viewModel.appTheme.value == "Light Mode") "Dark Mode" else "Light Mode"
+
+                    // Switch the theme when the user clicks the theme menu item
+                    val newTheme = if (themeItem.title == "Dark Mode") "Light Mode" else "Dark Mode"
+                    viewModel.setAppTheme(newTheme) // Update the theme in the ViewModel
+                    themeItem.title = newTheme // Update the menu item title
+                    true
 
                     true}
                 else ->false
