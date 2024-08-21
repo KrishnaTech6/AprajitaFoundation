@@ -98,7 +98,7 @@
                             android:layout_height="wrap_content"
                             android:text="Thank You!"
                             android:layout_gravity="center"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/black"
                             android:textStyle="bold"
                             android:textSize="24sp" />
 

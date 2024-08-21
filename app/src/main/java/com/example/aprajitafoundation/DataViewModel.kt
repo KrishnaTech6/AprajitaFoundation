@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.model.MemberModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -27,6 +28,9 @@ class DataViewModel : ViewModel() {
 
     private val _appTheme = MutableLiveData<String>()
     val appTheme: LiveData<String> get() = _appTheme
+
+    private val _members = MutableLiveData<List<MemberModel>>()
+    val members: LiveData<List<MemberModel>> get() = _members
 
     private val apiService = RetrofitClient.api
 
@@ -48,6 +52,26 @@ class DataViewModel : ViewModel() {
             }
         }
     }
+
+    fun fetchTeamMembers() {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = apiService.getTeamMembers()
+                if (response.isSuccessful) {
+                    _members.value = response.body()
+                } else {
+                    _error.value = "Error fetching members: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", "Error fetching member data", e)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
     // ViewModel
     fun setAppTheme(theme: String) {
         _appTheme.value = theme

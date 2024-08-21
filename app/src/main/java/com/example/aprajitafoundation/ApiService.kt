@@ -3,7 +3,7 @@ package com.example.aprajitafoundation
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
-import com.example.aprajitafoundation.model.MemberItem
+import com.example.aprajitafoundation.model.MemberModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -32,7 +32,7 @@ interface GalleryApi {
 
 
     @GET("get-team-members")
-    suspend fun getTeamMembers(): Response <List <MemberItem>>
+    suspend fun getTeamMembers(): Response <List <MemberModel>>
 
     @GET("get-events")
     suspend fun getAllEvents(): Response<List<EventModel>>

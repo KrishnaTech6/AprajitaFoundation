@@ -10,14 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.model.MemberItem
+import com.example.aprajitafoundation.model.MemberModel
 
-class ImageAdapter(private val context: Context, private val memberItem: List<MemberItem>, private val itemClickListener: ItemClickListener) :
+class ImageAdapter(private val context: Context, private var memberItem: List<MemberModel>, private val onItemClickListener: (MemberModel) -> Unit) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
-
-    interface ItemClickListener {
-        fun onItemClick(memberItem: MemberItem)
-    }
 
     class ImageViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val ivImage: ImageView = view.findViewById(R.id.iv_person)
@@ -39,15 +35,21 @@ class ImageAdapter(private val context: Context, private val memberItem: List<Me
 
         // Using Glide for image loading
         Glide.with(context)
-            .load(item.nameImageResourceId)
+            .load(item?.image)
             .into(holder.ivImage)
 
-        holder.tvName.text = item.Name ?: ""
-        holder.tvDesignation.text = item.designation ?: ""
+        holder.tvName.text = item.name ?: ""
+        holder.tvDesignation.text = item.position ?: ""
 
         holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(item)
+            onItemClickListener(item)
 
         }
+    }
+
+    // Method to update the list of members
+    fun updateMembers(newMembers: List<MemberModel>) {
+        memberItem = newMembers
+        notifyDataSetChanged()
     }
 }

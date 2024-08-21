@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.aprajitafoundation.DataViewModel
@@ -26,9 +24,8 @@ import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.model.ImageModel
-import com.example.aprajitafoundation.model.MemberItem
 
-class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
+class HomeFragment : BaseFragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var sliderAdapter: SliderAdapter
@@ -39,7 +36,7 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     private val sliderDataList = DataSource().loadSliderData()
 
-    private lateinit var viewModel:DataViewModel
+    private lateinit var viewModel: DataViewModel
 
     private var imageItems: List<ImageModel> = listOf()
 
@@ -57,9 +54,9 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
-        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO){
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
             viewModel.setAppTheme("Light Mode")
-        }else{
+        } else {
             viewModel.setAppTheme("Dark Mode")
         }
 
@@ -81,8 +78,8 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         binding.rvImageItem.setHasFixedSize(true)
 
         // Observe the images LiveData
-        viewModel.images.observe(viewLifecycleOwner){ images ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), images)
+        viewModel.images.observe(viewLifecycleOwner) { images ->
+            val imageEventAdapter = ImageEventAdapter(requireContext(), images)
             binding.rvImageItem.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
@@ -90,9 +87,9 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             // Handle loading state (e.g., show/hide a ProgressBar)
-            if(isLoading){
+            if (isLoading) {
                 showDialogProgress()
-            }else{
+            } else {
                 hideProgressDialog()
             }
         }
@@ -100,13 +97,31 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
         // Fetch the gallery images
         viewModel.fetchGalleryImages()
 
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.rvImageItem.layoutManager = staggeredGridLayoutManager
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
-        val imageItem = DataSource().loadNameData()
-        binding.rvItems.adapter = ImageAdapter(requireContext(), imageItem, this)
+        val memberAdapter = ImageAdapter(requireContext(), listOf()) { member ->
+            //OnClick Action
+            val memberFragment = MemberFragment.newInstance(member)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, memberFragment) // Use your container ID
+                .addToBackStack(null)
+                .commit()
+        }
+
+// Set the adapter and layout manager
+        binding.rvItems.adapter = memberAdapter
         binding.rvItems.setHasFixedSize(true)
+
+// Observe the members LiveData from the ViewModel
+        viewModel.members.observe(viewLifecycleOwner) { members ->
+            // Update the adapter with the new list
+            Log.d("Members Data", "Members: $members")
+            memberAdapter.updateMembers(members)
+        }
+        viewModel.fetchTeamMembers()
 
         //new Recycler view presentation in main layout
 //        recyclerItemView(imageItem)
@@ -118,7 +133,7 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 //        }
 
         binding.llDonate.setOnClickListener {
-            val intent=  Intent(requireActivity(), PaymentActivity::class.java)
+            val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }
 //        binding.llShare.setOnClickListener {
@@ -134,23 +149,23 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
 
     }
 
-    private fun recyclerItemView(item: List<MemberItem>){
-        val newRecyclerView: RecyclerView = RecyclerView(requireContext())
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        newRecyclerView.layoutManager = layoutManager
-        newRecyclerView.adapter = ImageAdapter(requireContext(), item, this)
-        newRecyclerView.setHasFixedSize(true)
-
-        val layoutParams= ViewGroup.MarginLayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        layoutParams.setMargins(0, 10, 0, 0 )
-        newRecyclerView.layoutParams = layoutParams
-        val parentLayout: ViewGroup  = binding.llScroll
-        parentLayout.addView(newRecyclerView)
-
-    }
+//    private fun recyclerItemView(item: List<MemberItem>){
+//        val newRecyclerView: RecyclerView = RecyclerView(requireContext())
+//        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        newRecyclerView.layoutManager = layoutManager
+//        newRecyclerView.adapter = ImageAdapter(requireContext(), item, this)
+//        newRecyclerView.setHasFixedSize(true)
+//
+//        val layoutParams= ViewGroup.MarginLayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        layoutParams.setMargins(0, 10, 0, 0 )
+//        newRecyclerView.layoutParams = layoutParams
+//        val parentLayout: ViewGroup  = binding.llScroll
+//        parentLayout.addView(newRecyclerView)
+//
+//    }
 
     private fun createDots(dotsLayout: LinearLayout, size: Int) {
         val dots = arrayOfNulls<ImageView>(size)
@@ -208,14 +223,6 @@ class HomeFragment : BaseFragment() , ImageAdapter.ItemClickListener {
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(runnable)
-    }
-
-    override fun onItemClick(memberItem: MemberItem) {
-        val memberFragment = MemberFragment.newInstance(memberItem)
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.frame_layout, memberFragment)
-            .addToBackStack(null) // Add the transaction to the back stack
-            .commit()
     }
 
 }
