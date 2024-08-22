@@ -7,11 +7,9 @@ import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.os.Environment
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityPaymentSuccessBinding
 import com.example.aprajitafoundation.model.Payment
 import java.io.File
@@ -129,6 +127,5 @@ class PaymentSuccessActivity : AppCompatActivity() {
         // Notify the user that the PDF has been saved
         Toast.makeText(context, "PDF saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
     }
-
 
 }

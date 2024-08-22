@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    app:cardElevation="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="@color/bgYellow"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/red_x_icon"/>
+
+        <TextView
+            android:id="@+id/tv_error_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/textAppearanceHeadline6"
+            android:text="Payment Failed!"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment Failed!"
+            android:layout_marginTop="12dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/tv_other_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:text="some other text"/>
+
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="OK"/>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

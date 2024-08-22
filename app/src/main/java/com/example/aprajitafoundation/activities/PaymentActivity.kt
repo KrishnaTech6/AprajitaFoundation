@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -249,14 +251,18 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
     override fun onPaymentError(errorCode: Int, errorMessage: String?, paymentData: PaymentData?) {
         try {
-            val message = if (paymentData != null) {
-                "Payment failed: $errorMessage. Payment Data: ${paymentData.data}"
+            val message1 = if (paymentData != null) {
+                "Payment failed: $errorMessage."
             } else {
-                "Payment failed: $errorMessage. No payment data available."
+                "Payment failed: $errorMessage."
             }
-            alertDialogBuilder.setMessage(message)
-            alertDialogBuilder.show()
-            Log.e(TAG, message)
+            val message2 = if (paymentData != null) {
+                "Payment Data: ${paymentData.data}"
+            } else {
+                "No payment data available."
+            }
+
+           // showFailureDialog(message1, message2)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -298,6 +304,24 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         val editor = sharedPreferences.edit()
         editor.putString(key, value)
         editor.apply()
+    }
+
+    private fun showFailureDialog(message1: String, message2:String) {
+        val dialogView = layoutInflater.inflate(R.layout.payment_failed, null)
+        val builder = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(true)
+
+        val dialog = builder.create()
+
+        // Set the message and button actions
+        dialogView.findViewById<TextView>(R.id.tv_error).text = message1
+        dialogView.findViewById<TextView>(R.id.tv_other_error).text = message2
+        dialogView.findViewById<Button>(R.id.btn_retry).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 }
