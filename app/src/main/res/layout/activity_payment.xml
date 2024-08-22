@@ -1,271 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgYellow"
-    android:padding="24dp"
     tools:context=".activities.PaymentActivity">
-
-    <!-- CardView containing Organization Image, Heading, and Subheading -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/yellow"
-        android:id="@+id/cardView"
-        app:cardElevation="8dp"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:background="@color/bgYellow"
+        android:padding="24dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- CardView containing Organization Image, Heading, and Subheading -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:gravity="center_horizontal">
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/yellow"
+            android:id="@+id/cardView"
+            app:cardElevation="8dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Organization Image -->
-            <ImageView
-                android:id="@+id/organization_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/logo_12"
-                android:scaleType="fitCenter"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:gravity="center_horizontal">
+
+                <!-- Organization Image -->
+                <ImageView
+                    android:id="@+id/organization_image"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/logo_12"
+                    android:scaleType="fitCenter"
+                    android:elevation="4dp" />
+
+                <!-- Organization Heading -->
+                <TextView
+                    android:id="@+id/organization_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textAppearance="?attr/textAppearanceHeadline5"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="4dp" />
+
+                <!-- Organization Subheading -->
+                <TextView
+                    android:id="@+id/organization_subheading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="@string/aprajita_subheading_donation"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:padding="4dp"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_enter_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/donate"
+            android:gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:text="Enter Your Details"
+            android:drawableTint="@color/black"
+            android:drawablePadding="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Name"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_input_border_color"
+            app:boxStrokeWidth="2dp"
+            android:layout_marginTop="8dp"
+            app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_details">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:padding="16dp"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_user_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Email"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_input_border_color"
+            app:boxStrokeWidth="2dp"
+            android:layout_marginTop="8dp"
+            app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_user_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_user_contact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter Phone Number"
+            android:layout_marginTop="8dp"
+            app:boxBackgroundMode="outline"
+            app:boxStrokeColor="@color/text_input_border_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_user_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:padding="16dp"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Toggle Buttons for Predefined Amounts -->
+        <RadioGroup
+            android:id="@+id/amount_toggle_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/til_user_contact"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RadioButton
+                android:id="@+id/amount_100"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="₹100"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/toggle_button_background"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:layout_marginEnd="8dp"
+
                 android:elevation="4dp" />
 
-            <!-- Organization Heading -->
-            <TextView
-                android:id="@+id/organization_heading"
-                android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/amount_200"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:text="₹200"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/toggle_button_background"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp" />
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="4dp" />
 
-            <!-- Organization Subheading -->
-            <TextView
-                android:id="@+id/organization_subheading"
-                android:layout_width="wrap_content"
+            <RadioButton
+                android:id="@+id/amount_500"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="@string/aprajita_subheading_donation"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:padding="4dp"
-                android:textColor="@color/black" />
+                android:text="₹500"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/toggle_button_background"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="4dp" />
 
-        </LinearLayout>
+            <RadioButton
+                android:id="@+id/amount_1000"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="₹1000"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/toggle_button_background"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:layout_marginEnd="8dp"
+                android:elevation="4dp" />
 
-    </androidx.cardview.widget.CardView>
+            <RadioButton
+                android:id="@+id/amount_2000"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="₹2000"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@drawable/toggle_button_background"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:paddingVertical="12dp"
+                android:elevation="4dp" />
+        </RadioGroup>
 
-    <TextView
-        android:id="@+id/tv_enter_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/donate"
-        android:gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:text="Enter Your Details"
-        android:drawableTint="@color/black"
-        android:drawablePadding="4dp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_user_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Name"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/text_input_border_color"
-        app:boxStrokeWidth="2dp"
-        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_enter_details">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:padding="16dp"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_user_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Email"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/text_input_border_color"
-        app:boxStrokeWidth="2dp"
-        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_user_name">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/user_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:padding="16dp"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_user_contact"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Phone Number"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/text_input_border_color"
-        app:boxStrokeWidth="2dp"
-        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_user_email">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/user_contact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:padding="16dp"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Toggle Buttons for Predefined Amounts -->
-    <RadioGroup
-        android:id="@+id/amount_toggle_group"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/til_user_contact"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <RadioButton
-            android:id="@+id/amount_100"
+        <!-- Payment Amount TextField -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/payment_amount_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="₹100"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/toggle_button_background"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="4dp" />
+            android:hint="Enter Amount"
+            app:boxBackgroundMode="outline"
+            android:layout_marginTop="4dp"
+            app:boxStrokeColor="@color/text_input_border_color"
+            app:boxStrokeWidth="2dp"
+            app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amount_toggle_group">
 
-        <RadioButton
-            android:id="@+id/amount_200"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/payment_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:padding="16dp"
+                android:textSize="16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Pay Button -->
+        <Button
+            android:id="@+id/pay_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="₹200"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/toggle_button_background"
-            android:textColor="@color/black"
-            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:text="Donate"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:paddingVertical="12dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="4dp" />
-
-        <RadioButton
-            android:id="@+id/amount_500"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="₹500"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/toggle_button_background"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="4dp" />
-
-        <RadioButton
-            android:id="@+id/amount_1000"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="₹1000"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/toggle_button_background"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="4dp" />
-
-        <RadioButton
-            android:id="@+id/amount_2000"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="₹2000"
-            android:layout_weight="1"
-            android:button="@null"
-            android:background="@drawable/toggle_button_background"
-            android:textColor="@color/black"
-            android:gravity="center"
-            android:paddingVertical="12dp"
-            android:elevation="4dp" />
-    </RadioGroup>
-
-    <!-- Payment Amount TextField -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/payment_amount_input_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter Amount"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/text_input_border_color"
-        app:boxStrokeWidth="2dp"
-        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_toggle_group">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/payment_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:padding="16dp"
-            android:textSize="16sp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Pay Button -->
-    <Button
-        android:id="@+id/pay_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Donate"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:paddingVertical="12dp"
-        android:paddingHorizontal="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/payment_amount_input_layout"
-        android:elevation="6dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:paddingHorizontal="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/payment_amount_input_layout"
+            android:elevation="6dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

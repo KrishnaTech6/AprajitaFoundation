@@ -5,8 +5,11 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -32,10 +35,20 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
     private lateinit var payment:Payment
     private var orderId = ""
     private val TAG = "PaymentActivity"
+
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //Shared preference
+        sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+
+        // Retrieve and set values to EditText
+        binding.userName.setText(getInputFromPreferences("name"))
+        binding.userEmail.setText(getInputFromPreferences("email"))
+        binding.userContact.setText(getInputFromPreferences("phone"))
 
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
@@ -69,6 +82,8 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         binding.payButton.setOnClickListener{
             if (isDetailsFilled()){
                 viewModel.createPayment(binding.paymentAmount.text.toString().toDouble())
+                //Now we wait for the order_id to be recieved from server
+                //go to viewmodel.orderId observer
             }
         }
 
@@ -85,8 +100,10 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         }
 
         viewModel.orderId.observe(this){
-            //get and set the orderId
-            orderId= it
+            //get and set the orderId from server
+
+            orderId= it // will be used inside startPayment()
+
             if (isDetailsFilled()){
                 startPayment()
             }
@@ -101,6 +118,41 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             intent.putExtra("transaction_detail", payment)
             startActivity(intent)
         }
+
+
+
+        //Saving the details after editext change
+
+        binding.userName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    saveInputToPreferences("name", it.toString())
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.userEmail.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    saveInputToPreferences("email", it.toString())
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.userContact.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                s?.let {
+                    saveInputToPreferences("phone", it.toString())
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
     }
 
     private fun isDetailsFilled(): Boolean {
@@ -179,7 +231,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
                     razorpay_payment_id = razorpayPaymentId,
                     razorpay_signature = razorpaySignature
                 )
-
                 viewModel.verifyPayment(payment)
 
                 Log.d(TAG, "Payment: $payment")
@@ -238,5 +289,15 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
     }
 
     fun hideProgressDialog() = mProgressDialog.dismiss()
+
+    private fun getInputFromPreferences(key: String): String? {
+        return sharedPreferences.getString(key, null)
+    }
+
+    private fun saveInputToPreferences(key: String, value: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(key, value)
+        editor.apply()
+    }
 
 }

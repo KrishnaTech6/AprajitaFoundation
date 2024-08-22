@@ -40,7 +40,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
             binding.tvCustomerName.text = "Customer Name: ${it.name}"
             binding.tvPaymentDate.text = "Date: $date"
             binding.tvCustomerPhone.text = "Phone No.: ${it.phone}"
-            binding.tvTransactionId.text = "Transaction ID: ${it.razorpay_payment_id}"
+            binding.tvTransactionId.text = "${it.razorpay_payment_id}"
 
             binding.btnDownloadReceipt.setOnClickListener {
                 downloadReceipt()
