@@ -127,7 +127,7 @@
                                 android:text="Bill Details"
                                 android:textColor="@color/black"
                                 android:textSize="18sp"
-                                android:drawableLeft="@drawable/email"
+                                android:drawableLeft="@drawable/bill_receipt_icon"
                                 android:drawableTint="@color/black"
                                 android:drawablePadding="8dp"/>
 
@@ -203,52 +203,53 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="4dp"
+                                    android:textStyle="bold"
                                     android:text="JBKSADB1243HJKB213"
                                     android:textColor="@color/black"
                                     android:textSize="16sp"/>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Debited from"
-                                    android:padding="4dp"
-                                    android:layout_marginTop="8dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="16sp"/>
+<!--                                <TextView-->
+<!--                                    android:layout_width="wrap_content"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:text="Debited from"-->
+<!--                                    android:padding="4dp"-->
+<!--                                    android:layout_marginTop="8dp"-->
+<!--                                    android:textColor="@color/black"-->
+<!--                                    android:textSize="16sp"/>-->
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingStart="4dp"
-                                    android:orientation="horizontal">
+<!--                                <LinearLayout-->
+<!--                                    android:layout_width="match_parent"-->
+<!--                                    android:layout_height="wrap_content"-->
+<!--                                    android:paddingStart="4dp"-->
+<!--                                    android:orientation="horizontal">-->
 
-                                    <ImageView
-                                        android:id="@+id/iv_bank"
-                                        android:layout_width="40dp"
-                                        android:layout_height="40dp"
-                                        tools:src="@drawable/facebooklogo"/>
-                                    <TextView
-                                        android:id="@+id/tv_account_no"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="4dp"
-                                        android:layout_weight="1"
-                                        android:layout_gravity="center_vertical"
-                                        android:text="Account no."
-                                        android:textColor="@color/black"
-                                        android:textSize="16sp" />
+<!--                                    <ImageView-->
+<!--                                        android:id="@+id/iv_bank"-->
+<!--                                        android:layout_width="40dp"-->
+<!--                                        android:layout_height="40dp"-->
+<!--                                        tools:src="@drawable/facebooklogo"/>-->
+<!--                                    <TextView-->
+<!--                                        android:id="@+id/tv_account_no"-->
+<!--                                        android:layout_width="0dp"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_marginStart="4dp"-->
+<!--                                        android:layout_weight="1"-->
+<!--                                        android:layout_gravity="center_vertical"-->
+<!--                                        android:text="Account no."-->
+<!--                                        android:textColor="@color/black"-->
+<!--                                        android:textSize="16sp" />-->
 
-                                    <TextView
-                                        android:id="@+id/tv_amount"
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="4dp"
-                                        android:layout_weight="1"
-                                        android:text="Amount"
-                                        android:layout_gravity="center_vertical"
-                                        android:textColor="@color/black"
-                                        android:textSize="16sp"/>
-                                </LinearLayout>
+<!--                                    <TextView-->
+<!--                                        android:id="@+id/tv_amount"-->
+<!--                                        android:layout_width="0dp"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_marginStart="4dp"-->
+<!--                                        android:layout_weight="1"-->
+<!--                                        android:text="Amount"-->
+<!--                                        android:layout_gravity="center_vertical"-->
+<!--                                        android:textColor="@color/black"-->
+<!--                                        android:textSize="16sp"/>-->
+<!--                                </LinearLayout>-->
                             </LinearLayout>
                         </LinearLayout>
 
@@ -269,6 +270,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:layout_width="0dp"
+                            android:id="@+id/btn_download_receipt"
                             android:layout_height="wrap_content"
                             android:text="Download"
                             android:layout_marginEnd="8dp"
@@ -279,6 +281,7 @@
                             android:drawablePadding="4dp"/>
 
                         <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_share_receipt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Share"

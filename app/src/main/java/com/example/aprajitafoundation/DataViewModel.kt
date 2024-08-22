@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
+import com.example.aprajitafoundation.model.Payment
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -31,6 +32,14 @@ class DataViewModel : ViewModel() {
 
     private val _members = MutableLiveData<List<MemberModel>>()
     val members: LiveData<List<MemberModel>> get() = _members
+
+
+    private val _orderId = MutableLiveData<String>()
+    val orderId: LiveData<String> get() = _orderId
+
+    private val _paymentVerificationStatus = MutableLiveData<String>()
+    val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
+
 
     private val apiService = RetrofitClient.api
 
@@ -96,4 +105,48 @@ class DataViewModel : ViewModel() {
             }
         }
     }
+
+    fun createPayment(amount: Double) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val paymentRequest = PaymentRequest(amount)
+                val response = apiService.createPayment(paymentRequest)
+                if (response.isSuccessful) {
+                    val order = response.body()?.order
+                    order?.let {
+                        _orderId.value = it.id  // Store the order ID
+                    }
+                } else {
+                    _error.value = "Error creating payment: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", "Error creating payment", e)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun verifyPayment(payment: Payment) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = apiService.storeVerifiedPayment(payment)
+                if (response.isSuccessful) {
+                    _paymentVerificationStatus.value = "Payment Verified Successfully"
+                } else {
+                    _error.value = "Error verifying payment: ${response.message()}"
+                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                }
+            } catch (e: Exception) {
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", e.message, e)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
 }

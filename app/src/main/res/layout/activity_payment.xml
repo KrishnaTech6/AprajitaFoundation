@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="@string/aprajita_subheading"
+                android:text="@string/aprajita_subheading_donation"
                 android:textAppearance="?attr/textAppearanceSubtitle1"
                 android:padding="4dp"
                 android:textColor="@color/black" />
@@ -63,6 +63,88 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_enter_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/donate"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:text="Enter Your Details"
+        android:drawableTint="@color/black"
+        android:drawablePadding="4dp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_user_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/text_input_border_color"
+        app:boxStrokeWidth="2dp"
+        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_enter_details">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_user_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Email"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/text_input_border_color"
+        app:boxStrokeWidth="2dp"
+        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_user_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_user_contact"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Phone Number"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/text_input_border_color"
+        app:boxStrokeWidth="2dp"
+        app:hintTextAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_user_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:padding="16dp"
+            android:textSize="16sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Toggle Buttons for Predefined Amounts -->
     <RadioGroup
@@ -72,7 +154,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/cardView"
+        app:layout_constraintTop_toBottomOf="@id/til_user_contact"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -154,12 +236,7 @@
         android:hint="Enter Amount"
         app:boxBackgroundMode="outline"
         app:boxStrokeColor="@color/text_input_border_color"
-        app:boxStrokeErrorColor="@color/red"
         app:boxStrokeWidth="2dp"
-        app:errorEnabled="true"
-        app:errorIconDrawable="@android:drawable/stat_notify_error"
-        app:errorIconTint="@color/red"
-        app:errorTextColor="@color/red"
         app:hintTextAppearance="?attr/textAppearanceSubtitle1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

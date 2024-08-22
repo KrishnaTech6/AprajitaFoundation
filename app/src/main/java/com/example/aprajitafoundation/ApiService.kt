@@ -4,10 +4,12 @@ import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
+import com.example.aprajitafoundation.model.Payment
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -19,31 +21,36 @@ interface GalleryApi {
     @GET("get-gallery-images")
     suspend fun getGalleryImages(): Response<List<ImageModel>>
 
-    @Multipart
-    @POST("upload-gallery-image")
-    suspend fun uploadGalleryImage(
-        @Part file: MultipartBody.Part
-    ): Response<UploadResponse>
-
-    @DELETE("delete-gallery-image/{id}")
-    suspend fun deleteGalleryImage(
-        @Path("id") id: String
-    ): Response<DeleteResponse>
-
-
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>
 
     @GET("get-events")
     suspend fun getAllEvents(): Response<List<EventModel>>
+
+    @POST("create-payment")
+    suspend fun createPayment(@Body paymentRequest: PaymentRequest): Response<PaymentResponse>
+
+    @POST("verify-payment")
+    suspend fun storeVerifiedPayment(@Body payment: Payment): Response<GenericResponse>
+
 }
 
-data class UploadResponse(
+data class GenericResponse(
     val message: String
 )
+data class PaymentRequest(
+    val amount: Double
+)
 
-data class DeleteResponse(
-    val message: String
+data class PaymentResponse(
+    val order: Order
+)
+data class Order(
+    val id: String,
+    val amount: Int,
+    val currency: String,
+    val receipt: String?,
+    val status: String?
 )
 
 object RetrofitClient {
