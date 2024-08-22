@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.example.aprajitafoundation.databinding.ActivityPaymentSuccessBinding
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.showToast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -125,7 +126,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
         }
 
         // Notify the user that the PDF has been saved
-        Toast.makeText(context, "PDF saved to ${file.absolutePath}", Toast.LENGTH_LONG).show()
+       showToast(this, "PDF saved to ${file.absolutePath}")
     }
 
 }

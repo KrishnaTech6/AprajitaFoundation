@@ -20,7 +20,12 @@ import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
+import com.example.aprajitafoundation.hideProgressDialog
+import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.showDialogProgress
+import com.example.aprajitafoundation.showSnackBar
+import com.example.aprajitafoundation.showToast
 import com.razorpay.Checkout
 import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData
@@ -30,8 +35,6 @@ import java.util.Date
 
 class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, ExternalWalletListener, DialogInterface.OnClickListener{
     private lateinit var binding: ActivityPaymentBinding
-    private lateinit var alertDialogBuilder: AlertDialog.Builder
-    private lateinit var mProgressDialog: Dialog
 
     private lateinit var viewModel: DataViewModel
     private lateinit var payment:Payment
@@ -70,16 +73,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             binding.paymentAmount.setText(selectedAmount.toString())
         }
 
-
-        alertDialogBuilder = AlertDialog.Builder(this@PaymentActivity)
-        alertDialogBuilder.setTitle("Payment Result")
-        alertDialogBuilder.setCancelable(true)
-        alertDialogBuilder.setPositiveButton("Ok"){_,_-> }
-
-
-
-
-
         // Call this function when you want to start the payment
         binding.payButton.setOnClickListener{
             if (isDetailsFilled()){
@@ -91,13 +84,17 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         viewModel.loading.observe(this){
             if(it){
-                showDialogProgress()
+                showDialogProgress(this)
+                if(!isInternetAvailable(this)){
+                    hideProgressDialog()
+                    showSnackBar(binding.root, "No Internet Connection")
+                }
             }else{
                 hideProgressDialog()
             }
         }
         viewModel.error.observe(this){
-            showToast(it)
+            showToast(this, it)
             Log.d(TAG, it)
         }
 
@@ -114,7 +111,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         viewModel.paymentVerificationStatus.observe(this){
             //show verified successfully msg
-            showToast(it)
+            showToast(this, it)
             //after msg go to success screen
             val intent = Intent(this@PaymentActivity, PaymentSuccessActivity::class.java)
             intent.putExtra("transaction_detail", payment)
@@ -158,21 +155,33 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
     }
 
     private fun isDetailsFilled(): Boolean {
+
+        val emailPattern = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+        val phonePattern = Regex("^[0-9]{10}$")
+
         return when{
             binding.userContact.text.toString().isEmpty() ->{
-                showToast("Enter the phone number!")
+                showSnackBar(binding.root,"Enter the phone number!")
+                false
+            }
+            !binding.userContact.text.toString().matches(phonePattern) -> {
+                showSnackBar(binding.root,"Enter a valid 10-digit phone number!")
                 false
             }
             binding.userEmail.text.toString().isEmpty() -> {
-                showToast("Enter your email!")
+                showSnackBar(binding.root,"Enter your email!")
+                false
+            }
+            !binding.userEmail.text.toString().matches(emailPattern) -> {
+                showSnackBar(binding.root,"Enter a valid 10-digit phone number!")
                 false
             }
             binding.userName.text.toString().isEmpty() -> {
-                showToast("Enter your name!")
+                showSnackBar(binding.root,"Enter your name!")
                 false
             }
             binding.paymentAmount.text.toString().isEmpty() -> {
-                showToast("Enter an amount!")
+                showSnackBar(binding.root, "Enter an amount!")
                 false
             }
             else -> true
@@ -240,11 +249,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             } else {
                 // Handle the case where paymentData is null
                 Log.e(TAG, "PaymentData is null")
-                showToast("PaymentData is null. Please contact support.")
+                showToast(this,"PaymentData is null. Please contact support.")
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast("An error occurred during payment processing.")
+            showToast(this, "An error occurred during payment processing.")
         }
     }
 
@@ -271,8 +280,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
     override fun onExternalWalletSelected(p0: String?, p1: PaymentData?) {
         try{
-            alertDialogBuilder.setMessage("External wallet was selected : Payment Data: ${p1?.data}")
-            alertDialogBuilder.show()
+            //todo: somethihng
         }catch (e: java.lang.Exception){
             e.printStackTrace()
         }
@@ -282,19 +290,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         finish()
     }
 
-    fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    fun showDialogProgress(){
-        mProgressDialog = Dialog(this)
-        mProgressDialog.setContentView(R.layout.progress_bar)
-        mProgressDialog.setCancelable(false)
-        mProgressDialog.setCanceledOnTouchOutside(false)
-        mProgressDialog.show()
-    }
-
-    fun hideProgressDialog() = mProgressDialog.dismiss()
 
     private fun getInputFromPreferences(key: String): String? {
         return sharedPreferences.getString(key, null)

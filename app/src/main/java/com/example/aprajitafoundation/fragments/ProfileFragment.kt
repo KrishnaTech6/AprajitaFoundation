@@ -23,6 +23,8 @@ import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
+import com.example.aprajitafoundation.isInternetAvailable
+import com.example.aprajitafoundation.showToast
 
 
 class ProfileFragment : BaseFragment() {
@@ -98,7 +100,7 @@ class ProfileFragment : BaseFragment() {
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when(menuItem.itemId){
                 R.id.sign_out ->{
-                    showToast("Sign out clicked")
+                    showToast(requireContext(), "Sign out clicked")
                     true}
                 R.id.app_theme ->{
                     themeItem.title = viewModel.appTheme.value

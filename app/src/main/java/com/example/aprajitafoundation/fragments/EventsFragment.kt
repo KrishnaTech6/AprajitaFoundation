@@ -10,11 +10,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.aprajitafoundation.DataViewModel
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
+import com.example.aprajitafoundation.hideProgressDialog
+import com.example.aprajitafoundation.isInternetAvailable
+import com.example.aprajitafoundation.showDialogProgress
+import com.example.aprajitafoundation.showSnackBar
 
 class EventsFragment : BaseFragment() {
 
@@ -48,9 +53,13 @@ class EventsFragment : BaseFragment() {
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             // Handle loading state (e.g., show/hide a ProgressBar)
-            if(isLoading){
-                showDialogProgress()
-            }else{
+            if (isLoading) {
+                showDialogProgress(requireContext())
+                if(!isInternetAvailable(requireContext())){
+                    hideProgressDialog()
+                    showSnackBar(requireView(), "No Internet Connection!")
+                }
+            } else {
                 hideProgressDialog()
             }
         }

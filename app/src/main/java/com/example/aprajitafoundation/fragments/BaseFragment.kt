@@ -17,20 +17,19 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.showToast
 import java.io.File
 import java.io.IOException
 
 open class BaseFragment : Fragment() {
 
 
-    private lateinit var mProgressDialog: Dialog
-
     fun openWhatsApp(phoneNumber: String) {
         val uri = Uri.parse("https://wa.me/$phoneNumber")
         val packageNames = listOf("com.whatsapp", "com.whatsapp.w4b")
 
         if (packageNames.any { startIntentWithPackage(uri, it) }) return
-        showToast("WhatsApp is not installed")
+        showToast(requireContext(), "WhatsApp is not installed")
     }
 
     fun openWebsite(url: String) {
@@ -41,26 +40,26 @@ open class BaseFragment : Fragment() {
             startActivity(intent)
         } catch (e: Exception) {
             // Handle the case where no browser is available
-            Toast.makeText(requireContext(), "No application available to open the link", Toast.LENGTH_SHORT).show()
+            showToast(requireContext(), "No application available to open the link")
         }
     }
 
-     fun shareLink(url: String) {
+    fun shareLink(url: String) {
 
-         // Create an intent to share the Google Drive link
-         val intent = Intent(Intent.ACTION_SEND).apply {
-             type = "text/plain"
-             putExtra(Intent.EXTRA_TEXT, "Download the APK from: $url")
-         }
+        // Create an intent to share the Google Drive link
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, "Download the APK from: $url")
+        }
 
-         // Start the activity to let the user choose how to share the link
-         try {
-             startActivity(Intent.createChooser(intent, "Share Download Link"))
-         } catch (e: Exception) {
-             Log.e("ShareError", "Error sharing link: ${e.message}", e)
-             showToast("Unable to share download link")
-         }
-   }
+        // Start the activity to let the user choose how to share the link
+        try {
+            startActivity(Intent.createChooser(intent, "Share Download Link"))
+        } catch (e: Exception) {
+            Log.e("ShareError", "Error sharing link: ${e.message}", e)
+            showToast(requireContext(), "Unable to share download link")
+        }
+    }
 
     fun openEmail(email: String){
         val intent = Intent(Intent.ACTION_SENDTO).apply {
@@ -74,11 +73,11 @@ open class BaseFragment : Fragment() {
                 startActivity(Intent.createChooser(intent, "Share Download Link"))
             } catch (e: Exception) {
                 Log.e("EmailError", "Error sharing link: ${e.message}", e)
-                showToast("Unable to open email")
+                showToast(requireContext(), "Unable to open email")
             }
         } else {
             // Handle the case where no email clients are installed
-            showToast("No email apps installed")
+            showToast(requireContext(), "No email apps installed")
         }
 
     }
@@ -103,33 +102,4 @@ open class BaseFragment : Fragment() {
             false
         }
     }
-
-    fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    fun showDialogProgress(){
-        mProgressDialog = Dialog(requireContext())
-        mProgressDialog.setContentView(R.layout.progress_bar)
-        mProgressDialog.setCancelable(false)
-        mProgressDialog.setCanceledOnTouchOutside(false)
-        mProgressDialog.show()
-    }
-
-    fun hideProgressDialog() = mProgressDialog.dismiss()
-
-//    private fun copyApkToExternalStorage(): File? {
-//        val packageInfo = requireContext().packageManager.getPackageInfo(requireContext().packageName, 0)
-//        val apkFile = File(packageInfo.applicationInfo.sourceDir)
-//        val externalDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-//        val copiedFile = File(externalDir, "AprajitaFoundation.apk")
-//
-//        return try {
-//            apkFile.copyTo(copiedFile, overwrite = true)
-//            copiedFile
-//        } catch (e: IOException) {
-//            Log.e("FileError", "Error copying APK file", e)
-//            null
-//        }
-//    }
 }
