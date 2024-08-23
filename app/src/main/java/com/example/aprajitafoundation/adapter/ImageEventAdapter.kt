@@ -20,21 +20,29 @@ import com.example.aprajitafoundation.model.ImageModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.ServiceLoader
 
 class ImageEventAdapter(
     private val context: Context,
     private val imageItems: List<ImageModel> = emptyList(),
-    private val eventItems: List<EventModel> = emptyList()
+    private val eventItems: List<EventModel> = emptyList(),
+    private val isSlider: Boolean = false,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val TYPE_IMAGE = 0
         private const val TYPE_EVENT = 1
+        private const val TYPE_IMAGE_SLIDER = 3
     }
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.iv_image_item)
         val textView: TextView = itemView.findViewById(R.id.tv_image_title_slider)
+    }
+
+    inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.iv_slider_item)
+        val textView: TextView = itemView.findViewById(R.id.tv_title_slider)
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,8 +56,10 @@ class ImageEventAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (position < imageItems.size) {
-            TYPE_IMAGE
-        } else {
+            if(isSlider){
+                TYPE_IMAGE_SLIDER
+            }else TYPE_IMAGE
+        }else {
             TYPE_EVENT
         }
     }
@@ -59,6 +69,11 @@ class ImageEventAdapter(
             TYPE_IMAGE -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.gallery_image_item, parent, false)
                 ImageViewHolder(view)
+            }
+
+            TYPE_IMAGE_SLIDER -> {
+                val view = LayoutInflater.from(context).inflate(R.layout.slider_item, parent, false)
+                SliderViewHolder(view)
             }
             TYPE_EVENT -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false)
@@ -73,6 +88,18 @@ class ImageEventAdapter(
             TYPE_IMAGE -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as ImageViewHolder
+                Glide.with(context)
+                    .load(item?.image)
+                    .into(imageHolder.imageView)
+                imageHolder.itemView.setOnClickListener {
+                    val intent = Intent(context, FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", item?.image)
+                    context.startActivity(intent)
+                }
+            }
+            TYPE_IMAGE_SLIDER -> {
+                val item = imageItems.getOrNull(position)
+                val imageHolder = holder as SliderViewHolder
                 Glide.with(context)
                     .load(item?.image)
                     .into(imageHolder.imageView)

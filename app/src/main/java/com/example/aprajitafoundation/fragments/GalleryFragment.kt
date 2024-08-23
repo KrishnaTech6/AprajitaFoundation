@@ -54,7 +54,7 @@ class GalleryFragment : Fragment() {
             }
         }
 
-        // Fetch the all events
+        // Fetch the all images
         viewModel.fetchAllGalleryImages()
 
         return binding.root

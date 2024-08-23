@@ -20,8 +20,6 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
-import com.example.aprajitafoundation.adapter.SliderAdapter
-import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable
@@ -32,13 +30,12 @@ import com.example.aprajitafoundation.showSnackBar
 class HomeFragment : BaseFragment() {
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var sliderAdapter: SliderAdapter
     private lateinit var binding: FragmentHomeBinding
 
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var runnable: Runnable
+    private  var runnable: Runnable? = null
 
-    private val sliderDataList = DataSource().loadSliderData()
+    private var sliderDataList = listOf<ImageModel>()
 
     private lateinit var viewModel: DataViewModel
 
@@ -65,20 +62,6 @@ class HomeFragment : BaseFragment() {
             viewModel.setAppTheme("Dark Mode")
         }
 
-        /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
-        viewPager = binding.viewPager
-        sliderAdapter = SliderAdapter(requireContext(), sliderDataList)
-        viewPager.adapter = sliderAdapter
-        // Initialize the runnable for automatic sliding
-        runnable = Runnable {
-            val nextItem =
-                if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
-            viewPager.currentItem = nextItem
-            handler.postDelayed(runnable, 2500) // Delay in milliseconds between slides
-        }
-        createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
-
-
         binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf())
         binding.rvImageItem.setHasFixedSize(true)
 
@@ -86,8 +69,25 @@ class HomeFragment : BaseFragment() {
         viewModel.images.observe(viewLifecycleOwner) { images ->
             val imageEventAdapter = ImageEventAdapter(requireContext(), images)
             binding.rvImageItem.adapter = imageEventAdapter
+
+            sliderDataList= images
+            /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
+            viewPager = binding.viewPager
+            viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true)
+
             imageEventAdapter.notifyDataSetChanged()
+
+            // Initialize the runnable for automatic sliding
+            runnable = Runnable {
+                val nextItem =
+                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+                viewPager.currentItem = nextItem
+                runnable?.let { handler.postDelayed(it, 2500) } // Delay in milliseconds between slides
+            }
+            createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
         }
+
+
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
@@ -132,36 +132,20 @@ class HomeFragment : BaseFragment() {
         }
         viewModel.fetchTeamMembers()
 
-        //new Recycler view presentation in main layout
-//        recyclerItemView(imageItem)
-
-
-//        //To chat with
-//        binding.llWtspContact.setOnClickListener {
-//            openWhatsApp(Constants.phnNumber)
-//        }
-
         binding.btnDonate.setOnClickListener {
             val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }
-//        binding.llShare.setOnClickListener {
-//            shareLink(Constants.apkLink)
-//        }
-//
-//        binding.llEmail.setOnClickListener {
-//            openEmail(Constants.email)
-//        }
 
         //Go to gallery fragment
         binding.llGoToGallery.setOnClickListener {
-            val galleryFragment = GalleryFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, galleryFragment) // Use your container ID
-                .addToBackStack(null)
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, GalleryFragment(), "Gallery")
+                .addToBackStack("Gallery")
                 .commit()
-        }
 
+        }
 
         return binding.root
 
@@ -235,12 +219,16 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        handler.postDelayed(runnable, 2500)
+        runnable?.let {
+            handler.postDelayed(it, 2500)
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        handler.removeCallbacks(runnable)
+        runnable?.let {
+            handler.removeCallbacks(it)
+        }
     }
 
 }

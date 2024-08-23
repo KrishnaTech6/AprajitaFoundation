@@ -4,12 +4,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.databinding.ActivityFullScreenImageBinding
-import com.example.aprajitafoundation.model.SlideItem
 
 class FullScreenImageActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFullScreenImageBinding

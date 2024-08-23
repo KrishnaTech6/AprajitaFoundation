@@ -4,17 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.aprajitafoundation.DataViewModel
-import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
-import com.example.aprajitafoundation.adapter.SliderAdapter
-import com.example.aprajitafoundation.data.DataSource
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable
