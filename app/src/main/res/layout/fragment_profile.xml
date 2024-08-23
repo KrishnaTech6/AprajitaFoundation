@@ -69,7 +69,7 @@
                     android:id="@+id/iv_image_profile"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/apj4"
+                    android:src="@drawable/logo_12"
                     android:padding="2dp"
                     android:elevation="4dp"
                     android:scaleType="centerCrop"

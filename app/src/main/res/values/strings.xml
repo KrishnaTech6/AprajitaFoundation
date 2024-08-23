@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Aprajita Foundation</string>
-    <string name="profile">Profile</string>
     <string name="aprajita_subheading">An NGO for women and kids Empowerment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="event_image_description">Event Image\n</string>
@@ -10,5 +9,4 @@
     <string name="facebook">facebook\n</string>
     <string name="aprajita_subheading_donation">Donation for a cause</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
