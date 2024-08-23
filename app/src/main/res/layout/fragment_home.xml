@@ -57,18 +57,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="@color/grey" />
-
             <!-- ViewPager Section -->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:clipToPadding="false" />
 
             <LinearLayout
@@ -78,11 +73,6 @@
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="@color/grey" />
 
             <!-- Core Members Section -->
             <TextView
@@ -102,12 +92,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/member_item" />
 
-            <View
-                android:id="@+id/separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="@color/grey" />
 
             <!-- Profile Section -->
 
@@ -122,16 +106,7 @@
                 android:paddingBottom="16dp"
                 android:text="Donate for a cause" />
 
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                android:background="@color/grey" />
-
             <!-- Gallery Section -->
-
-            <!-- Core Members Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

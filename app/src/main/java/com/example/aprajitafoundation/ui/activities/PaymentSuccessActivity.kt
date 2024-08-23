@@ -34,13 +34,17 @@ class PaymentSuccessActivity : AppCompatActivity() {
         paymentDetails = intent.getParcelableExtra("transaction_detail")
 
         paymentDetails?.let {
-            val dateFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a", Locale.getDefault())
             val date = dateFormat.format(it.date) // Assuming `date` is a field in `Payment`
 
             binding.tvCustomerName.text = "Customer Name: ${it.name}"
+            binding.tvCustomerEmail.text = "Customer Email: ${it.email}"
             binding.tvPaymentDate.text = "Date: $date"
             binding.tvCustomerPhone.text = "Phone No.: ${it.phone}"
-            binding.tvTransactionId.text = "${it.razorpay_payment_id}"
+
+            binding.tvTransactionId.text = "Transaction ID: ${it.razorpay_payment_id}"
+            binding.tvAmount.text = "Amount: ₹${it.amount}"
+            binding.tvOrderId.text = "Order ID: ${it.razorpay_order_id}"
 
             binding.btnDownloadReceipt.setOnClickListener {
                 if (!isDownloaded)

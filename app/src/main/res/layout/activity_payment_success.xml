@@ -143,7 +143,21 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Customer Name: Rishav Chandra"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="none"
+                                    android:maxLines="3"
                                     android:textColor="@color/black"
+                                    android:padding="4dp"
+                                    android:textSize="16sp"/>
+                                <TextView
+                                    android:id="@+id/tv_customer_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Customer email: theaprajita@gmail.com"
+                                    android:textColor="@color/black"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="none"
+                                    android:maxLines="3"
                                     android:padding="4dp"
                                     android:textSize="16sp"/>
 
@@ -192,19 +206,33 @@
                                 android:layout_marginTop="8dp">
 
                                 <TextView
+                                    android:id="@+id/tv_transaction_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="none"
+                                    android:maxLines="3"
                                     android:text="Transaction ID:"
                                     android:padding="4dp"
                                     android:textColor="@color/black"
                                     android:textSize="16sp"/>
                                 <TextView
-                                    android:id="@+id/tv_transaction_id"
+                                    android:id="@+id/tv_order_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:paddingStart="4dp"
-                                    android:textStyle="bold"
-                                    android:text="JBKSADB1243HJKB213"
+                                    android:text="Order ID:"
+                                    android:breakStrategy="balanced"
+                                    android:ellipsize="none"
+                                    android:maxLines="3"
+                                    android:padding="4dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp"/>
+                                <TextView
+                                    android:id="@+id/tv_amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Amount: "
+                                    android:padding="4dp"
                                     android:textColor="@color/black"
                                     android:textSize="16sp"/>
 
