@@ -78,12 +78,13 @@ class HomeFragment : BaseFragment() {
             imageEventAdapter.notifyDataSetChanged()
 
             // Initialize the runnable for automatic sliding
-            runnable = Runnable {
-                val nextItem =
-                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
-                viewPager.currentItem = nextItem
-                runnable?.let { handler.postDelayed(it, 2500) } // Delay in milliseconds between slides
-            }
+//            runnable = Runnable {
+//                val nextItem =
+//                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+//                viewPager.currentItem = nextItem
+//                runnable?.let { handler.postDelayed(it, 2500) } // Delay in milliseconds between slides
+//            }
+
             createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
         }
 
@@ -170,6 +171,8 @@ class HomeFragment : BaseFragment() {
 //    }
 
     private fun createDots(dotsLayout: LinearLayout, size: Int) {
+
+        dotsLayout.removeAllViews()
         val dots = arrayOfNulls<ImageView>(size)
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -219,16 +222,16 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        runnable?.let {
-            handler.postDelayed(it, 2500)
-        }
+//        runnable?.let {
+//            handler.postDelayed(it, 2500)
+//        }
     }
 
     override fun onPause() {
         super.onPause()
-        runnable?.let {
-            handler.removeCallbacks(it)
-        }
+//        runnable?.let {
+//            handler.removeCallbacks(it)
+//        }
     }
 
 }

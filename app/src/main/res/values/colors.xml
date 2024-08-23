@@ -17,5 +17,6 @@
     <color name="defaultColor">#E0E0E0</color>
     <color name="selectedColorRb">#FFEB3B</color>
     <color name="pressedColor">#808080</color>
+    <color name="blackText">#000000</color>
 
 </resources>
