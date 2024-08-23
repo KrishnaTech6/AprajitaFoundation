@@ -36,10 +36,17 @@ class HomeFragment : BaseFragment() {
     private  var runnable: Runnable? = null
 
     private var sliderDataList = listOf<ImageModel>()
+    private val autoSlideDelay: Long = 3000 // 3 seconds
 
     private lateinit var viewModel: DataViewModel
 
-    private var imageItems: List<ImageModel> = listOf()
+    private val autoSlideRunnable = object : Runnable {
+        override fun run() {
+            val nextItem = if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+            viewPager.setCurrentItem(nextItem, true)
+            handler.postDelayed(this, autoSlideDelay) // Schedule next slide
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +62,10 @@ class HomeFragment : BaseFragment() {
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        // Setup ViewPager
+        viewPager = binding.viewPager
+        viewPager.adapter = ImageEventAdapter(requireContext(), listOf(), isSlider = true)
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
             viewModel.setAppTheme("Light Mode")
@@ -171,67 +182,43 @@ class HomeFragment : BaseFragment() {
 //    }
 
     private fun createDots(dotsLayout: LinearLayout, size: Int) {
-
         dotsLayout.removeAllViews()
         val dots = arrayOfNulls<ImageView>(size)
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.setMargins(4, 2, 4, 2)
+        ).apply {
+            setMargins(4, 2, 4, 2)
+        }
 
         for (i in 0 until size) {
-            dots[i] = ImageView(requireContext())
-            dots[i]?.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.dot_inactive
-                )
-            )
-            dots[i]?.layoutParams = params
+            dots[i] = ImageView(requireContext()).apply {
+                setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dot_inactive))
+                layoutParams = params
+            }
             dotsLayout.addView(dots[i])
         }
 
-        dots[0]?.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.dot_active
-            )
-        )
+        dots[0]?.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dot_active))
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                for (i in 0 until size) {
-                    dots[i]?.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            R.drawable.dot_inactive
-                        )
-                    )
+                dots.forEachIndexed { index, imageView ->
+                    imageView?.setImageDrawable(ContextCompat.getDrawable(requireContext(), if (index == position) R.drawable.dot_active else R.drawable.dot_inactive))
                 }
-
-                dots[position]?.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.dot_active
-                    )
-                )
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-//        runnable?.let {
-//            handler.postDelayed(it, 2500)
-//        }
+        handler.postDelayed(autoSlideRunnable, autoSlideDelay)
     }
 
     override fun onPause() {
         super.onPause()
-//        runnable?.let {
-//            handler.removeCallbacks(it)
-//        }
+        handler.removeCallbacks(autoSlideRunnable)
+
     }
 
 }

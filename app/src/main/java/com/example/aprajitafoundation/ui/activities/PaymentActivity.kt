@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -30,6 +31,7 @@ import com.razorpay.Checkout
 import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData
 import com.razorpay.PaymentResultWithDataListener
+import org.json.JSONException
 import org.json.JSONObject
 import java.util.Date
 
@@ -259,20 +261,33 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
     override fun onPaymentError(errorCode: Int, errorMessage: String?, paymentData: PaymentData?) {
         try {
-            val message1 = if (paymentData != null) {
-                "Payment failed: $errorMessage."
-            } else {
-                "Payment failed: $errorMessage."
-            }
-            val message2 = if (paymentData != null) {
-                "Payment Data: ${paymentData.data}"
-            } else {
-                "No payment data available."
-            }
+            val message1 = errorMessage ?: "An unknown error occurred."
+            // Format the error message to show only relevant parts
+            val formattedMessage = formatErrorMessage(message1)
 
-           // showFailureDialog(message1, message2)
+            showFailureDialog(formattedMessage)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    // Function to format the raw error message
+    private fun formatErrorMessage(rawMessage: String): String {
+        return try {
+            // Parse the raw JSON message
+            val jsonObject = JSONObject(rawMessage)
+            val error = jsonObject.getJSONObject("error")
+            val code = error.getString("code")
+            val description = error.getString("description")
+            val reason = error.getString("reason")
+
+            val metadata= error.getJSONObject("metadata")
+
+            // Return a formatted message
+            "Error Code: $code\nDescription: $description\n\n Reason: $reason\n $metadata "
+        } catch (e: JSONException) {
+            // If there's an error in parsing, return the raw message
+            rawMessage
         }
     }
 
@@ -300,7 +315,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         editor.apply()
     }
 
-    private fun showFailureDialog(message1: String, message2:String) {
+    private fun showFailureDialog(message1: String) {
         val dialogView = layoutInflater.inflate(R.layout.payment_failed, null)
         val builder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -310,7 +325,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         // Set the message and button actions
         dialogView.findViewById<TextView>(R.id.tv_error).text = message1
-        dialogView.findViewById<TextView>(R.id.tv_other_error).text = message2
+        dialogView.findViewById<TextView>(R.id.tv_other_error).visibility = View.GONE
         dialogView.findViewById<Button>(R.id.btn_retry).setOnClickListener {
             dialog.dismiss()
         }
