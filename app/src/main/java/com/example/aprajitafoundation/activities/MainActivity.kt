@@ -15,6 +15,7 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
 import com.example.aprajitafoundation.fragments.HomeFragment
 import com.example.aprajitafoundation.fragments.EventsFragment
+import com.example.aprajitafoundation.fragments.GalleryFragment
 import com.example.aprajitafoundation.fragments.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
@@ -45,9 +46,10 @@ class MainActivity : AppCompatActivity() {
                     true}
                 R.id.events -> {    replaceFragment(EventsFragment(), "Events")
                     true}
+                R.id.gallery -> {   replaceFragment(GalleryFragment(), "Gallery")
+                    true}
                 R.id.profile -> {   replaceFragment(ProfileFragment(), "Profile")
                     true}
-
                 else -> false
 
             }
@@ -97,6 +99,7 @@ class MainActivity : AppCompatActivity() {
         when (supportFragmentManager.findFragmentById(R.id.frame_layout)) {
             is HomeFragment -> binding.bottomNavigationBar.selectedItemId = R.id.home
             is EventsFragment -> binding.bottomNavigationBar.selectedItemId = R.id.events
+            is GalleryFragment -> binding.bottomNavigationBar.selectedItemId = R.id.gallery
             is ProfileFragment -> binding.bottomNavigationBar.selectedItemId = R.id.profile
             else -> {
                 Log.d("MainActivity","null fragment" )

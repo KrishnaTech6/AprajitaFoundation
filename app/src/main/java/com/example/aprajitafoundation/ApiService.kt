@@ -21,6 +21,9 @@ interface GalleryApi {
     @GET("get-gallery-images")
     suspend fun getGalleryImages(): Response<List<ImageModel>>
 
+    @GET("get-all-gallery-images")
+    suspend fun getAllGalleryImages(): Response<List<ImageModel>>
+
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>
 

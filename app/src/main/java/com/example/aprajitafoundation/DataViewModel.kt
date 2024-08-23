@@ -18,6 +18,9 @@ class DataViewModel : ViewModel() {
     private val _images = MutableLiveData<List<ImageModel>>()
     val images: LiveData<List<ImageModel>> get() = _images
 
+    private val _allImages = MutableLiveData<List<ImageModel>>()
+    val allImages: LiveData<List<ImageModel>> get() = _allImages
+
     private val _events = MutableLiveData<List<EventModel>>()
     val events: LiveData<List<EventModel>> get() = _events
 
@@ -50,6 +53,25 @@ class DataViewModel : ViewModel() {
                 val response = apiService.getGalleryImages()
                 if (response.isSuccessful) {
                     _images.value = response.body()
+                } else {
+                    _error.value = "Error fetching images: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", "Error fetching gallery images", e)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun fetchAllGalleryImages() {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = apiService.getAllGalleryImages()
+                if (response.isSuccessful) {
+                    _allImages.value = response.body()
                 } else {
                     _error.value = "Error fetching images: ${response.message()}"
                 }

@@ -153,6 +153,15 @@ class HomeFragment : BaseFragment() {
 //            openEmail(Constants.email)
 //        }
 
+        //Go to gallery fragment
+        binding.llGoToGallery.setOnClickListener {
+            val galleryFragment = GalleryFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, galleryFragment) // Use your container ID
+                .addToBackStack(null)
+                .commit()
+        }
+
 
         return binding.root
 
