@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar

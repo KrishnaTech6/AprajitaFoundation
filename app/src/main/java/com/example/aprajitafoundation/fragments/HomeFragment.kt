@@ -22,7 +22,7 @@ import com.example.aprajitafoundation.adapter.ImageAdapter
 import com.example.aprajitafoundation.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.adapter.SliderAdapter
 import com.example.aprajitafoundation.data.DataSource
-import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
+import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.model.ImageModel
@@ -33,7 +33,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var sliderAdapter: SliderAdapter
-    private lateinit var binding: FragmentDashboardBinding
+    private lateinit var binding: FragmentHomeBinding
 
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var runnable: Runnable
@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        binding = FragmentDashboardBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
@@ -107,7 +107,7 @@ class HomeFragment : BaseFragment() {
         viewModel.fetchGalleryImages()
 
         val staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.rvImageItem.layoutManager = staggeredGridLayoutManager
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
@@ -141,7 +141,7 @@ class HomeFragment : BaseFragment() {
 //            openWhatsApp(Constants.phnNumber)
 //        }
 
-        binding.llDonate.setOnClickListener {
+        binding.btnDonate.setOnClickListener {
             val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }

@@ -21,7 +21,6 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.activities.MainActivity
 import com.example.aprajitafoundation.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
-import com.example.aprajitafoundation.databinding.FragmentDashboardBinding
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
 import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.showToast

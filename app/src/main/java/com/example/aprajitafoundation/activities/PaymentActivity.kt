@@ -173,7 +173,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
                 false
             }
             !binding.userEmail.text.toString().matches(emailPattern) -> {
-                showSnackBar(binding.root,"Enter a valid 10-digit phone number!")
+                showSnackBar(binding.root,"Enter a valid email!")
                 false
             }
             binding.userName.text.toString().isEmpty() -> {
