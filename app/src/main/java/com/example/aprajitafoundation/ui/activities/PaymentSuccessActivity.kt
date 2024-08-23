@@ -24,6 +24,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
 
     private var paymentDetails: Payment? = null
     private lateinit var binding: ActivityPaymentSuccessBinding
+    private var isDownloaded=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,11 @@ class PaymentSuccessActivity : AppCompatActivity() {
             binding.tvTransactionId.text = "${it.razorpay_payment_id}"
 
             binding.btnDownloadReceipt.setOnClickListener {
-                downloadReceipt()
+                if (!isDownloaded)
+                    downloadReceipt()
+                else
+                    showToast(this, "File already downloaded! Check Downloads")
+
             }
 
             binding.btnShareReceipt.setOnClickListener {
@@ -112,7 +117,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
         pdfDocument.finishPage(page)
 
         val fileName = "Aprajita_${System.currentTimeMillis()}.pdf"
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), fileName)
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
 
         var outputStream: OutputStream? = null
         try {
@@ -126,7 +131,9 @@ class PaymentSuccessActivity : AppCompatActivity() {
         }
 
         // Notify the user that the PDF has been saved
-       showToast(this, "PDF saved to ${file.absolutePath}")
+        showToast(context, "PDF saved to ${file.absolutePath}")
+        isDownloaded=true
     }
+
 
 }
