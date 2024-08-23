@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bgYellow"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.MemberFragment">
+    tools:context=".ui.fragments.MemberFragment">
 
         <!-- Photo -->
         <de.hdodenhof.circleimageview.CircleImageView

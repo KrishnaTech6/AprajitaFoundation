@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.activities
+package com.example.aprajitafoundation.ui.activities
 
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity

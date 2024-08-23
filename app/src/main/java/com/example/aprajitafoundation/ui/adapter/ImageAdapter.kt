@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.adapter
+package com.example.aprajitafoundation.ui.adapter
 
 
 import android.content.Context

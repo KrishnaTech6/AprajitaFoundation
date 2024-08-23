@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.activities
+package com.example.aprajitafoundation.ui.activities
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -121,7 +121,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
 
         //Saving the details after editext change
-
         binding.userName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {

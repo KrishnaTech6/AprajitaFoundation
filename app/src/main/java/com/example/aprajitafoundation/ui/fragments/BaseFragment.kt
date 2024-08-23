@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.fragments
+package com.example.aprajitafoundation.ui.fragments
 
 import android.app.Dialog
 import android.content.ActivityNotFoundException

@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.fragments
+package com.example.aprajitafoundation.ui.fragments
 
 import android.content.Intent
 import android.net.Uri
@@ -18,11 +18,9 @@ import androidx.core.content.res.ResourcesCompat.ThemeCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.activities.MainActivity
-import com.example.aprajitafoundation.activities.PaymentActivity
+import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
-import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.showToast
 
 

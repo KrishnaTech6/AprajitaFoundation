@@ -19,10 +19,10 @@ import retrofit2.http.Path
 
 interface GalleryApi {
     @GET("get-gallery-images")
-    suspend fun getGalleryImages(): Response<List<ImageModel>>
+    suspend fun getGalleryImages(): Response<List<ImageModel>>  // to retrieve 15 images
 
     @GET("get-all-gallery-images")
-    suspend fun getAllGalleryImages(): Response<List<ImageModel>>
+    suspend fun getAllGalleryImages(): Response<List<ImageModel>> // to retrieve all images
 
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>

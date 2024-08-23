@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.fragments
+package com.example.aprajitafoundation.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.activities.PaymentActivity
-import com.example.aprajitafoundation.adapter.ImageAdapter
-import com.example.aprajitafoundation.adapter.ImageEventAdapter
+import com.example.aprajitafoundation.ui.activities.PaymentActivity
+import com.example.aprajitafoundation.ui.adapter.ImageAdapter
+import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable

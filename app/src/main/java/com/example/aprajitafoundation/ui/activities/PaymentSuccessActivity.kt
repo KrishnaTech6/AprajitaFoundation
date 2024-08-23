@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.activities
+package com.example.aprajitafoundation.ui.activities
 
 import android.content.Context
 import android.content.Intent

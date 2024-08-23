@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.adapter
+package com.example.aprajitafoundation.ui.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.aprajitafoundation.activities.FullScreenImageActivity
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel

@@ -48,22 +48,22 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity
-            android:name=".activities.PaymentSuccessActivity"
+            android:name=".ui.activities.PaymentSuccessActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.FullScreenImageActivity"
+            android:name=".ui.activities.FullScreenImageActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.PaymentActivity"
+            android:name=".ui.activities.PaymentActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".ui.activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,7 +72,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true" />
     </application>
 

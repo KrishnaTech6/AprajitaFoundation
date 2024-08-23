@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.activities
+package com.example.aprajitafoundation.ui.activities
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -13,10 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
-import com.example.aprajitafoundation.fragments.HomeFragment
-import com.example.aprajitafoundation.fragments.EventsFragment
-import com.example.aprajitafoundation.fragments.GalleryFragment
-import com.example.aprajitafoundation.fragments.ProfileFragment
+import com.example.aprajitafoundation.ui.fragments.HomeFragment
+import com.example.aprajitafoundation.ui.fragments.EventsFragment
+import com.example.aprajitafoundation.ui.fragments.GalleryFragment
+import com.example.aprajitafoundation.ui.fragments.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
