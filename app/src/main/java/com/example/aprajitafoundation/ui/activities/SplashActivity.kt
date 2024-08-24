@@ -9,8 +9,11 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.aprajitafoundation.R
+import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
+
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -29,13 +32,22 @@ class SplashActivity : AppCompatActivity() {
             )
         }
 
+        mAuth = FirebaseAuth.getInstance()
+
+
         //to show splash screen for 15s and go to main screen
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-
+                // Check if user is already signed in
+                if (mAuth.currentUser != null) {
+                    val intent=  Intent(this@SplashActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }, 2000
         )
     }

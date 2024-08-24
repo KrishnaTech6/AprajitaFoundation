@@ -1,6 +1,8 @@
 package com.example.aprajitafoundation.ui.fragments
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,21 +15,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat.ThemeCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
+import com.example.aprajitafoundation.model.UserData
 import com.example.aprajitafoundation.showToast
+import com.google.gson.Gson
 
 
 class ProfileFragment : BaseFragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: DataViewModel
+    private lateinit var sharedPreferences:SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -39,9 +46,27 @@ class ProfileFragment : BaseFragment() {
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
 
-
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+
+        sharedPreferences = requireContext().getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        // Retrieve JSON string from SharedPreferences
+        val userDataJson = sharedPreferences.getString("google_user_data", null)
+
+       // Convert JSON string back to UserData object
+        val gson = Gson()
+        val userData: UserData? = gson.fromJson(userDataJson, UserData::class.java)
+
+       // Check if the object is not null
+        if (userData != null) {
+
+            binding.tvNameProfile.text = userData.name
+            binding.tvEmailProfile.text = userData.email
+            Glide.with(requireContext())
+                .load(userData.profileUrl)
+                .into(binding.ivImageProfile)
+
+        }
 
         binding.ivBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
