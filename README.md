@@ -29,7 +29,32 @@ This project is an Android application developed for the Aprajita Foundation. Th
 
 - **Payment Integration**:
   - Razorpay payment gateway integrated for handling donations.
-    
+
+## App Screenshots
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a6858752-22e5-4def-ba64-553ced8359e3" width="200" />
+  <img src="https://github.com/user-attachments/assets/11ffa8f0-032a-40d9-b109-4e851415bebb" width="200" />
+  <img src="https://github.com/user-attachments/assets/8484a16a-95b1-467f-b1f3-f00401f34ab1" width="200" />
+  <img src="https://github.com/user-attachments/assets/1b188d14-2e30-4491-a639-cf01911763f2" width="200" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/db5e6103-861f-4fed-b831-9f0ca32c6ef4" width="200" />
+  <img src="https://github.com/user-attachments/assets/5c8095a1-a017-4829-a09e-41a8f0a66df9" width="200" />
+  <img src="https://github.com/user-attachments/assets/db645ce5-5d45-409d-897b-87fff9a7504a" width="200" />
+  <img src="https://github.com/user-attachments/assets/93864e5c-0ea2-48ed-be70-660c252015aa" width="200" />
+</p>
+
+<p align="center">
+  
+  <img src="https://github.com/user-attachments/assets/9fe8e1ff-f919-4002-8ed1-9a35f95291cc" width="200" />
+   <img src="https://github.com/user-attachments/assets/69f4cc35-ee9d-47a3-8f72-ef54a909f005" width="200" />
+  <img src="https://github.com/user-attachments/assets/3a468446-55c9-43b7-9d37-1768fb43fc50" width="200" />
+
+  <img src="https://github.com/user-attachments/assets/5e37fb0a-ee42-4078-bfbe-d276a92640f6" width="200" />
+</p>
+
 ## Technologies Used
 
 - **Kotlin**: For Android development.
