@@ -65,6 +65,12 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        binding.skipButton.setOnClickListener {
+            val intent=  Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(Constants.defaultWebClientId)
             .requestEmail()
