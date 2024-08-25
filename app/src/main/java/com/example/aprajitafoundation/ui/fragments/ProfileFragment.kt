@@ -71,13 +71,21 @@ class ProfileFragment : BaseFragment() {
 
         // Check if the object is not null
         if (userData != null) {
-
+            binding.btnLogin.visibility = View.INVISIBLE
             binding.tvNameProfile.text = userData.name
             binding.tvEmailProfile.text = userData.email
             Glide.with(requireContext())
                 .load(userData.picture)
                 .into(binding.ivImageProfile)
 
+        }else{
+            binding.btnLogin.visibility = View.VISIBLE
+        }
+
+        binding.btnLogin.setOnClickListener{
+            val intent = Intent(activity, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
 
         binding.ivBack.setOnClickListener {
@@ -123,29 +131,36 @@ class ProfileFragment : BaseFragment() {
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.sign_out -> {
-                    mAuth.signOut()
 
-                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(Constants.defaultWebClientId)
-                        .requestEmail()
-                        .build()
+                    if(mAuth.currentUser != null){
+                        mAuth.signOut()
 
-                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestIdToken(Constants.defaultWebClientId)
+                            .requestEmail()
+                            .build()
 
-                    googleSignInClient.signOut().addOnSuccessListener {
-                        showToast(requireContext(), "Signed Out Successfully!")
+                        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-                        // Clear the google_user_data from SharedPreferences
-                        sharedPreferences.edit().remove("google_user_data").apply()
+                        googleSignInClient.signOut().addOnSuccessListener {
+                            showToast(requireContext(), "Signed Out Successfully!")
 
-                        // Reset UI elements
-                        binding.tvNameProfile.text = "Your Name"
-                        binding.tvEmailProfile.text = "example@gmail.com"
-                        binding.ivImageProfile.setImageResource(R.drawable.logo_12)
+                            // Clear the google_user_data from SharedPreferences
+                            sharedPreferences.edit().remove("google_user_data").apply()
 
-                    }.addOnFailureListener {
-                        showSnackBar(requireView(), "error: ${it.message}")
+                            // Reset UI elements
+                            binding.btnLogin.visibility = View.VISIBLE
+                            binding.tvNameProfile.text = "Your Name"
+                            binding.tvEmailProfile.text = "example@gmail.com"
+                            binding.ivImageProfile.setImageResource(R.drawable.logo_12)
+
+                        }.addOnFailureListener {
+                            showSnackBar(requireView(), "error: ${it.message}")
+                        }
+                    }else{
+                        showToast(requireContext(), "No User")
                     }
+
                     true
                 }
 

@@ -17,9 +17,11 @@ import com.example.aprajitafoundation.ui.fragments.HomeFragment
 import com.example.aprajitafoundation.ui.fragments.EventsFragment
 import com.example.aprajitafoundation.ui.fragments.GalleryFragment
 import com.example.aprajitafoundation.ui.fragments.ProfileFragment
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -36,6 +38,8 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+
+        mAuth = FirebaseAuth.getInstance()
 
         replaceFragment(HomeFragment(), "Home")
         binding.bottomNavigationBar.selectedItemId = R.id.home
@@ -65,7 +69,10 @@ class MainActivity : AppCompatActivity() {
 
         if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
-        } else {
+        }else if (mAuth.currentUser == null) {
+            finish()
+        }
+        else {
             // Create an AlertDialog to ask the user if they want to exit
             AlertDialog.Builder(this)
                 .setTitle("Exit App")

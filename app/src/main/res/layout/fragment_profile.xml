@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Krishna Rana"
+                    android:text="Your Name"
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
@@ -98,11 +98,11 @@
                     android:textColor="@color/black" />
 
                 <Button
-                    android:id="@+id/btn_edit_profile"
+                    android:id="@+id/btn_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Edit Profile"
+                    android:text="LOGIN"
                     android:textColor="@color/black"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:paddingStart="16dp"
