@@ -2,7 +2,10 @@ package com.example.aprajitafoundation.model
 
 
 data class UserData(
-    val name: String?,
+    val googleId : String?,
     val email: String?,
-    val profileUrl: String?,
+    val name: String?,
+    val picture: String?,
 )
+
+data class GoogleIDToken(val idToken: GoogleIDToken)

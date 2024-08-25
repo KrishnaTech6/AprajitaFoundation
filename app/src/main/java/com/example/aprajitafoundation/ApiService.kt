@@ -5,17 +5,13 @@ import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Payment
-import okhttp3.MultipartBody
+import com.example.aprajitafoundation.model.UserData
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Path
 
 interface GalleryApi {
     @GET("get-gallery-images")
@@ -32,6 +28,9 @@ interface GalleryApi {
 
     @POST("create-payment")
     suspend fun createPayment(@Body paymentRequest: PaymentRequest): Response<PaymentResponse>
+
+    @POST("google-login")
+    suspend fun sendUserData(@Body userData: UserData): Response<GenericResponse>
 
     @POST("verify-payment")
     suspend fun storeVerifiedPayment(@Body payment: Payment): Response<GenericResponse>

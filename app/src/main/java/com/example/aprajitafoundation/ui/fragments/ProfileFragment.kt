@@ -63,7 +63,7 @@ class ProfileFragment : BaseFragment() {
             binding.tvNameProfile.text = userData.name
             binding.tvEmailProfile.text = userData.email
             Glide.with(requireContext())
-                .load(userData.profileUrl)
+                .load(userData.picture)
                 .into(binding.ivImageProfile)
 
         }

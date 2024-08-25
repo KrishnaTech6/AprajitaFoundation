@@ -1,18 +1,15 @@
 package com.example.aprajitafoundation.ui.activities
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.UserManager
-import android.view.View
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import com.example.aprajitafoundation.R
+import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.DataViewModel
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
 import com.example.aprajitafoundation.hideProgressDialog
@@ -24,15 +21,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -40,6 +34,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var binding: ActivityLoginBinding
+
+    private lateinit var viewModel: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +52,8 @@ class LoginActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -99,17 +97,26 @@ class LoginActivity : AppCompatActivity() {
             mAuth.signInWithCredential(credential)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful && task.result.user != null) {
-
                         val userData = UserData(
-                            account?.displayName,
+                            account?.id,
                             account?.email,
+                            account?.displayName,
                             account?.photoUrl.toString()
                         )
+
+
+                        viewModel.error.observe(this){
+                            Log.d("LoginActivity", it)
+                        }
+                        //Sending userData to Server
+                        viewModel.sendUserData(userData)
+                        
+
                         val gson = Gson()
                         val userDataJson = gson.toJson(userData)
                         saveInputToPreferences("google_user_data", userDataJson)
 
-                        onAuthSuccess(task)
+                        onAuthSuccess()
                     } else {
                         onError(task.exception?.message ?: "some error occurred")
                     }
@@ -117,7 +124,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-    private fun onAuthSuccess(task: Task<AuthResult>) {
+    private fun onAuthSuccess() {
         CoroutineScope(Dispatchers.Main).launch {
             if (this@LoginActivity.isDestroyed) return@launch
 

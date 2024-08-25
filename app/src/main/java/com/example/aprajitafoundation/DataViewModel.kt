@@ -1,7 +1,6 @@
 package com.example.aprajitafoundation
 
 import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +9,8 @@ import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.model.UserData
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class DataViewModel : ViewModel() {
 
@@ -145,6 +144,25 @@ class DataViewModel : ViewModel() {
             } catch (e: Exception) {
                 _error.value = "Exception: ${e.message}"
                 Log.e("DataViewModel", "Error creating payment", e)
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun sendUserData(userData:UserData) {
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val response = apiService.sendUserData(userData)
+                if (response.isSuccessful) {
+                    _error.value = "User data submitted successfully"
+                } else {
+                    _error.value = "Error submitting user data: ${response.message()}"
+                }
+            } catch (e: Exception) {
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", "Error submitting user data", e)
             } finally {
                 _loading.value = false
             }
