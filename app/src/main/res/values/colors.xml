@@ -18,5 +18,7 @@
     <color name="selectedColorRb">#FFEB3B</color>
     <color name="pressedColor">#808080</color>
     <color name="blackText">#000000</color>
+    <color name="btnColor">#FF6200EE</color>
+    <color name="memberItemBackground">#ffffff</color>
 
 </resources>
