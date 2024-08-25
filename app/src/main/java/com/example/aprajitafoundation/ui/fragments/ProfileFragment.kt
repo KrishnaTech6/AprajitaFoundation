@@ -163,6 +163,8 @@ class ProfileFragment : BaseFragment() {
                         saveInputToPreferences(requireContext(), "appTheme", "Dark Mode")
                         themeItem.title = "Light Mode"
                     }
+
+                    activity?.recreate()
                     true
                 }
 

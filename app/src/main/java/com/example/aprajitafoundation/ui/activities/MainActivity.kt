@@ -84,7 +84,6 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment, tag:String){
         val fragmentManager = supportFragmentManager
         val existingFragment = fragmentManager.findFragmentByTag(tag)
-
         if (existingFragment !=null){
             fragmentManager.popBackStack(tag, 0)
         }else{
@@ -105,6 +104,11 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity","null fragment" )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateBottomNavHighlight()
     }
 
 }
