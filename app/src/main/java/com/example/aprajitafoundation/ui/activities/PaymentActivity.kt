@@ -24,6 +24,7 @@ import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.saveInputToPreferences
 import com.example.aprajitafoundation.showDialogProgress
 import com.example.aprajitafoundation.showSnackBar
 import com.example.aprajitafoundation.showToast
@@ -126,7 +127,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         binding.userName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    saveInputToPreferences("name", it.toString())
+                    saveInputToPreferences(this@PaymentActivity,"name", it.toString())
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -136,7 +137,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         binding.userEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    saveInputToPreferences("email", it.toString())
+                    saveInputToPreferences(this@PaymentActivity, "email", it.toString())
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -146,7 +147,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         binding.userContact.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 s?.let {
-                    saveInputToPreferences("phone", it.toString())
+                    saveInputToPreferences(this@PaymentActivity, "phone", it.toString())
                 }
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -309,11 +310,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         return sharedPreferences.getString(key, null)
     }
 
-    private fun saveInputToPreferences(key: String, value: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString(key, value)
-        editor.apply()
-    }
 
     private fun showFailureDialog(message1: String) {
         val dialogView = layoutInflater.inflate(R.layout.payment_failed, null)

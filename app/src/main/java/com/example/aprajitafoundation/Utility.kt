@@ -42,3 +42,12 @@ fun showDialogProgress(context: Context){
 }
 
 fun hideProgressDialog() = mProgressDialog.dismiss()
+
+ fun saveInputToPreferences(context: Context, key: String, value: String) {
+    //Shared preference
+    val sharedPreferences =
+        context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString(key, value)
+    editor.apply()
+}

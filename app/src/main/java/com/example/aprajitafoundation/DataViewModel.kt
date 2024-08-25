@@ -29,9 +29,6 @@ class DataViewModel : ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
-    private val _appTheme = MutableLiveData<String>()
-    val appTheme: LiveData<String> get() = _appTheme
-
     private val _members = MutableLiveData<List<MemberModel>>()
     val members: LiveData<List<MemberModel>> get() = _members
 
@@ -100,11 +97,6 @@ class DataViewModel : ViewModel() {
                 _loading.value = false
             }
         }
-    }
-
-    // ViewModel
-    fun setAppTheme(theme: String) {
-        _appTheme.value = theme
     }
 
 

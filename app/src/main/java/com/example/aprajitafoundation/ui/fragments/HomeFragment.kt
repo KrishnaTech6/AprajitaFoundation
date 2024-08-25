@@ -1,6 +1,8 @@
 package com.example.aprajitafoundation.ui.fragments
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,6 +26,7 @@ import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.isInternetAvailable
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.saveInputToPreferences
 import com.example.aprajitafoundation.showDialogProgress
 import com.example.aprajitafoundation.showSnackBar
 
@@ -33,7 +36,6 @@ class HomeFragment : BaseFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val handler = Handler(Looper.getMainLooper())
-    private  var runnable: Runnable? = null
 
     private var sliderDataList = listOf<ImageModel>()
     private val autoSlideDelay: Long = 3000 // 3 seconds
@@ -42,7 +44,8 @@ class HomeFragment : BaseFragment() {
 
     private val autoSlideRunnable = object : Runnable {
         override fun run() {
-            val nextItem = if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+            val nextItem =
+                if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
             viewPager.setCurrentItem(nextItem, true)
             handler.postDelayed(this, autoSlideDelay) // Schedule next slide
         }
@@ -62,16 +65,14 @@ class HomeFragment : BaseFragment() {
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        // Fetch the gallery images and members
+        viewModel.fetchGalleryImages()
+        viewModel.fetchTeamMembers()
+
 
         // Setup ViewPager
         viewPager = binding.viewPager
         viewPager.adapter = ImageEventAdapter(requireContext(), listOf(), isSlider = true)
-
-        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-            viewModel.setAppTheme("Light Mode")
-        } else {
-            viewModel.setAppTheme("Dark Mode")
-        }
 
         binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf())
         binding.rvImageItem.setHasFixedSize(true)
@@ -81,24 +82,14 @@ class HomeFragment : BaseFragment() {
             val imageEventAdapter = ImageEventAdapter(requireContext(), images)
             binding.rvImageItem.adapter = imageEventAdapter
 
-            sliderDataList= images
+            sliderDataList = images
             /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
             viewPager = binding.viewPager
             viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true)
 
             imageEventAdapter.notifyDataSetChanged()
-
-            // Initialize the runnable for automatic sliding
-//            runnable = Runnable {
-//                val nextItem =
-//                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
-//                viewPager.currentItem = nextItem
-//                runnable?.let { handler.postDelayed(it, 2500) } // Delay in milliseconds between slides
-//            }
-
             createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
         }
-
 
 
         // Observe the loading LiveData
@@ -106,7 +97,7 @@ class HomeFragment : BaseFragment() {
             // Handle loading state (e.g., show/hide a ProgressBar)
             if (isLoading) {
                 showDialogProgress(requireContext())
-                if(!isInternetAvailable(requireContext())){
+                if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
                     showSnackBar(requireView(), "No Internet Connection!")
                 }
@@ -114,9 +105,6 @@ class HomeFragment : BaseFragment() {
                 hideProgressDialog()
             }
         }
-
-        // Fetch the gallery images
-        viewModel.fetchGalleryImages()
 
         val staggeredGridLayoutManager =
             StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -142,8 +130,6 @@ class HomeFragment : BaseFragment() {
             Log.d("Members Data", "Members: $members")
             memberAdapter.updateMembers(members)
         }
-        viewModel.fetchTeamMembers()
-
         binding.btnDonate.setOnClickListener {
             val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
@@ -193,18 +179,33 @@ class HomeFragment : BaseFragment() {
 
         for (i in 0 until size) {
             dots[i] = ImageView(requireContext()).apply {
-                setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dot_inactive))
+                setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.dot_inactive
+                    )
+                )
                 layoutParams = params
             }
             dotsLayout.addView(dots[i])
         }
 
-        dots[0]?.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.dot_active))
+        dots[0]?.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.dot_active
+            )
+        )
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 dots.forEachIndexed { index, imageView ->
-                    imageView?.setImageDrawable(ContextCompat.getDrawable(requireContext(), if (index == position) R.drawable.dot_active else R.drawable.dot_inactive))
+                    imageView?.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            if (index == position) R.drawable.dot_active else R.drawable.dot_inactive
+                        )
+                    )
                 }
             }
         })

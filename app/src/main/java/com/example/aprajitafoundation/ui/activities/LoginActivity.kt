@@ -14,6 +14,7 @@ import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
 import com.example.aprajitafoundation.hideProgressDialog
 import com.example.aprajitafoundation.model.UserData
+import com.example.aprajitafoundation.saveInputToPreferences
 import com.example.aprajitafoundation.showDialogProgress
 import com.example.aprajitafoundation.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -115,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
 
                         val gson = Gson()
                         val userDataJson = gson.toJson(userData)
-                        saveInputToPreferences("google_user_data", userDataJson)
+                        saveInputToPreferences(this, "google_user_data", userDataJson)
 
                         onAuthSuccess()
                     } else {
@@ -141,13 +142,6 @@ class LoginActivity : AppCompatActivity() {
         hideProgressDialog()
     }
 
-    private fun saveInputToPreferences(key: String, value: String) {
-        //Shared preference
-        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString(key, value)
-        editor.apply()
-    }
 
 
 

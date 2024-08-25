@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation.ui.fragments
 
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -26,6 +27,7 @@ import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
 import com.example.aprajitafoundation.model.UserData
+import com.example.aprajitafoundation.saveInputToPreferences
 import com.example.aprajitafoundation.showSnackBar
 import com.example.aprajitafoundation.showToast
 import com.example.aprajitafoundation.ui.activities.LoginActivity
@@ -39,8 +41,8 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: DataViewModel
-    private lateinit var sharedPreferences:SharedPreferences
-    private lateinit var mAuth:FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -63,11 +65,11 @@ class ProfileFragment : BaseFragment() {
         // Retrieve JSON string from SharedPreferences
         val userDataJson = sharedPreferences.getString("google_user_data", null)
 
-       // Convert JSON string back to UserData object
+        // Convert JSON string back to UserData object
         val gson = Gson()
         val userData: UserData? = gson.fromJson(userDataJson, UserData::class.java)
 
-       // Check if the object is not null
+        // Check if the object is not null
         if (userData != null) {
 
             binding.tvNameProfile.text = userData.name
@@ -99,39 +101,28 @@ class ProfileFragment : BaseFragment() {
         }
 
         binding.llDonate.setOnClickListener {
-            val intent=  Intent(requireActivity(), PaymentActivity::class.java)
+            val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
         }
-        binding.ivSettings.setOnClickListener{
+        binding.ivSettings.setOnClickListener {
             Log.d("ProfileFragment", "Settings clicked")
+
             popUpSettingsMenu(it)
         }
-
-        // Observe the app theme in onViewCreated
-        viewModel.appTheme.observe(viewLifecycleOwner) { theme ->
-            // Update the theme based on the current value
-            if (theme == "Light Mode") {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            } else if (theme == "Dark Mode") {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-        }
-
-
-
         return binding.root
     }
-
-    private fun popUpSettingsMenu(view: View){
-        val popupMenu= PopupMenu(requireContext(), view)
+    private fun popUpSettingsMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.settings_menu, popupMenu.menu)
 
         val themeItem = popupMenu.menu.findItem(R.id.app_theme)
 
+        val theme = sharedPreferences.getString("appTheme", "Light Mode")
+        themeItem.title = if (theme == "Light Mode") "Dark Mode" else "Light Mode"
 
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when(menuItem.itemId){
-                R.id.sign_out ->{
+            when (menuItem.itemId) {
+                R.id.sign_out -> {
                     mAuth.signOut()
 
                     val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -155,20 +146,27 @@ class ProfileFragment : BaseFragment() {
                     }.addOnFailureListener {
                         showSnackBar(requireView(), "error: ${it.message}")
                     }
-                    true}
-                R.id.app_theme ->{
-                    themeItem.title = viewModel.appTheme.value
-                    // Set the menu item title based on the current theme
-                    themeItem.title = if (viewModel.appTheme.value == "Light Mode") "Dark Mode" else "Light Mode"
-
-                    // Switch the theme when the user clicks the theme menu item
-                    val newTheme = if (themeItem.title == "Dark Mode") "Light Mode" else "Dark Mode"
-                    viewModel.setAppTheme(newTheme) // Update the theme in the ViewModel
-                    themeItem.title = newTheme // Update the menu item title
                     true
+                }
 
-                    true}
-                else ->false
+                R.id.app_theme -> {
+                    val currentMode = AppCompatDelegate.getDefaultNightMode()
+
+                    if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                        // Switch to light mode
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        saveInputToPreferences(requireContext(), "appTheme", "Light Mode")
+                        themeItem.title = "Dark Mode"
+                    } else {
+                        // Switch to dark mode
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        saveInputToPreferences(requireContext(), "appTheme", "Dark Mode")
+                        themeItem.title = "Light Mode"
+                    }
+                    true
+                }
+
+                else -> false
             }
 
         }

@@ -8,7 +8,10 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.saveInputToPreferences
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
@@ -33,6 +36,18 @@ class SplashActivity : AppCompatActivity() {
         }
 
         mAuth = FirebaseAuth.getInstance()
+
+
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        val theme = sharedPreferences.getString("appTheme", "Light Mode")
+
+// Check if the current mode does not match the stored theme
+        if (theme == "Dark Mode" && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else if (theme == "Light Mode" && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
 
 
         //to show splash screen for 15s and go to main screen
