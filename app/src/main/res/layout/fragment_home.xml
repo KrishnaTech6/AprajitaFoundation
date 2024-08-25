@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Go to Gallery for More Images"
-                    android:textColor="@color/blackText"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -154,7 +154,7 @@
                     android:layout_marginStart="8dp"
                     android:src="@drawable/back_arrow_icon"
                     android:rotation="180"
-                    app:tint="@color/blackText" />
+                    app:tint="@color/black" />
             </LinearLayout>
 
         </LinearLayout>

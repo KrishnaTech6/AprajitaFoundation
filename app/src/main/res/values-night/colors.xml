@@ -11,4 +11,5 @@
     <color name="progressBarColor">#E0E4EB</color>
     <color name="whiteEditText">#F0F1F5</color>
     <color name="blackText">#4e576a</color>
+    <color name="white">#4e576a</color>
 </resources>
