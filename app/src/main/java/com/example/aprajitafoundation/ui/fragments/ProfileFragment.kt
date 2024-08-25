@@ -26,7 +26,12 @@ import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.data.Constants
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
 import com.example.aprajitafoundation.model.UserData
+import com.example.aprajitafoundation.showSnackBar
 import com.example.aprajitafoundation.showToast
+import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 
 
@@ -35,16 +40,21 @@ class ProfileFragment : BaseFragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var viewModel: DataViewModel
     private lateinit var sharedPreferences:SharedPreferences
+    private lateinit var mAuth:FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentProfileBinding.inflate(layoutInflater)
+
+        mAuth = FirebaseAuth.getInstance()
+
 
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
@@ -122,7 +132,29 @@ class ProfileFragment : BaseFragment() {
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when(menuItem.itemId){
                 R.id.sign_out ->{
-                    showToast(requireContext(), "Sign out clicked")
+                    mAuth.signOut()
+
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(Constants.defaultWebClientId)
+                        .requestEmail()
+                        .build()
+
+                    val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+                    googleSignInClient.signOut().addOnSuccessListener {
+                        showToast(requireContext(), "Signed Out Successfully!")
+
+                        // Clear the google_user_data from SharedPreferences
+                        sharedPreferences.edit().remove("google_user_data").apply()
+
+                        // Reset UI elements
+                        binding.tvNameProfile.text = "Your Name"
+                        binding.tvEmailProfile.text = "example@gmail.com"
+                        binding.ivImageProfile.setImageResource(R.drawable.logo_12)
+
+                    }.addOnFailureListener {
+                        showSnackBar(requireView(), "error: ${it.message}")
+                    }
                     true}
                 R.id.app_theme ->{
                     themeItem.title = viewModel.appTheme.value

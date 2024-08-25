@@ -108,6 +108,7 @@ class LoginActivity : AppCompatActivity() {
                         viewModel.error.observe(this){
                             Log.d("LoginActivity", it)
                         }
+
                         //Sending userData to Server
                         viewModel.sendUserData(userData)
                         
