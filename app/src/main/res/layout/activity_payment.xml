@@ -17,7 +17,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="@color/yellow"
             android:id="@+id/cardView"
             app:cardElevation="8dp"
             app:cardCornerRadius="12dp"
@@ -29,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:background="@drawable/gradient_yellow"
                 android:padding="16dp"
                 android:gravity="center_horizontal">
 
