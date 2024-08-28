@@ -1,25 +1,11 @@
 package com.example.aprajitafoundation.ui.fragments
 
-import android.app.Dialog
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.data.Constants
-import com.example.aprajitafoundation.showToast
-import java.io.File
-import java.io.IOException
+import com.example.aprajitafoundation.utility.showToast
 
 open class BaseFragment : Fragment() {
 

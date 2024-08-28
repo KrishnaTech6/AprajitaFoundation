@@ -68,8 +68,6 @@
             android:textColor="#000000"
             android:textSize="16sp" />
     </LinearLayout>
-
-
     <Button
         android:id="@+id/skipButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -81,5 +79,19 @@
         android:layout_marginBottom="16dp"
         android:textColor="@color/black"
         android:text="Skip" />
+
+
+    <Button
+        android:id="@+id/login_Admin"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toStartOf="@+id/skipButton"
+        android:text="Login as an Admin"
+        android:textColor="@color/red" />
 
 </RelativeLayout>

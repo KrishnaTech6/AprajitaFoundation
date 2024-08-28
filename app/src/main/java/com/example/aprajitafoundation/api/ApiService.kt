@@ -1,6 +1,6 @@
-package com.example.aprajitafoundation
+package com.example.aprajitafoundation.api
 
-import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
@@ -36,17 +36,9 @@ interface GalleryApi {
     suspend fun storeVerifiedPayment(@Body payment: Payment): Response<GenericResponse>
 
 }
-
-data class GenericResponse(
-    val message: String
-)
-data class PaymentRequest(
-    val amount: Double
-)
-
-data class PaymentResponse(
-    val order: Order
-)
+data class GenericResponse(val message: String)
+data class PaymentRequest(val amount: Double)
+data class PaymentResponse(val order: Order)
 data class Order(
     val id: String,
     val amount: Int,
@@ -67,5 +59,9 @@ object RetrofitClient {
 
     val api: GalleryApi by lazy {
         retrofit.create(GalleryApi::class.java)
+    }
+
+    val authApi: AuthApi by lazy {
+        retrofit.create(AuthApi::class.java)
     }
 }

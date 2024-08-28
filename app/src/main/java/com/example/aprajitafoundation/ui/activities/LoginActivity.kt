@@ -9,14 +9,15 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import com.example.aprajitafoundation.DataViewModel
-import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.viewmodel.DataViewModel
+import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
-import com.example.aprajitafoundation.hideProgressDialog
+import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.model.UserData
-import com.example.aprajitafoundation.saveInputToPreferences
-import com.example.aprajitafoundation.showDialogProgress
-import com.example.aprajitafoundation.showToast
+import com.example.aprajitafoundation.ui.admin.LoginAdminActivity
+import com.example.aprajitafoundation.utility.saveInputToPreferences
+import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.utility.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -81,6 +82,11 @@ class LoginActivity : AppCompatActivity() {
             showDialogProgress(this)
             val intent = googleSignInClient.signInIntent
             startActivityForResult(intent, 1001)
+        }
+
+        binding.loginAdmin.setOnClickListener{
+            val intent=  Intent(this@LoginActivity, LoginAdminActivity::class.java)
+            startActivity(intent)
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

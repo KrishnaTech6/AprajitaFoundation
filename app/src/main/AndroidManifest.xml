@@ -9,10 +9,9 @@
         <!-- Declare WhatsApp Business package (if needed) -->
         <package android:name="com.whatsapp.w4b" />
         <package android:name="com.google.android.gm" />
-
         <package android:name="com.google.android.apps.nbu.paisa.user" />
-        <package android:name="com.phonepe.app"/>
-        <package android:name="net.one97.paytm"/>
+        <package android:name="com.phonepe.app" />
+        <package android:name="net.one97.paytm" />
 
         <intent>
             <action android:name="android.intent.action.SEND" />
@@ -22,11 +21,10 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -38,6 +36,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AprajitaFoundation"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.admin.AdminActivity"
+            android:exported="false"
+            android:label="@string/title_activity_admin"
+            android:theme="@style/Theme.AprajitaFoundation.NoActionBar" />
+        <activity
+            android:name=".ui.admin.LoginAdminActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -47,6 +54,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".ui.activities.PaymentSuccessActivity"
             android:exported="false" />

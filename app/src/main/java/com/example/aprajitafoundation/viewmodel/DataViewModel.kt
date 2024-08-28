@@ -1,10 +1,12 @@
-package com.example.aprajitafoundation
+package com.example.aprajitafoundation.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aprajitafoundation.api.PaymentRequest
+import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel

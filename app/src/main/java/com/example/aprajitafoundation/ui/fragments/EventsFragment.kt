@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.aprajitafoundation.DataViewModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
-import com.example.aprajitafoundation.hideProgressDialog
-import com.example.aprajitafoundation.isInternetAvailable
-import com.example.aprajitafoundation.showDialogProgress
-import com.example.aprajitafoundation.showSnackBar
+import com.example.aprajitafoundation.utility.hideProgressDialog
+import com.example.aprajitafoundation.utility.isInternetAvailable
+import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.utility.showSnackBar
 
 class EventsFragment : BaseFragment() {
 

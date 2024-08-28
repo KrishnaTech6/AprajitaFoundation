@@ -9,9 +9,7 @@ import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.saveInputToPreferences
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {

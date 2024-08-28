@@ -36,6 +36,6 @@
   public void onPayment*(...);
 }
 # Obfuscate the entire Constants class, including its fields
--keep class com.example.aprajitafoundation.data.Constants {
+-keep class com.example.aprajitafoundation.utility.Constants {
     <fields>;
 }

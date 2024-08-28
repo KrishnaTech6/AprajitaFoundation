@@ -1,7 +1,6 @@
 package com.example.aprajitafoundation.ui.activities
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -14,20 +13,19 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.aprajitafoundation.DataViewModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.data.Constants
+import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
-import com.example.aprajitafoundation.hideProgressDialog
-import com.example.aprajitafoundation.isInternetAvailable
+import com.example.aprajitafoundation.utility.hideProgressDialog
+import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
-import com.example.aprajitafoundation.saveInputToPreferences
-import com.example.aprajitafoundation.showDialogProgress
-import com.example.aprajitafoundation.showSnackBar
-import com.example.aprajitafoundation.showToast
+import com.example.aprajitafoundation.utility.saveInputToPreferences
+import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.utility.showSnackBar
+import com.example.aprajitafoundation.utility.showToast
 import com.razorpay.Checkout
 import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData

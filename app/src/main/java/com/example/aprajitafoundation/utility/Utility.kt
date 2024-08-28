@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation
+package com.example.aprajitafoundation.utility
 
 import android.app.Dialog
 import android.content.Context
@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.View
 import android.widget.Toast
+import com.example.aprajitafoundation.R
 import com.google.android.material.snackbar.Snackbar
 
 fun isInternetAvailable(context: Context): Boolean {

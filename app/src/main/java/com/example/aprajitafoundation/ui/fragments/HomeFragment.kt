@@ -1,8 +1,6 @@
 package com.example.aprajitafoundation.ui.fragments
 
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,23 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.aprajitafoundation.DataViewModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.ui.adapter.ImageAdapter
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
-import com.example.aprajitafoundation.hideProgressDialog
-import com.example.aprajitafoundation.isInternetAvailable
+import com.example.aprajitafoundation.utility.hideProgressDialog
+import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.ImageModel
-import com.example.aprajitafoundation.saveInputToPreferences
-import com.example.aprajitafoundation.showDialogProgress
-import com.example.aprajitafoundation.showSnackBar
+import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.utility.showSnackBar
 
 class HomeFragment : BaseFragment() {
 
