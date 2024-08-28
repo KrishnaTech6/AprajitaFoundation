@@ -1,125 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bgYellow"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
     tools:context=".ui.fragments.MemberFragment">
 
-        <!-- Photo -->
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_photo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="16dp"
-            tools:src="@drawable/logo_12"
-            android:padding="2dp"
-            android:background="@drawable/image_circular_background"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <!-- Name -->
+        <!-- FrameLayout for Profile Photo with added shadow -->
+        <FrameLayout
+            android:id="@+id/fl_photo"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="122dp"
+                android:background="@drawable/gradient_yellow" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/image_circular_background"
+                android:elevation="4dp"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/logo_12" />
+
+        </FrameLayout>
+
+        <!-- Name with adjusted text size and weight -->
         <TextView
             android:id="@+id/profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="John Doe"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/profile_photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_photo" />
 
-        <!-- Designation -->
-    <TextView
-        android:id="@+id/profile_designation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Software Engineer"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_name" />
+        <!-- Designation with adjusted text size and weight -->
+        <TextView
+            android:id="@+id/profile_designation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Software Engineer"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_name" />
 
-    <TextView
-        android:id="@+id/profile_punchline"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Living the code life one line at a time!"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/black"
-        android:textStyle="italic|bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_designation" />
+        <!-- Punchline with italic style and improved padding -->
+        <TextView
+            android:id="@+id/profile_punchline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+           android:textAlignment="center"
+            android:text="Living the code life one line at a time!"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="@color/black"
+            android:textStyle="italic|bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_designation" />
 
-    <TextView
-        android:id="@+id/profile_about"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:minHeight="100dp"
-        android:text="About the person goes here. This text can be longer to provide more information about the person's background, interests, or any other relevant details."
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_punchline" />
+        <!-- About Section inside CardView with improved padding and margin -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp"
+            android:backgroundTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_punchline">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_about">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <!-- Facebook Icon -->
-        <ImageView
-            android:id="@+id/ivFacebook"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/facebook"
-            android:src="@drawable/facebooklogo" />
+                <TextView
+                    android:id="@+id/profile_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="About the person goes here. This text can be longer to provide more information about the person's background, interests, or any other relevant details."
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                    android:textColor="@color/black" />
 
-        <!-- Instagram Icon -->
-        <ImageView
-            android:id="@+id/ivInstagram"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/instagram"
-            android:src="@drawable/instagram_icon" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        <!-- LinkedIn Icon -->
-        <ImageView
-            android:id="@+id/ivLinkedIn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/linkedin"
-            android:src="@drawable/linkedin_icon" />
+        <!-- Social Media Icons with increased size and spacing -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView2">
 
-        <!-- Twitter Icon -->
-        <ImageView
-            android:id="@+id/ivTwitter"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/twitter"
-            android:src="@drawable/twitter_icon" />
+            <!-- Facebook Icon -->
+            <ImageView
+                android:id="@+id/ivFacebook"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/facebook"
+                android:src="@drawable/facebooklogo" />
 
-    </LinearLayout>
+            <!-- Instagram Icon -->
+            <ImageView
+                android:id="@+id/ivInstagram"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/instagram"
+                android:src="@drawable/instagram_icon" />
 
+            <!-- LinkedIn Icon -->
+            <ImageView
+                android:id="@+id/ivLinkedIn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/linkedin"
+                android:src="@drawable/linkedin_icon" />
 
+            <!-- Twitter Icon -->
+            <ImageView
+                android:id="@+id/ivTwitter"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/twitter"
+                android:src="@drawable/twitter_icon" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
