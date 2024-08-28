@@ -111,6 +111,7 @@ class ProfileFragment : BaseFragment() {
         }
         return binding.root
     }
+
     private fun popUpSettingsMenu(view: View) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.settings_menu, popupMenu.menu)
@@ -146,6 +147,10 @@ class ProfileFragment : BaseFragment() {
                             binding.tvEmailProfile.text = "example@gmail.com"
                             binding.ivImageProfile.setImageResource(R.drawable.logo_12)
 
+                            //To go to signin screen
+                            val intent = Intent(activity, LoginActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(intent)
                         }.addOnFailureListener {
                             showSnackBar(requireView(), "error: ${it.message}")
                         }

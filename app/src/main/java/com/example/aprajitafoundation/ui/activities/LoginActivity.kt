@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.utility.Constants
@@ -151,6 +152,26 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this, s, Toast.LENGTH_SHORT)
             .show()
         hideProgressDialog()
+    }
+
+    override fun onBackPressed() {
+        if (isTaskRoot) {
+            // This is the last activity, show the dialog
+            AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Do you really want to exit the app?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            // This is not the last activity, perform normal back button behavior
+            super.onBackPressed()
+        }
     }
 
 
