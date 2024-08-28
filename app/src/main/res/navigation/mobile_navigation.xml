@@ -7,32 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home_admin"
-        android:name="com.example.aprajitafoundation.ui.admin.ui.HomeAdminFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.HomeAdminFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home_2" />
 
     <fragment
         android:id="@+id/nav_gallery_admin"
-        android:name="com.example.aprajitafoundation.ui.admin.ui.GalleryAdminFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.GalleryAdminFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_gallery2" />
 
     <fragment
-        android:id="@+id/nav_events_admin"
-        android:name="com.example.aprajitafoundation.ui.admin.ui.ProfileAdminFragment"
-        android:label="@string/menu_events"
+        android:id="@+id/nav_profile_admin"
+        android:name="com.example.aprajitafoundation.admin.ui.ProfileAdminFragment"
+        android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile_2" />
+    <fragment
+        android:id="@+id/nav_events_admin"
+        android:name="com.example.aprajitafoundation.admin.ui.EventsAdminFragment"
+        android:label="@string/menu_events"
+        tools:layout="@layout/fragment_events2" />
 
 
     <fragment
         android:id="@+id/nav_register_admin"
-        android:name="com.example.aprajitafoundation.ui.admin.ui.RegisterAdminFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.RegisterAdminFragment"
         android:label = "@string/menu_register_admin"
         tools:layout="@layout/fragment_register_admin" />
 
     <fragment
         android:id="@+id/nav_payments"
-        android:name="com.example.aprajitafoundation.ui.admin.ui.PaymentsFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.PaymentsFragment"
         android:label = "@string/menu_payments"
         tools:layout="@layout/fragment_payments" />
 

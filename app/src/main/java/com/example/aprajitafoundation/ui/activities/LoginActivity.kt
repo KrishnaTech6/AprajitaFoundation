@@ -14,7 +14,7 @@ import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.model.UserData
-import com.example.aprajitafoundation.ui.admin.LoginAdminActivity
+import com.example.aprajitafoundation.admin.LoginAdminActivity
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast

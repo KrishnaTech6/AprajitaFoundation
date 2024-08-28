@@ -1,15 +1,15 @@
-package com.example.aprajitafoundation.ui.admin.ui
+package com.example.aprajitafoundation.admin.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
+import com.example.aprajitafoundation.databinding.FragmentHome2Binding
 
-class GalleryAdminFragment : Fragment() {
+class HomeAdminFragment : Fragment() {
 
-    private var _binding: FragmentGallery2Binding? = null
+    private var _binding: FragmentHome2Binding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -20,8 +20,7 @@ class GalleryAdminFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-
-        _binding = FragmentGallery2Binding.inflate(inflater, container, false)
+        _binding = FragmentHome2Binding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root

@@ -1,15 +1,15 @@
-package com.example.aprajitafoundation.ui.admin.ui
+package com.example.aprajitafoundation.admin.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.aprajitafoundation.databinding.FragmentProfile2Binding
+import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
 
-class ProfileAdminFragment : Fragment() {
+class GalleryAdminFragment : Fragment() {
 
-    private var _binding: FragmentProfile2Binding? = null
+    private var _binding: FragmentGallery2Binding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -21,7 +21,7 @@ class ProfileAdminFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
 
-        _binding = FragmentProfile2Binding.inflate(inflater, container, false)
+        _binding = FragmentGallery2Binding.inflate(inflater, container, false)
         val root: View = binding.root
 
         return root

@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.ui.admin
+package com.example.aprajitafoundation.admin
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

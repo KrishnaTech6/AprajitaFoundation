@@ -1,4 +1,4 @@
-package com.example.aprajitafoundation.ui.admin
+package com.example.aprajitafoundation.admin
 
 import android.os.Bundle
 import android.view.Menu
@@ -44,7 +44,7 @@ class AdminActivity : AppCompatActivity() {
                 R.id.nav_events_admin,
                 R.id.nav_register_admin,
                 R.id.nav_payments,
-                R.id.nav_profile_admin
+                R.id.nav_profile_admin,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
