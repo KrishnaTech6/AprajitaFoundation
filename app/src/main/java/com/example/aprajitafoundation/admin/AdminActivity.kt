@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -101,6 +102,26 @@ class AdminActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_admin)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        if (isTaskRoot) {
+            // This is the last activity, show the dialog
+            AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Do you really want to exit the app?")
+                .setPositiveButton("Yes") { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            // This is not the last activity, perform normal back button behavior
+            super.onBackPressed()
+        }
     }
 
 }

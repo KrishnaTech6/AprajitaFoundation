@@ -3,10 +3,12 @@ package com.example.aprajitafoundation.admin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
+import com.example.aprajitafoundation.ui.activities.LoginActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
@@ -73,4 +75,15 @@ class LoginAdminActivity : AppCompatActivity() {
         }
 
     }
+    override fun onBackPressed() {
+        if (isTaskRoot) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        } else {
+            // This is not the last activity, perform normal back button behavior
+            super.onBackPressed()
+        }
+    }
+
 }

@@ -88,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
         binding.loginAdmin.setOnClickListener{
             val intent=  Intent(this@LoginActivity, LoginAdminActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

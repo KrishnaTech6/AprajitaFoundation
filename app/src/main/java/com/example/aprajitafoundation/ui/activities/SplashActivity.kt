@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.admin.AdminActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
@@ -46,6 +48,8 @@ class SplashActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
+        val adminLogin = sharedPreferences.getString("token", "")
+
 
 
         //to show splash screen for 15s and go to main screen
@@ -53,15 +57,19 @@ class SplashActivity : AppCompatActivity() {
             {
                 // Check if user is already signed in
                 if (mAuth.currentUser != null) {
-                    val intent=  Intent(this@SplashActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    gotoActivity(MainActivity())
+                }else if(!adminLogin.isNullOrBlank()){
+                    gotoActivity(AdminActivity())
                 }else{
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    gotoActivity(LoginActivity())
                 }
             }, 2000
         )
+    }
+
+    private fun gotoActivity(activity: Activity){
+        val intent=  Intent(this@SplashActivity, Activity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
