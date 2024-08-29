@@ -25,6 +25,7 @@ import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
+import com.example.aprajitafoundation.utility.showToast
 
 class HomeFragment : BaseFragment() {
 
@@ -68,20 +69,20 @@ class HomeFragment : BaseFragment() {
 
         // Setup ViewPager
         viewPager = binding.viewPager
-        viewPager.adapter = ImageEventAdapter(requireContext(), listOf(), isSlider = true)
+        viewPager.adapter = ImageEventAdapter(requireContext(), listOf(), isSlider = true, viewModel = viewModel)
 
-        binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf())
+        binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvImageItem.setHasFixedSize(true)
 
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
-            val imageEventAdapter = ImageEventAdapter(requireContext(), images)
+            val imageEventAdapter = ImageEventAdapter(requireContext(), images, viewModel = viewModel)
             binding.rvImageItem.adapter = imageEventAdapter
 
             sliderDataList = images
             /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
             viewPager = binding.viewPager
-            viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true)
+            viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true, viewModel = viewModel)
 
             imageEventAdapter.notifyDataSetChanged()
             createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
@@ -100,6 +101,9 @@ class HomeFragment : BaseFragment() {
             } else {
                 hideProgressDialog()
             }
+        }
+        viewModel.error.observe(viewLifecycleOwner){
+            showToast(requireContext(), it)
         }
 
         val staggeredGridLayoutManager =

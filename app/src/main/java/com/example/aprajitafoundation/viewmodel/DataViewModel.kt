@@ -1,10 +1,12 @@
 package com.example.aprajitafoundation.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.EventModel
@@ -45,6 +47,9 @@ class DataViewModel : ViewModel() {
     val allPayments: LiveData<List<Payment>> get() =_allPayments
 
 
+    private val _deleteResponse = MutableLiveData<GenericResponse>()
+    val deleteResponse: LiveData<GenericResponse> get() =_deleteResponse
+
     private val apiService = RetrofitClient.api
 
     fun fetchGalleryImages() {
@@ -54,8 +59,11 @@ class DataViewModel : ViewModel() {
                 val response = apiService.getGalleryImages()
                 if (response.isSuccessful) {
                     _images.value = response.body()
+                    Log.d("DataViewModel", "${response.body()}")
+
                 } else {
                     _error.value = "Error fetching images: ${response.message()}"
+                    Log.d("DataViewModel", "${response.message()}")
                 }
             } catch (e: Exception) {
                 _error.value = "Exception: ${e.message}"
@@ -201,6 +209,32 @@ class DataViewModel : ViewModel() {
                 _error.value = "Exception: ${e.message}"
                 Log.e("DataViewModel", e.message, e)
             }finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun deleteGalleryImage( context:Context, imageId:String?){
+        viewModelScope.launch {
+            try {
+                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("token", "")
+                Log.d("ViewModel", "token: "+token.toString())
+
+                val response =apiService.deleteGalleryImage(token, imageId)
+                if (response.isSuccessful) {
+                    _deleteResponse.value =response.body()
+                    Log.d("DataViewModel", "${response.body()}")
+                } else {
+                    _error.value = "Error Deleting image: ${response.message()}"
+                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                }
+
+            }catch (e:Exception){
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", e.message, e)
+            }
+            finally {
                 _loading.value = false
             }
         }

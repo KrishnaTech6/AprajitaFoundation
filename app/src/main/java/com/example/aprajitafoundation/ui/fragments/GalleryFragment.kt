@@ -14,6 +14,7 @@ import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
+import com.example.aprajitafoundation.utility.showToast
 
 class GalleryFragment : Fragment() {
     private lateinit var binding: FragmentGalleryBinding
@@ -23,7 +24,7 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentGalleryBinding.inflate(layoutInflater)
-        binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf())
+        binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvGallery.setHasFixedSize(true)
 
         // Initialize the ViewModel
@@ -31,7 +32,7 @@ class GalleryFragment : Fragment() {
 
         // Observe the images LiveData
         viewModel.allImages.observe(viewLifecycleOwner){ images ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), imageItems =  images)
+            val imageEventAdapter= ImageEventAdapter(requireContext(), imageItems =  images, viewModel = viewModel)
             binding.rvGallery.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
@@ -51,6 +52,10 @@ class GalleryFragment : Fragment() {
             } else {
                 hideProgressDialog()
             }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner){
+            showToast(requireContext(), it)
         }
 
         // Fetch the all images

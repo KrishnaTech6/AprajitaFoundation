@@ -6,16 +6,35 @@ import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.model.UserData
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface GalleryApi {
     @GET("get-gallery-images")
     suspend fun getGalleryImages(): Response<List<ImageModel>>  // to retrieve 15 images
+
+    @Multipart
+    @POST("upload-gallery-image")
+    suspend fun uploadGalleryImage(
+        @Part file: MultipartBody.Part
+    ): Response<GenericResponse>
+
+    @DELETE("delete-gallery-image/{id}")
+    suspend fun deleteGalleryImage(
+        @Header("Authorization") token: String?,
+        @Path("id") id: String?
+    ): Response<GenericResponse>
+
 
     @GET("get-all-gallery-images")
     suspend fun getAllGalleryImages(): Response<List<ImageModel>> // to retrieve all images

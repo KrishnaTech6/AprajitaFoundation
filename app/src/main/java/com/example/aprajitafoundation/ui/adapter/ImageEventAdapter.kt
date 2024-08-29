@@ -4,19 +4,23 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -27,7 +31,10 @@ class ImageEventAdapter(
     private val imageItems: List<ImageModel> = emptyList(),
     private val eventItems: List<EventModel> = emptyList(),
     private val isSlider: Boolean = false,
+    private val isAdmin: Boolean = false,
+    private val viewModel: DataViewModel,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
 
     companion object {
         private const val TYPE_IMAGE = 0
@@ -37,6 +44,7 @@ class ImageEventAdapter(
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.iv_image_item)
+        val deleteImage: ImageView = itemView.findViewById(R.id.iv_del_gallery)
     }
 
     inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,14 +59,18 @@ class ImageEventAdapter(
         val eventDescription: TextView = itemView.findViewById(R.id.event_description)
         val eventLocation: TextView = itemView.findViewById(R.id.event_location)
         val eventDate: TextView = itemView.findViewById(R.id.event_date)
+
+        val llDelEditEvents: LinearLayout = itemView.findViewById(R.id.ll_admin_del_edit_event)
+        val editEvent: ImageView = itemView.findViewById(R.id.edit_event)
+        val deleteEvent: ImageView = itemView.findViewById(R.id.del_event)
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (position < imageItems.size) {
-            if(isSlider){
+            if (isSlider) {
                 TYPE_IMAGE_SLIDER
-            }else TYPE_IMAGE
-        }else {
+            } else TYPE_IMAGE
+        } else {
             TYPE_EVENT
         }
     }
@@ -66,7 +78,8 @@ class ImageEventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_IMAGE -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.gallery_image_item, parent, false)
+                val view =
+                    LayoutInflater.from(context).inflate(R.layout.gallery_image_item, parent, false)
                 ImageViewHolder(view)
             }
 
@@ -74,10 +87,12 @@ class ImageEventAdapter(
                 val view = LayoutInflater.from(context).inflate(R.layout.slider_item, parent, false)
                 SliderViewHolder(view)
             }
+
             TYPE_EVENT -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false)
                 EventViewHolder(view)
             }
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
@@ -87,15 +102,35 @@ class ImageEventAdapter(
             TYPE_IMAGE -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as ImageViewHolder
-                Glide.with(context)
-                    .load(item?.image)
-                    .into(imageHolder.imageView)
-                imageHolder.itemView.setOnClickListener {
-                    val intent = Intent(context, FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", item?.image)
-                    context.startActivity(intent)
+
+                if (isAdmin) {
+                    imageHolder.deleteImage.visibility = View.VISIBLE
+
+                    Glide.with(context)
+                        .load(item?.image)
+                        .into(imageHolder.imageView)
+                    imageHolder.itemView.setOnClickListener {
+                        val intent = Intent(context, FullScreenImageActivity::class.java)
+                        intent.putExtra("image_url", item?.image)
+                        context.startActivity(intent)
+                    }
+                    imageHolder.deleteImage.setOnClickListener {
+                        viewModel.deleteGalleryImage(context, item?.id)
+                        Log.d("ViewModel" ,"itemId : ${item?.id}")
+                    }
+                } else {
+                    imageHolder.deleteImage.visibility = View.GONE
+                    Glide.with(context)
+                        .load(item?.image)
+                        .into(imageHolder.imageView)
+                    imageHolder.itemView.setOnClickListener {
+                        val intent = Intent(context, FullScreenImageActivity::class.java)
+                        intent.putExtra("image_url", item?.image)
+                        context.startActivity(intent)
+                    }
                 }
             }
+
             TYPE_IMAGE_SLIDER -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as SliderViewHolder
@@ -108,10 +143,23 @@ class ImageEventAdapter(
                     context.startActivity(intent)
                 }
             }
+
             TYPE_EVENT -> {
                 val item = eventItems.getOrNull(position - imageItems.size)
                 val formattedDate = formatDate(item?.date)
                 val eventHolder = holder as EventViewHolder
+
+                if (isAdmin) {
+                    eventHolder.llDelEditEvents.visibility = View.VISIBLE
+                    eventHolder.deleteEvent.setOnClickListener {
+                        //todo: del event
+                    }
+                    eventHolder.editEvent.setOnClickListener {
+                        //todo: edit event
+                    }
+                } else {
+                    eventHolder.llDelEditEvents.visibility = View.GONE
+                }
                 Glide.with(context)
                     .load(item?.image)
                     .thumbnail(0.1f)

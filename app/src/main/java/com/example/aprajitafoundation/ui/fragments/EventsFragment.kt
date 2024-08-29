@@ -12,6 +12,7 @@ import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
+import com.example.aprajitafoundation.utility.showToast
 
 class EventsFragment : BaseFragment() {
 
@@ -29,7 +30,7 @@ class EventsFragment : BaseFragment() {
 
 
         //val imageItem = DataSource().loadImageData()
-        binding.rvEvents.adapter = ImageEventAdapter(requireContext(), listOf())
+        binding.rvEvents.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvEvents.setHasFixedSize(true)
 
         // Initialize the ViewModel
@@ -37,7 +38,7 @@ class EventsFragment : BaseFragment() {
 
         // Observe the images LiveData
         viewModel.events.observe(viewLifecycleOwner){ events ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events)
+            val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events, viewModel = viewModel)
             binding.rvEvents.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
@@ -54,6 +55,9 @@ class EventsFragment : BaseFragment() {
             } else {
                 hideProgressDialog()
             }
+        }
+        viewModel.error.observe(viewLifecycleOwner){
+            showToast(requireContext(), it)
         }
 
         // Fetch the all events

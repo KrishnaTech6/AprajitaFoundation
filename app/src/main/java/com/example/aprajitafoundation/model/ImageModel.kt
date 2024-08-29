@@ -1,6 +1,9 @@
 package com.example.aprajitafoundation.model
 
+import com.google.gson.annotations.SerializedName
+
 data class ImageModel(
-    val id: String,
+    @SerializedName("_id")
+    val id: String?,
     val image: String
 )
