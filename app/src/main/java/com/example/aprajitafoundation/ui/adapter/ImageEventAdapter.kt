@@ -37,7 +37,6 @@ class ImageEventAdapter(
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.iv_image_item)
-        val textView: TextView = itemView.findViewById(R.id.tv_image_title_slider)
     }
 
     inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

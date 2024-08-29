@@ -35,6 +35,9 @@ interface GalleryApi {
     @POST("verify-payment")
     suspend fun storeVerifiedPayment(@Body payment: Payment): Response<GenericResponse>
 
+    @GET("get-all-payment-data")
+    suspend fun getAllPayments():Response<List<Payment>>
+
 }
 data class GenericResponse(val message: String)
 data class PaymentRequest(val amount: Double)

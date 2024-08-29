@@ -41,6 +41,9 @@ class DataViewModel : ViewModel() {
     private val _paymentVerificationStatus = MutableLiveData<String>()
     val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
 
+    private val _allPayments = MutableLiveData<List<Payment>>()
+    val allPayments: LiveData<List<Payment>> get() =_allPayments
+
 
     private val apiService = RetrofitClient.api
 
@@ -183,4 +186,23 @@ class DataViewModel : ViewModel() {
         }
     }
 
+    fun getAllPayments(){
+        viewModelScope.launch {
+            _loading.value=true
+            try {
+                val response =apiService.getAllPayments()
+                if (response.isSuccessful) {
+                    _allPayments.value = response.body()
+                } else {
+                    _error.value = "Error fetching payments: ${response.message()}"
+                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                }
+            }catch (e:Exception){
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", e.message, e)
+            }finally {
+                _loading.value = false
+            }
+        }
+    }
 }
