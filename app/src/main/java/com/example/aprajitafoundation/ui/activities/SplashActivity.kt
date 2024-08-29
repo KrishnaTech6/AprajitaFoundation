@@ -55,20 +55,20 @@ class SplashActivity : AppCompatActivity() {
         //to show splash screen for 15s and go to main screen
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                // Check if user is already signed in
-                if (mAuth.currentUser != null) {
-                    gotoActivity(MainActivity())
-                }else if(!adminLogin.isNullOrBlank()){
-                    gotoActivity(AdminActivity())
+
+                if (mAuth.currentUser != null) {// Check if user is already signed in
+                    gotoActivity(MainActivity::class.java)
+                }else if(!adminLogin.isNullOrBlank()){ // check if admin is already signed in
+                    gotoActivity(AdminActivity::class.java)
                 }else{
-                    gotoActivity(LoginActivity())
+                    gotoActivity(LoginActivity::class.java)
                 }
             }, 2000
         )
     }
 
-    private fun gotoActivity(activity: Activity){
-        val intent=  Intent(this@SplashActivity, Activity::class.java)
+    private fun gotoActivity(activityClass: Class<out Activity>){
+        val intent=  Intent(this@SplashActivity, activityClass)
         startActivity(intent)
         finish()
     }
