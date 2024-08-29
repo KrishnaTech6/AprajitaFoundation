@@ -67,12 +67,14 @@ interface GalleryApi {
     suspend fun storeVerifiedPayment(@Body payment: Payment): Response<GenericResponse>
 
     @GET("get-all-payment-data")
-    suspend fun getAllPayments():Response<List<Payment>>
+    suspend fun getAllPayments(@Header("Authorization") token: String?):Response<PaymentDetailResponse>
 
 }
 data class GenericResponse(val message: String)
 data class PaymentRequest(val amount: Double)
 data class PaymentResponse(val order: Order)
+
+data class PaymentDetailResponse(val payments: List<Payment>)
 data class Order(
     val id: String,
     val amount: Int,

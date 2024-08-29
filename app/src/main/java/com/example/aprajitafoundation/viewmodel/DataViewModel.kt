@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.GenericResponse
+import com.example.aprajitafoundation.api.PaymentDetailResponse
 import com.example.aprajitafoundation.api.PaymentRequest
+import com.example.aprajitafoundation.api.PaymentResponse
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
@@ -43,8 +45,8 @@ class DataViewModel : ViewModel() {
     private val _paymentVerificationStatus = MutableLiveData<String>()
     val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
 
-    private val _allPayments = MutableLiveData<List<Payment>>()
-    val allPayments: LiveData<List<Payment>> get() =_allPayments
+    private val _allPayments = MutableLiveData<PaymentDetailResponse>()
+    val allPayments: LiveData<PaymentDetailResponse> get() =_allPayments
 
 
     private val _deleteResponse = MutableLiveData<GenericResponse>()
@@ -194,11 +196,14 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    fun getAllPayments(){
+    fun getAllPayments(context: Context){
         viewModelScope.launch {
             _loading.value=true
             try {
-                val response =apiService.getAllPayments()
+                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("token", "")
+                Log.d("ViewModel", "token: "+token.toString())
+                val response =apiService.getAllPayments(token)
                 if (response.isSuccessful) {
                     _allPayments.value = response.body()
                 } else {
