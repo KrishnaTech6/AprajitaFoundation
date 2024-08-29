@@ -204,7 +204,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             options.put("theme.color", getColorHex(this, R.color.yellow))
             options.put("currency", "INR")
             options.put("order_id", orderId)
-            options.put("amount", (binding.paymentAmount.text.toString().toInt() * 100).toString()) // Amount in paise (e.g., Rs 500.00)
+            options.put("amount", (binding.paymentAmount.text.toString().toDouble() * 100).toString()) // Amount in paise (e.g., Rs 500.00)
             options.put("prefill.email", binding.userEmail.text.toString())
             options.put("prefill.contact", binding.userContact.text.toString())
 

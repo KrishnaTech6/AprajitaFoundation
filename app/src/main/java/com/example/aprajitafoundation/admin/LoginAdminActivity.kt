@@ -30,7 +30,7 @@ class LoginAdminActivity : AppCompatActivity() {
                     email = binding.emailEditText.text.toString(),
                     password = binding.passwordEditText.text.toString()
                 )
-                viewModel.loginAdmin(request)
+                viewModel.loginAdmin(request, this@LoginAdminActivity)
             }
         }
 

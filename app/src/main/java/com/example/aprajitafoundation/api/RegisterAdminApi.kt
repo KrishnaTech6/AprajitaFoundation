@@ -2,13 +2,16 @@ package com.example.aprajitafoundation.api
 
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 // Data classes to represent requests and responses
 data class RegisterRequest(val name: String, val email: String, val password: String, val profileImg: String?)
 data class LoginRequest(val email: String, val password: String)
 data class ProfileUpdateRequest(val name: String, val email: String, val profileImg: String?)
-data class AuthResponse(val message: String, val token: String, val user: User)
+data class AuthResponse(val message: String, var token: String, val user: User)
+
+data class LogoutRequest(val token: String?)
 
 data class User(val id: String, val name: String, val email: String, val profileImg: String?)
 
@@ -27,5 +30,5 @@ interface AuthApi {
     suspend fun fetchProfile(): Response<AuthResponse>
 
     @POST("logout")
-    suspend fun logout(): Response<GenericResponse>
+    suspend fun logout(@Header("Authorization") token: String): Response<GenericResponse>
 }

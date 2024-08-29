@@ -25,5 +25,6 @@
     <string name="menu_profile">Profile</string>
     <string name="menu_register_admin">Register new Admin</string>
     <string name="menu_payments">Payments</string>
+    <string name="action_signout">Sign out</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

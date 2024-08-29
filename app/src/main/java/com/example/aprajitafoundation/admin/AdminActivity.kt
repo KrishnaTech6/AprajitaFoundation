@@ -1,7 +1,9 @@
 package com.example.aprajitafoundation.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -11,13 +13,21 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
+import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.example.aprajitafoundation.utility.hideProgressDialog
+import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.utility.showToast
+import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 
 class AdminActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityAdminBinding
+
+    private lateinit var viewModel: AdminAuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +35,17 @@ class AdminActivity : AppCompatActivity() {
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarAdmin.toolbar)
+
+        viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
+
+
+        viewModel.error.observe(this){
+            showToast(this, it)
+        }
+
+        viewModel.loading.observe(this){
+            if(it) showDialogProgress(this) else hideProgressDialog()
+        }
 
 
         binding.appBarAdmin.fab.setOnClickListener { view ->
@@ -57,8 +78,29 @@ class AdminActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.action_signout ->{
+                viewModel.logout(this@AdminActivity)
+
+                viewModel.genericResponse.observe(this@AdminActivity){
+                    showToast(this@AdminActivity, it.message)
+
+                    //clear tasks and go to LoginActivity
+                    val intent = Intent (this , LoginAdminActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
+                }
+                true
+            }
+            else->super.onOptionsItemSelected(item)
+        }
+    }
+
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_admin)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
 }
