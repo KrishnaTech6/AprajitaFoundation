@@ -111,7 +111,7 @@ class HomeFragment : BaseFragment() {
         binding.rvImageItem.layoutManager = staggeredGridLayoutManager
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
-        val memberAdapter = ImageAdapter(requireContext(), listOf()) { member ->
+        val memberAdapter = ImageAdapter(requireContext(), listOf(), viewModel = viewModel) { member ->
             //OnClick Action
             val memberFragment = MemberFragment.newInstance(member)
             parentFragmentManager.beginTransaction()

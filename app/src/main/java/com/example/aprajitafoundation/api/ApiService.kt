@@ -41,9 +41,21 @@ interface GalleryApi {
 
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>
+    @DELETE("delete-team-member/{id}")
+    suspend fun deleteMember(
+        @Header("Authorization") token: String?,
+        @Path("id") id: String?
+    ): Response<GenericResponse>
+
 
     @GET("get-events")
     suspend fun getAllEvents(): Response<List<EventModel>>
+
+    @DELETE("delete-event/{id}")
+    suspend fun deleteEvent(
+        @Header("Authorization") token: String?,
+        @Path("id") id: String?
+    ): Response<GenericResponse>
 
     @POST("create-payment")
     suspend fun createPayment(@Body paymentRequest: PaymentRequest): Response<PaymentResponse>

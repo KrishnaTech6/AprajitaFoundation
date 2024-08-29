@@ -239,4 +239,58 @@ class DataViewModel : ViewModel() {
             }
         }
     }
+
+    fun deleteEvent( context:Context, eventId:String?){
+        viewModelScope.launch {
+            try {
+                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("token", "")
+                Log.d("ViewModel", "token: "+token.toString())
+
+                val response =apiService.deleteEvent(token, eventId)
+                if (response.isSuccessful) {
+                    _deleteResponse.value =response.body()
+                    Log.d("DataViewModel", "${response.body()}")
+                } else {
+                    _error.value = "Error Deleting Event: ${response.message()}"
+                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                }
+
+            }catch (e:Exception){
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", e.message, e)
+            }
+            finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun deleteMember(context: Context, memberId: String?){
+
+        viewModelScope.launch {
+            try {
+                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                val token = sharedPreferences.getString("token", "")
+                Log.d("ViewModel", "token: "+token.toString())
+
+                val response =apiService.deleteMember(token, memberId)
+                if (response.isSuccessful) {
+                    _deleteResponse.value =response.body()
+                    Log.d("DataViewModel", "${response.body()}")
+                } else {
+                    _error.value = "Error Deleting Member: ${response.message()}"
+                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                }
+
+            }catch (e:Exception){
+                _error.value = "Exception: ${e.message}"
+                Log.e("DataViewModel", e.message, e)
+            }
+            finally {
+                _loading.value = false
+            }
+        }
+
+    }
 }

@@ -2,23 +2,37 @@ package com.example.aprajitafoundation.ui.adapter
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.model.MemberModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 
-class ImageAdapter(private val context: Context, private var memberItem: List<MemberModel>, private val onItemClickListener: (MemberModel) -> Unit) :
+class ImageAdapter(
+    private val context: Context,
+    private var memberItem: List<MemberModel>,
+    private val isAdmin: Boolean = false,
+    private val viewModel: DataViewModel,
+    private val onItemClickListener: (MemberModel) -> Unit,
+) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
     class ImageViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val ivImage: ImageView = view.findViewById(R.id.iv_person)
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val tvDesignation: TextView = view.findViewById(R.id.tv_designation)
+        val llEditDelMember :LinearLayout = view.findViewById(R.id.ll_admin_del_edit_member)
+        val editMember: ImageView = view.findViewById(R.id.edit_member)
+        val delMember: ImageView = view.findViewById(R.id.del_member)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -28,10 +42,38 @@ class ImageAdapter(private val context: Context, private var memberItem: List<Me
         return ImageViewHolder(adapterLayout)
     }
 
-    override fun getItemCount()= memberItem.size
+    override fun getItemCount() = memberItem.size
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         val item = memberItem[position]
+
+        if(isAdmin){
+            holder.llEditDelMember.visibility = View.VISIBLE
+            holder.delMember.setOnClickListener{
+                // Create an AlertDialog to ask
+                AlertDialog.Builder(context)
+                    .setTitle("Delete Team Member")
+                    .setMessage("Do you really want to delete the team member?")
+                    .setPositiveButton("Yes") { dialog, _ ->
+                        dialog.dismiss()
+                        //delete from the server
+                        viewModel.deleteMember(context, item.id)
+                        Log.d("ViewModel", "id: "+ item.id)
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+
+            }
+            holder.editMember.setOnClickListener{
+                //todo: implement edit member
+            }
+
+        }else{
+            holder.llEditDelMember.visibility = View.GONE
+        }
+
 
         // Using Glide for image loading
         Glide.with(context)
@@ -44,7 +86,6 @@ class ImageAdapter(private val context: Context, private var memberItem: List<Me
 
         holder.itemView.setOnClickListener {
             onItemClickListener(item)
-
         }
     }
 

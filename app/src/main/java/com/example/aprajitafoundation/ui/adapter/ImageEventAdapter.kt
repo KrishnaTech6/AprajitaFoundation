@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -105,29 +106,33 @@ class ImageEventAdapter(
 
                 if (isAdmin) {
                     imageHolder.deleteImage.visibility = View.VISIBLE
-
-                    Glide.with(context)
-                        .load(item?.image)
-                        .into(imageHolder.imageView)
-                    imageHolder.itemView.setOnClickListener {
-                        val intent = Intent(context, FullScreenImageActivity::class.java)
-                        intent.putExtra("image_url", item?.image)
-                        context.startActivity(intent)
-                    }
                     imageHolder.deleteImage.setOnClickListener {
-                        viewModel.deleteGalleryImage(context, item?.id)
-                        Log.d("ViewModel" ,"itemId : ${item?.id}")
+
+                        // Create an AlertDialog to ask
+                        AlertDialog.Builder(context)
+                            .setTitle("Delete Image")
+                            .setMessage("Do you really want to delete the Image?")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                dialog.dismiss()
+                                //delete from the server
+                                viewModel.deleteGalleryImage(context, item?.id)
+                                Log.d("ViewModel" ,"itemId : ${item?.id}")
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
                     }
                 } else {
                     imageHolder.deleteImage.visibility = View.GONE
-                    Glide.with(context)
-                        .load(item?.image)
-                        .into(imageHolder.imageView)
-                    imageHolder.itemView.setOnClickListener {
-                        val intent = Intent(context, FullScreenImageActivity::class.java)
-                        intent.putExtra("image_url", item?.image)
-                        context.startActivity(intent)
-                    }
+                }
+                Glide.with(context)
+                    .load(item?.image)
+                    .into(imageHolder.imageView)
+                imageHolder.itemView.setOnClickListener {
+                    val intent = Intent(context, FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", item?.image)
+                    context.startActivity(intent)
                 }
             }
 
@@ -152,7 +157,21 @@ class ImageEventAdapter(
                 if (isAdmin) {
                     eventHolder.llDelEditEvents.visibility = View.VISIBLE
                     eventHolder.deleteEvent.setOnClickListener {
-                        //todo: del event
+
+                        // Create an AlertDialog to ask
+                        AlertDialog.Builder(context)
+                            .setTitle("Delete Event")
+                            .setMessage("Do you really want to delete the event?")
+                            .setPositiveButton("Yes") { dialog, _ ->
+                                dialog.dismiss()
+                                //delete from the server
+                                viewModel.deleteEvent(context, item?.id)
+                                Log.d("ViewModel" ,"itemId : ${item?.id}")
+                            }
+                            .setNegativeButton("No") { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
                     }
                     eventHolder.editEvent.setOnClickListener {
                         //todo: edit event

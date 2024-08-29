@@ -27,6 +27,11 @@
         android:name="com.example.aprajitafoundation.admin.ui.EventsAdminFragment"
         android:label="@string/menu_events"
         tools:layout="@layout/fragment_events2" />
+    <fragment
+        android:id="@+id/nav_team_member"
+        android:name="com.example.aprajitafoundation.admin.ui.AddMemberFragment"
+        android:label="@string/menu_team_member"
+        tools:layout="@layout/fragment_add_member" />
 
 
     <fragment
