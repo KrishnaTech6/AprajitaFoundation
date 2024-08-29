@@ -22,5 +22,8 @@
     <color name="memberItemBackground">#F3F4F6</color>
     <color name="yellowDark">#FFC107</color>
     <color name="greyBottomNav">#6B6F77</color>
+    <color name="orange">#FF9800</color>
+    <color name="cardBackground1">#C8E6C9</color>
+    <color name="cardBackground2">#E3F2FD</color>
 
 </resources>

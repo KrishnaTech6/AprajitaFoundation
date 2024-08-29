@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="16dp"
-    app:cardBackgroundColor="@color/white"
     android:visibility="visible"
+    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -21,53 +21,53 @@
             android:id="@+id/event_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"
             android:contentDescription="@string/event_image_description"
-            android:layout_marginBottom="8dp" />
+            android:scaleType="centerCrop" />
 
         <!-- TextView for displaying the event title -->
         <TextView
             android:id="@+id/event_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="4dp"
             android:textColor="@android:color/black"
-            android:layout_marginBottom="4dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <!-- TextView for displaying the event description -->
         <TextView
             android:id="@+id/event_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:layout_marginBottom="4dp"
             android:textColor="@android:color/black"
-            android:layout_marginBottom="4dp" />
+            android:textSize="14sp" />
 
         <!-- LinearLayout for date and location -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="4dp"
+            android:orientation="horizontal">
 
             <!-- ImageView and TextView for displaying the event date -->
             <ImageView
                 android:id="@+id/date_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/calendar_24"
-                app:tint="@android:color/holo_green_light"
-            android:layout_marginEnd="4dp" />
+                app:tint="@android:color/holo_green_light" />
 
             <TextView
                 android:id="@+id/event_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                tools:text="2024-12-18"
                 android:layout_gravity="center_vertical"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                tools:text="2024-12-18" />
 
         </LinearLayout>
 
@@ -81,19 +81,42 @@
                 android:id="@+id/location_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/location_24"
-                app:tint="@android:color/holo_red_light"
-            android:layout_marginEnd="4dp" />
+                app:tint="@android:color/holo_red_light" />
 
             <TextView
                 android:id="@+id/event_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                tools:text="Delhi"
                 android:layout_gravity="center_vertical"
-                android:textColor="@android:color/darker_gray" />
+                android:textColor="@android:color/darker_gray"
+                android:textSize="12sp"
+                tools:text="Delhi" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_admin_del_edit_event"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/edit_event"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/baseline_edit_24" />
+
+            <ImageView
+                android:id="@+id/del_event"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_delete_24" />
         </LinearLayout>
 
     </LinearLayout>

@@ -53,6 +53,30 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             tools:text="Android Developer" />
 
+        <LinearLayout
+            android:id="@+id/ll_admin_del_edit_member"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_designation"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp">
+            <ImageView
+                android:id="@+id/edit_member"
+                android:layout_marginEnd="16dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_edit_24"
+                />
+            <ImageView
+                android:id="@+id/del_member"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_delete_24"
+                />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
