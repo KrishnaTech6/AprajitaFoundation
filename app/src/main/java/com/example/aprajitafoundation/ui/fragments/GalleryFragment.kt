@@ -24,11 +24,11 @@ class GalleryFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentGalleryBinding.inflate(layoutInflater)
-        binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
-        binding.rvGallery.setHasFixedSize(true)
-
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+
+        binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
+        binding.rvGallery.setHasFixedSize(true)
 
         // Observe the images LiveData
         viewModel.allImages.observe(viewLifecycleOwner){ images ->

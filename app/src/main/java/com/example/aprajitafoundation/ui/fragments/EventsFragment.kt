@@ -27,14 +27,12 @@ class EventsFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding= FragmentEventsBinding.inflate(layoutInflater)
-
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         //val imageItem = DataSource().loadImageData()
         binding.rvEvents.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvEvents.setHasFixedSize(true)
-
-        // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Observe the images LiveData
         viewModel.events.observe(viewLifecycleOwner){ events ->
