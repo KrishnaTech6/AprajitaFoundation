@@ -5,13 +5,16 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.FileProvider
 import com.example.aprajitafoundation.databinding.ActivityPaymentSuccessBinding
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.utility.showToast
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -122,6 +125,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
         val fileName = "Aprajita_${System.currentTimeMillis()}.pdf"
         val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
 
+        val uri = Uri.fromFile(file)
         var outputStream: OutputStream? = null
         try {
             outputStream = FileOutputStream(file)
@@ -134,8 +138,26 @@ class PaymentSuccessActivity : AppCompatActivity() {
         }
 
         // Notify the user that the PDF has been saved
-        showToast(context, "PDF saved to ${file.absolutePath}")
+        Snackbar
+            .make(binding.root, "PDF saved successfully.", Snackbar.LENGTH_SHORT)
+            .setAction("Open") {
+                openFileLocation(uri)
+            }
+            .show()
         isDownloaded=true
+    }
+
+    fun openFileLocation(uri: Uri) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast(this, "Unable to open the file: ${e.message}")
+        }
     }
 
 

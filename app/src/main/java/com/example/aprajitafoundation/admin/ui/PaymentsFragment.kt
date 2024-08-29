@@ -1,9 +1,14 @@
 package com.example.aprajitafoundation.admin.ui
 
 import android.Manifest
+import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +24,7 @@ import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.DataViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.kernel.colors.ColorConstants
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
@@ -27,16 +33,17 @@ import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
-import org.bouncycastle.asn1.x500.style.RFC4519Style.title
-
 import java.io.File
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PaymentsFragment : Fragment() {
+
     private lateinit var binding: FragmentPaymentsBinding
-    private  var paymentsList : List<Payment> = listOf()
+    private var paymentsList: List<Payment> = listOf()
     private lateinit var viewModel: DataViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -44,25 +51,24 @@ class PaymentsFragment : Fragment() {
         binding = FragmentPaymentsBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
-
         viewModel.getAllPayments(requireContext())
 
-        viewModel.allPayments.observe(viewLifecycleOwner){
+        viewModel.allPayments.observe(viewLifecycleOwner) {
             paymentsList = it.payments
             populateTable()
         }
 
-        viewModel.error.observe(viewLifecycleOwner){
+        viewModel.error.observe(viewLifecycleOwner) {
             showToast(requireContext(), it)
         }
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) showDialogProgress(requireContext()) else hideProgressDialog()
         }
 
-        binding.downloadPayments.setOnClickListener{
-            if(checkPermissions()){
+        binding.downloadPayments.setOnClickListener {
+            if (checkPermissions()) {
                 savePdfFile()
-            }else{
+            } else {
                 requestPermissions()
             }
         }
@@ -98,10 +104,12 @@ class PaymentsFragment : Fragment() {
                 text = payment.date.toString()
                 setPadding(8, 8, 8, 8)
             }
+
             val phoneTextView = TextView(requireContext()).apply {
                 text = payment.phone.toString()
                 setPadding(8, 8, 8, 8)
             }
+
             val paymentIDTextView = TextView(requireContext()).apply {
                 text = payment.razorpay_payment_id.toString()
                 setPadding(8, 8, 8, 8)
@@ -120,73 +128,111 @@ class PaymentsFragment : Fragment() {
 
     private fun savePdfFile() {
         val fileName = "AllPayments_Aprajita.pdf"
-        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
+
+        val pdfUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val resolver = requireContext().contentResolver
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+            }
+            resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+        } else {
+            val file = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                fileName
+            )
+            Uri.fromFile(file)
+        }
 
         try {
-            val pdfWriter = PdfWriter(file)
-            val pdfDocument = PdfDocument(pdfWriter)
-            val document = Document(pdfDocument)
+            pdfUri?.let { uri ->
+                requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    writePdf(outputStream)
+                }
 
-
-            // Add title
-            val title = Paragraph("Aprajita Foundation")
-                .setFontSize(20f)
-                .setFontColor(ColorConstants.BLACK)
-                .setTextAlignment(TextAlignment.CENTER)
-            val subheading= Paragraph("An NGO for Women and Kids Empowerment")
-                .setFontSize(14f)
-                .setFontColor(ColorConstants.BLACK)
-                .setTextAlignment(TextAlignment.CENTER)
-
-
-            val paymentDetails= Paragraph("\n\nPayment Details")
-                .setFontSize(18f)
-                .setFontColor(ColorConstants.BLACK)
-                .setTextAlignment(TextAlignment.CENTER)
-            document.add(title)
-            document.add(subheading)
-            document.add(paymentDetails)
-
-            // Create a table with 6 columns
-            val table = Table(floatArrayOf(1f, 2f, 1f, 1f, 1f, 2f))
-            table.setWidth(100f)
-
-            // Add table headers
-            table.addHeaderCell(createHeaderCell("Name"))
-            table.addHeaderCell(createHeaderCell("Email"))
-            table.addHeaderCell(createHeaderCell("Amount"))
-            table.addHeaderCell(createHeaderCell("Date"))
-            table.addHeaderCell(createHeaderCell("Phone"))
-            table.addHeaderCell(createHeaderCell("PaymentID"))
-
-            val dateFormat = SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a", Locale.getDefault())
-
-            // Add rows to the table
-            paymentsList.forEach { payment ->
-                table.addCell(createCell(payment.name))
-                table.addCell(createCell(payment.email))
-                table.addCell(createCell(payment.amount.toString()))
-
-                val date = dateFormat.format(payment.date)
-                table.addCell(createCell(date))
-
-                table.addCell(createCell(payment.phone))
-                table.addCell(createCell(payment.razorpay_payment_id.toString()))
+                Snackbar
+                    .make(binding.root, "PDF saved successfully.", Snackbar.LENGTH_SHORT)
+                    .setAction("Open") {
+                        openFileLocation(uri)
+                    }
+                    .show()
             }
-
-            document.add(table)
-            document.close()
-
-            showToast(requireContext(), "PDF saved at: ${file.absolutePath}")
-
         } catch (e: Exception) {
             e.printStackTrace()
             showToast(requireContext(), "Failed to save PDF: ${e.message}")
         }
     }
+    private fun openFileLocation(uri: Uri) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showToast(requireContext(), "Unable to open the file: ${e.message}")
+        }
+    }
+
+    private fun writePdf(outputStream: OutputStream) {
+        val pdfWriter = PdfWriter(outputStream)
+        val pdfDocument = PdfDocument(pdfWriter)
+        val document = Document(pdfDocument)
+
+        // Add title and subheading
+        val title = Paragraph("Aprajita Foundation")
+            .setFontSize(20f)
+            .setFontColor(ColorConstants.BLACK)
+            .setTextAlignment(TextAlignment.CENTER)
+        val subheading = Paragraph("An NGO for Women and Kids Empowerment")
+            .setFontSize(14f)
+            .setFontColor(ColorConstants.BLACK)
+            .setTextAlignment(TextAlignment.CENTER)
+        val paymentDetails = Paragraph("\n\nPayment Details")
+            .setFontSize(18f)
+            .setFontColor(ColorConstants.BLACK)
+            .setTextAlignment(TextAlignment.CENTER)
+
+        document.add(title)
+        document.add(subheading)
+        document.add(paymentDetails)
+
+        // Create and add the table
+        val table = Table(floatArrayOf(1f, 2f, 1f, 1f, 1f, 2f)).apply {
+            setWidth(100f)
+        }
+
+        // Add table headers
+        table.addHeaderCell(createHeaderCell("Name"))
+        table.addHeaderCell(createHeaderCell("Email"))
+        table.addHeaderCell(createHeaderCell("Amount"))
+        table.addHeaderCell(createHeaderCell("Date"))
+        table.addHeaderCell(createHeaderCell("Phone"))
+        table.addHeaderCell(createHeaderCell("PaymentID"))
+
+        // Add rows to the table
+        val dateFormat = SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a", Locale.getDefault())
+        paymentsList.forEach { payment ->
+            table.addCell(createCell(payment.name))
+            table.addCell(createCell(payment.email))
+            table.addCell(createCell(payment.amount.toString()))
+
+            val date = dateFormat.format(payment.date)
+            table.addCell(createCell(date))
+
+            table.addCell(createCell(payment.phone))
+            table.addCell(createCell(payment.razorpay_payment_id.toString()))
+        }
+
+        document.add(table)
+        document.close()
+    }
 
     private fun createHeaderCell(text: String): Cell {
-        return Cell().add(Paragraph(text).setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY)
+        return Cell().add(Paragraph(text).setBold())
+            .setBackgroundColor(ColorConstants.LIGHT_GRAY)
             .setTextAlignment(TextAlignment.CENTER)
     }
 
@@ -195,24 +241,30 @@ class PaymentsFragment : Fragment() {
     }
 
     private fun checkPermissions(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            true
+        } else {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            100
-        )
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                100
+            )
+        }
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -222,4 +274,3 @@ class PaymentsFragment : Fragment() {
         }
     }
 }
-
