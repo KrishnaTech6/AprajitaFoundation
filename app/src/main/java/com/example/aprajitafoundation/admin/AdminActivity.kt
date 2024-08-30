@@ -1,7 +1,9 @@
 package com.example.aprajitafoundation.admin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
@@ -15,10 +17,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
+import com.example.aprajitafoundation.utility.initCloudinary
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
@@ -32,6 +38,9 @@ class AdminActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Initialised Cloudinary
+        initCloudinary(this)
 
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)

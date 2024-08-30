@@ -82,5 +82,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.itextpdf:itext7-core:7.2.3'
 
+    //Cloudinary dependency
+    implementation 'com.cloudinary:cloudinary-android:2.8.0'
 
 }

@@ -7,9 +7,15 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.cloudinary.Transformation
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -65,3 +71,58 @@ fun EditText.onTextChanged(action: (text: String) -> Unit) {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }
+
+fun initCloudinary(context: Context) {
+    val config: HashMap<String, String> = HashMap()
+    config["cloud_name"] = Constants.cloudName
+    config["api_key"] = Constants.cloudApiKey
+    config["api_secret"] = Constants.cloudApiKeySecret
+    MediaManager.init(context, config)
+}
+
+fun uploadToCloudinary(context: Context, filePath: String, onSuccess: (String) -> Unit) {
+    val transformation = Transformation<Transformation<*>>()
+        .quality("auto:best") // Automatically adjust the quality
+        .fetchFormat("auto") // Automatically determine the best format
+        .crop("limit")
+        .height(1920).width(1920)
+
+
+
+    MediaManager.get().upload(filePath)
+        .option("transformation", transformation) // Apply the transformation
+        .callback(object : UploadCallback {
+            override fun onStart(requestId: String) {
+                // Upload started
+                showDialogProgress(context)
+            }
+
+            override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                // Upload progress
+                if (!isInternetAvailable(context)) {
+                    hideProgressDialog()
+                    showToast(context, "No Internet Connection!")
+                }
+            }
+
+            override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+                // Handle successful upload
+                hideProgressDialog()
+                val secureUrl = resultData["secure_url"].toString()
+                Log.d("Cloud", "URL: $secureUrl")
+                onSuccess(secureUrl)
+            }
+
+            override fun onError(requestId: String, error: ErrorInfo) {
+                // Handle error
+                hideProgressDialog()
+                showToast(context, "Error: ${error.description}")
+            }
+
+            override fun onReschedule(requestId: String, error: ErrorInfo) {
+                // Handle reschedule
+            }
+        })
+        .dispatch()
+}
+

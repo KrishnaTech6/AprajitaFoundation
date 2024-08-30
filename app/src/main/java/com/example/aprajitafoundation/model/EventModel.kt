@@ -12,7 +12,7 @@ data class EventModel(
     val id:String,
     var title: String,
     var description: String,
-    val date: Date,
+    var date: Date,
     var location: String,
     var image: String,
 ):Parcelable

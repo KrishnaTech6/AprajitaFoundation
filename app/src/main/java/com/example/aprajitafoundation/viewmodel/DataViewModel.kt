@@ -99,10 +99,10 @@ class DataViewModel : ViewModel() {
     fun updateEvent(context: Context, eventModel: EventModel?){
         viewModelScope.launch {
             _loading.value = true
-
             try {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
                 val response = apiService.updateEvent(token,eventModel?.id, eventModel )
+                Log.d("ViewModel", "$token")
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
