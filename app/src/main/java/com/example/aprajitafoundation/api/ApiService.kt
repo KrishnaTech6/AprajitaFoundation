@@ -16,6 +16,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 
@@ -26,6 +27,7 @@ interface GalleryApi {
     @Multipart
     @POST("upload-gallery-image")
     suspend fun uploadGalleryImage(
+        @Header("Authorization") token: String?,
         @Part file: MultipartBody.Part
     ): Response<GenericResponse>
 
@@ -39,6 +41,20 @@ interface GalleryApi {
     @GET("get-all-gallery-images")
     suspend fun getAllGalleryImages(): Response<List<ImageModel>> // to retrieve all images
 
+
+    @POST("add-team-member")
+    suspend fun addTeamMember(
+        @Header("Authorization") token: String?,
+        @Body member: MemberModel
+    ): Response<GenericResponse>
+
+    @PUT("update-team-member/{id}")
+    suspend fun updateTeamMember(
+        @Header("Authorization") token: String?,
+        @Path("id") id: String?,
+        @Body member: MemberModel?
+    ): Response<GenericResponse>
+
     @GET("get-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>
     @DELETE("delete-team-member/{id}")
@@ -47,15 +63,29 @@ interface GalleryApi {
         @Path("id") id: String?
     ): Response<GenericResponse>
 
-
     @GET("get-events")
     suspend fun getAllEvents(): Response<List<EventModel>>
+
+    @POST("add-event")
+    suspend fun addEvent(
+        @Header("Authorization") token: String?,
+        @Body event: EventModel
+    ): Response<GenericResponse>
+
+    @PUT("update-event/{id}")
+    suspend fun updateEvent(
+        @Header("Authorization") token: String?,
+        @Path("id") id: String?,
+        @Body event: EventModel?
+    ): Response<GenericResponse>
 
     @DELETE("delete-event/{id}")
     suspend fun deleteEvent(
         @Header("Authorization") token: String?,
         @Path("id") id: String?
     ): Response<GenericResponse>
+
+
 
     @POST("create-payment")
     suspend fun createPayment(@Body paymentRequest: PaymentRequest): Response<PaymentResponse>

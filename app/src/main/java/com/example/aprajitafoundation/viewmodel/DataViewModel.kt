@@ -24,6 +24,7 @@ class DataViewModel : ViewModel() {
     val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
     val allPayments: LiveData<PaymentDetailResponse> get() = _allPayments
     val deleteResponse: LiveData<GenericResponse> get() = _deleteResponse
+    val updateResponse: LiveData<GenericResponse> get() = _updateResponse
     val loading: LiveData<Boolean> get() = _loading
     val error: LiveData<String> get() = _error
 
@@ -36,6 +37,7 @@ class DataViewModel : ViewModel() {
     private val _paymentVerificationStatus = MutableLiveData<String>()
     private val _allPayments = MutableLiveData<PaymentDetailResponse>()
     private val _deleteResponse = MutableLiveData<GenericResponse>()
+    private val _updateResponse = MutableLiveData<GenericResponse>()
     private val _loading = MutableLiveData<Boolean>()
     private val _error = MutableLiveData<String>()
 
@@ -92,6 +94,49 @@ class DataViewModel : ViewModel() {
     fun deleteGalleryImage(context: Context, imageId: String?) = makeApiCallWithToken(context, { apiService.deleteGalleryImage(it, imageId) }, _deleteResponse)
     fun deleteEvent(context: Context, eventId: String?) = makeApiCallWithToken(context, { apiService.deleteEvent(it, eventId) }, _deleteResponse)
     fun deleteMember(context: Context, memberId: String?) = makeApiCallWithToken(context, { apiService.deleteMember(it, memberId) }, _deleteResponse)
+
+
+    fun updateEvent(context: Context, eventModel: EventModel?){
+        viewModelScope.launch {
+            _loading.value = true
+
+            try {
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val response = apiService.updateEvent(token,eventModel?.id, eventModel )
+                if (response.isSuccessful) {
+                    _updateResponse.value = response.body()
+                } else {
+                    handleError("Error fetching data", response.message())
+                }
+
+            }catch (e: Exception){
+                handleError("Exception: ${e.message}")
+            }finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun updateTeamMember(context: Context, teamMember: MemberModel?){
+        viewModelScope.launch {
+            _loading.value = true
+
+            try {
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val response = apiService.updateTeamMember(token,teamMember?.id, teamMember )
+                if (response.isSuccessful) {
+                    _updateResponse.value = response.body()
+                } else {
+                    handleError("Error fetching data", response.message())
+                }
+
+            }catch (e: Exception){
+                handleError("Exception: ${e.message}")
+            }finally {
+                _loading.value = false
+            }
+        }
+    }
 
     private fun <T> makeApiCall(apiCall: suspend () -> retrofit2.Response<T>, liveData: MutableLiveData<T>?) {
         viewModelScope.launch {
