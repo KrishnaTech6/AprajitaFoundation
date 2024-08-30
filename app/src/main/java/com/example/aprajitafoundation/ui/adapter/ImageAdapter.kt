@@ -2,6 +2,7 @@ package com.example.aprajitafoundation.ui.adapter
 
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
@@ -67,9 +70,12 @@ class ImageAdapter(
 
             }
             holder.editMember.setOnClickListener{
-                //todo: implement edit member
+                val bundle = Bundle().apply {
+                    putParcelable("member", item)
+                }
+                val navController = (context as? AppCompatActivity)?.findNavController(R.id.nav_host_fragment_content_admin)
+                navController?.navigate(R.id.action_nav_team_member_to_editMemberFragment, bundle)
             }
-
         }else{
             holder.llEditDelMember.visibility = View.GONE
         }
