@@ -7,5 +7,3 @@ data class UserData(
     val name: String?,
     val picture: String?,
 )
-
-data class GoogleIDToken(val idToken: GoogleIDToken)

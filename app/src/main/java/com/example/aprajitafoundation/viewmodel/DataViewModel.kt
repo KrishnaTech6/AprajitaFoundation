@@ -9,172 +9,63 @@ import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.PaymentDetailResponse
 import com.example.aprajitafoundation.api.PaymentRequest
-import com.example.aprajitafoundation.api.PaymentResponse
 import com.example.aprajitafoundation.api.RetrofitClient
-import com.example.aprajitafoundation.model.EventModel
-import com.example.aprajitafoundation.model.ImageModel
-import com.example.aprajitafoundation.model.MemberModel
-import com.example.aprajitafoundation.model.Payment
-import com.example.aprajitafoundation.model.UserData
+import com.example.aprajitafoundation.model.*
 import kotlinx.coroutines.launch
 
 class DataViewModel : ViewModel() {
 
-    private val _images = MutableLiveData<List<ImageModel>>()
+    // LiveData objects for observing data in the UI
     val images: LiveData<List<ImageModel>> get() = _images
-
-    private val _allImages = MutableLiveData<List<ImageModel>>()
     val allImages: LiveData<List<ImageModel>> get() = _allImages
-
-    private val _events = MutableLiveData<List<EventModel>>()
     val events: LiveData<List<EventModel>> get() = _events
-
-    private val _loading = MutableLiveData<Boolean>()
+    val members: LiveData<List<MemberModel>> get() = _members
+    val orderId: LiveData<String> get() = _orderId
+    val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
+    val allPayments: LiveData<PaymentDetailResponse> get() = _allPayments
+    val deleteResponse: LiveData<GenericResponse> get() = _deleteResponse
     val loading: LiveData<Boolean> get() = _loading
-
-    private val _error = MutableLiveData<String>()
     val error: LiveData<String> get() = _error
 
+    // Private MutableLiveData for internal use
+    private val _images = MutableLiveData<List<ImageModel>>()
+    private val _allImages = MutableLiveData<List<ImageModel>>()
+    private val _events = MutableLiveData<List<EventModel>>()
     private val _members = MutableLiveData<List<MemberModel>>()
-    val members: LiveData<List<MemberModel>> get() = _members
-
-
     private val _orderId = MutableLiveData<String>()
-    val orderId: LiveData<String> get() = _orderId
-
     private val _paymentVerificationStatus = MutableLiveData<String>()
-    val paymentVerificationStatus: LiveData<String> get() = _paymentVerificationStatus
-
     private val _allPayments = MutableLiveData<PaymentDetailResponse>()
-    val allPayments: LiveData<PaymentDetailResponse> get() =_allPayments
-
-
     private val _deleteResponse = MutableLiveData<GenericResponse>()
-    val deleteResponse: LiveData<GenericResponse> get() =_deleteResponse
+    private val _loading = MutableLiveData<Boolean>()
+    private val _error = MutableLiveData<String>()
 
     private val apiService = RetrofitClient.api
 
-    fun fetchGalleryImages() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = apiService.getGalleryImages()
-                if (response.isSuccessful) {
-                    _images.value = response.body()
-                    Log.d("DataViewModel", "${response.body()}")
-
-                } else {
-                    _error.value = "Error fetching images: ${response.message()}"
-                    Log.d("DataViewModel", "${response.message()}")
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error fetching gallery images", e)
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
-
-    fun fetchAllGalleryImages() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = apiService.getAllGalleryImages()
-                if (response.isSuccessful) {
-                    _allImages.value = response.body()
-                } else {
-                    _error.value = "Error fetching images: ${response.message()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error fetching gallery images", e)
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
-
-    fun fetchTeamMembers() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = apiService.getTeamMembers()
-                if (response.isSuccessful) {
-                    _members.value = response.body()
-                } else {
-                    _error.value = "Error fetching members: ${response.message()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error fetching member data", e)
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
-
-
-    fun fetchAllEvents() {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = apiService.getAllEvents()
-                if (response.isSuccessful) {
-                    _events.value = response.body()
-                } else {
-                    _error.value = "Error fetching events: ${response.message()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error fetching events", e)
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
+    // Simplified API call methods
+    fun fetchGalleryImages() = makeApiCall(apiService::getGalleryImages, _images)
+    fun fetchAllGalleryImages() = makeApiCall(apiService::getAllGalleryImages, _allImages)
+    fun fetchTeamMembers() = makeApiCall(apiService::getTeamMembers, _members)
+    fun fetchAllEvents() = makeApiCall(apiService::getAllEvents, _events)
 
     fun createPayment(amount: Double) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val paymentRequest = PaymentRequest(amount)
-                val response = apiService.createPayment(paymentRequest)
+                val response = apiService.createPayment(PaymentRequest(amount))
                 if (response.isSuccessful) {
-                    val order = response.body()?.order
-                    order?.let {
-                        _orderId.value = it.id  // Store the order ID
-                    }
+                    _orderId.value = response.body()?.order?.id
                 } else {
-                    _error.value = "Error creating payment: ${response.message()}"
+                    handleError("Error creating payment", response.message())
                 }
             } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error creating payment", e)
+                handleError("Exception: ${e.message}")
             } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun sendUserData(userData:UserData) {
-        viewModelScope.launch {
-            _loading.value = true
-            try {
-                val response = apiService.sendUserData(userData)
-                if (response.isSuccessful) {
-                    _error.value = "User data submitted successfully"
-                } else {
-                    _error.value = "Error submitting user data: ${response.message()}"
-                }
-            } catch (e: Exception) {
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", "Error submitting user data", e)
-            } finally {
-                _loading.value = false
-            }
-        }
-    }
+    fun sendUserData(userData: UserData) = makeApiCall({ apiService.sendUserData(userData) }, null)
 
     fun verifyPayment(payment: Payment) {
         viewModelScope.launch {
@@ -196,106 +87,51 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    fun getAllPayments(context: Context){
+
+    fun getAllPayments(context: Context) = makeApiCallWithToken(context, apiService::getAllPayments, _allPayments)
+    fun deleteGalleryImage(context: Context, imageId: String?) = makeApiCallWithToken(context, { apiService.deleteGalleryImage(it, imageId) }, _deleteResponse)
+    fun deleteEvent(context: Context, eventId: String?) = makeApiCallWithToken(context, { apiService.deleteEvent(it, eventId) }, _deleteResponse)
+    fun deleteMember(context: Context, memberId: String?) = makeApiCallWithToken(context, { apiService.deleteMember(it, memberId) }, _deleteResponse)
+
+    private fun <T> makeApiCall(apiCall: suspend () -> retrofit2.Response<T>, liveData: MutableLiveData<T>?) {
         viewModelScope.launch {
-            _loading.value=true
+            _loading.value = true
             try {
-                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                val token = sharedPreferences.getString("token", "")
-                Log.d("ViewModel", "token: "+token.toString())
-                val response =apiService.getAllPayments(token)
+                val response = apiCall()
                 if (response.isSuccessful) {
-                    _allPayments.value = response.body()
+                    liveData?.value = response.body()
                 } else {
-                    _error.value = "Error fetching payments: ${response.message()}"
-                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                    handleError("Error fetching data", response.message())
                 }
-            }catch (e:Exception){
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", e.message, e)
-            }finally {
+            } catch (e: Exception) {
+                handleError("Exception: ${e.message}")
+            } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun deleteGalleryImage( context:Context, imageId:String?){
+    private fun <T> makeApiCallWithToken(context: Context, apiCall: suspend (String) -> retrofit2.Response<T>, liveData: MutableLiveData<T>) {
         viewModelScope.launch {
+            _loading.value = true
             try {
-                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                val token = sharedPreferences.getString("token", "")
-                Log.d("ViewModel", "token: "+token.toString())
-
-                val response =apiService.deleteGalleryImage(token, imageId)
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val response = apiCall(token)
                 if (response.isSuccessful) {
-                    _deleteResponse.value =response.body()
-                    Log.d("DataViewModel", "${response.body()}")
+                    liveData.value = response.body()
                 } else {
-                    _error.value = "Error Deleting image: ${response.message()}"
-                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
+                    handleError("Error fetching data", response.message())
                 }
-
-            }catch (e:Exception){
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", e.message, e)
-            }
-            finally {
+            } catch (e: Exception) {
+                handleError("Exception: ${e.message}")
+            } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun deleteEvent( context:Context, eventId:String?){
-        viewModelScope.launch {
-            try {
-                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                val token = sharedPreferences.getString("token", "")
-                Log.d("ViewModel", "token: "+token.toString())
-
-                val response =apiService.deleteEvent(token, eventId)
-                if (response.isSuccessful) {
-                    _deleteResponse.value =response.body()
-                    Log.d("DataViewModel", "${response.body()}")
-                } else {
-                    _error.value = "Error Deleting Event: ${response.message()}"
-                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
-                }
-
-            }catch (e:Exception){
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", e.message, e)
-            }
-            finally {
-                _loading.value = false
-            }
-        }
-    }
-
-    fun deleteMember(context: Context, memberId: String?){
-
-        viewModelScope.launch {
-            try {
-                val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                val token = sharedPreferences.getString("token", "")
-                Log.d("ViewModel", "token: "+token.toString())
-
-                val response =apiService.deleteMember(token, memberId)
-                if (response.isSuccessful) {
-                    _deleteResponse.value =response.body()
-                    Log.d("DataViewModel", "${response.body()}")
-                } else {
-                    _error.value = "Error Deleting Member: ${response.message()}"
-                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
-                }
-
-            }catch (e:Exception){
-                _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", e.message, e)
-            }
-            finally {
-                _loading.value = false
-            }
-        }
-
+    private fun handleError(message: String, details: String? = null) {
+        _error.value = "$message: $details"
+        Log.e("DataViewModel", "$message: $details")
     }
 }
