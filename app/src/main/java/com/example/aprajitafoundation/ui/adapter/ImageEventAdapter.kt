@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.media.Image
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,17 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.admin.ui.EditEventFragment
+import com.example.aprajitafoundation.admin.ui.EventsAdminFragment
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.viewmodel.DataViewModel
@@ -174,7 +180,11 @@ class ImageEventAdapter(
                             .show()
                     }
                     eventHolder.editEvent.setOnClickListener {
-                        //todo: edit event
+                        val bundle = Bundle().apply {
+                            putParcelable("event", item)
+                        }
+                        val navController = (context as? AppCompatActivity)?.findNavController(R.id.nav_host_fragment_content_admin)
+                        navController?.navigate(R.id.action_nav_events_admin_to_editEventFragment, bundle)
                     }
                 } else {
                     eventHolder.llDelEditEvents.visibility = View.GONE

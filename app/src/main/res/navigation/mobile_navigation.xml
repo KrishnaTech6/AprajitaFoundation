@@ -26,13 +26,16 @@
         android:id="@+id/nav_events_admin"
         android:name="com.example.aprajitafoundation.admin.ui.EventsAdminFragment"
         android:label="@string/menu_events"
-        tools:layout="@layout/fragment_events2" />
+        tools:layout="@layout/fragment_events2" >
+        <action
+            android:id="@+id/action_nav_events_admin_to_editEventFragment"
+            app:destination="@id/editEventFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_team_member"
         android:name="com.example.aprajitafoundation.admin.ui.AddMemberFragment"
         android:label="@string/menu_team_member"
-        tools:layout="@layout/fragment_add_member" />
-
+        tools:layout="@layout/fragment_add_member"/>
 
     <fragment
         android:id="@+id/nav_register_admin"
@@ -45,6 +48,13 @@
         android:name="com.example.aprajitafoundation.admin.ui.PaymentsFragment"
         android:label = "@string/menu_payments"
         tools:layout="@layout/fragment_payments" />
+
+
+    <fragment
+        android:id="@+id/editEventFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.EditEventFragment"
+        android:label="Edit Event"
+        tools:layout="@layout/fragment_edit_event"/>
 
 
 </navigation>
