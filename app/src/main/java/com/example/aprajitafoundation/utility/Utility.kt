@@ -5,7 +5,10 @@ import android.content.Context
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.example.aprajitafoundation.R
 import com.google.android.material.snackbar.Snackbar
@@ -51,4 +54,14 @@ fun hideProgressDialog() = mProgressDialog.dismiss()
     val editor = sharedPreferences.edit()
     editor.putString(key, value)
     editor.apply()
+}
+
+fun EditText.onTextChanged(action: (text: String) -> Unit) {
+    this.addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            s?.let { action(it.toString()) }
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+    })
 }

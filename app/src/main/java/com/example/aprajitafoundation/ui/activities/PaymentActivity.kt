@@ -22,6 +22,7 @@ import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.utility.onTextChanged
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
@@ -119,39 +120,17 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             startActivity(intent)
         }
 
+        binding.userName.onTextChanged { text ->
+            saveInputToPreferences(this@PaymentActivity, "name", text)
+        }
 
+        binding.userEmail.onTextChanged { text ->
+            saveInputToPreferences(this@PaymentActivity, "email", text)
+        }
 
-        //Saving the details after editext change
-        binding.userName.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    saveInputToPreferences(this@PaymentActivity,"name", it.toString())
-                }
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        binding.userEmail.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    saveInputToPreferences(this@PaymentActivity, "email", it.toString())
-                }
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        binding.userContact.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                s?.let {
-                    saveInputToPreferences(this@PaymentActivity, "phone", it.toString())
-                }
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
+        binding.userContact.onTextChanged { text ->
+            saveInputToPreferences(this@PaymentActivity, "phone", text)
+        }
     }
 
     private fun isDetailsFilled(): Boolean {

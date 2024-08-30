@@ -10,9 +10,9 @@ import java.util.Date
 data class EventModel(
     @SerializedName("_id")
     val id:String,
-    val title: String,
-    val description: String,
+    var title: String,
+    var description: String,
     val date: Date,
-    val location: String,
-    val image: String,
+    var location: String,
+    var image: String,
 ):Parcelable
