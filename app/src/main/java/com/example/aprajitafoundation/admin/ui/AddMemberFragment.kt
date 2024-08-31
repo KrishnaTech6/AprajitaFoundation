@@ -54,10 +54,11 @@ class AddMemberFragment : Fragment() {
             memberAdapter.updateMembers(members)
         }
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
-            Log.d("ViewModel", it.message)
             showToast(requireContext(), it.message)
 
-            //get updated list from server after deletion
+            //do this before calling fetch again
+            hideProgressDialog()
+            //fetch updated team members from server
             viewModel.fetchTeamMembers()
 
         }
@@ -81,9 +82,6 @@ class AddMemberFragment : Fragment() {
 
         // Fetch the all events
         viewModel.fetchTeamMembers()
-
-
-
 
         return binding.root
     }

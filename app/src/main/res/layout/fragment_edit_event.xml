@@ -86,7 +86,7 @@ tools:context=".admin.ui.EditEventFragment">
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
             android:contentDescription="@string/menu_team_member"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/logo_12" />
 
         <Button

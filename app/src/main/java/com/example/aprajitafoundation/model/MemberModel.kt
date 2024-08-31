@@ -9,18 +9,18 @@ import kotlinx.android.parcel.RawValue
 data class MemberModel(
     @SerializedName("_id")
     val id: String,
-    val name: String,
-    val position: String,
-    val image: String,
-    val description: String,
-    val quote: String? = null,
+    var name: String,
+    var position: String,
+    var image: String,
+    var description: String,
+    var quote: String? = null,
     val socials: Socials? = null
 ):Parcelable
 
 @Parcelize
 data class Socials(
-    val facebook: String? = null,
-    val twitter: String? = null,
-    val instagram: String? = null,
-    val linkedin: String? = null
+    var facebook: String? = null,
+    var twitter: String? = null,
+    var instagram: String? = null,
+    var linkedin: String? = null
 ):Parcelable

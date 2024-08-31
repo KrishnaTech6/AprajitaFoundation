@@ -74,6 +74,7 @@ class AdminActivity : AppCompatActivity() {
                 R.id.nav_gallery_admin,
                 R.id.nav_events_admin,
                 R.id.nav_register_admin,
+                R.id.nav_team_member,
                 R.id.nav_payments,
                 R.id.nav_profile_admin,
             ), drawerLayout

@@ -61,7 +61,6 @@ class ImageAdapter(
                         dialog.dismiss()
                         //delete from the server
                         viewModel.deleteMember(context, item.id)
-                        Log.d("ViewModel", "id: "+ item.id)
                     }
                     .setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()

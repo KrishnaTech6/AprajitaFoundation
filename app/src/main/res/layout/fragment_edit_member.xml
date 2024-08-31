@@ -54,7 +54,7 @@
                 android:inputType="textMultiLine"
                 android:maxLength="200"
                 android:minLines="3"
-                android:text="@{viewModel.eventDescription}" />
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Event Location -->
@@ -68,8 +68,7 @@
                 android:id="@+id/edit_member_quote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:text="@{viewModel.eventLocation}" />
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -83,7 +82,7 @@
                 android:layout_height="200dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/event_image_description"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 android:src="@drawable/logo_12" />
 
             <Button

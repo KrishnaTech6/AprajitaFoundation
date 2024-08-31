@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -31,10 +33,10 @@ import java.util.Locale
 
 class EditEventFragment : Fragment() {
 
-    private lateinit var binding:FragmentEditEventBinding
+    private lateinit var binding: FragmentEditEventBinding
     private val PICK_IMAGE_REQUEST = 1
 
-    private lateinit var viewModel:DataViewModel
+    private lateinit var viewModel: DataViewModel
 
     private lateinit var eventModel: EventModel
 
@@ -45,15 +47,15 @@ class EditEventFragment : Fragment() {
         Log.d("EditEvent", "Start")
         binding = FragmentEditEventBinding.inflate(layoutInflater)
 
-        viewModel= ViewModelProvider(requireActivity())[DataViewModel::class.java]
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed event data
         val event = arguments?.getParcelable<EventModel>("event")
         Log.d("EditEventFargment", event.toString())
 
-        if(event!=null){
+        if (event != null) {
 
-            eventModel= event
+            eventModel = event
 
             binding.editEventTitle.setText(event.title)
             binding.editEventDescription.setText(event.description)
@@ -64,33 +66,35 @@ class EditEventFragment : Fragment() {
                 .into(binding.editEventImage)
 
             val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val date  =formattedDate.format(event.date)
+            val date = formattedDate.format(event.date)
             binding.editEventDate.setText(date)
 
         }
 
-        viewModel.error.observe(viewLifecycleOwner){error->
+        viewModel.error.observe(viewLifecycleOwner) { error ->
             showSnackBar(binding.root, error)
         }
 
-        viewModel.updateResponse.observe(viewLifecycleOwner){
+        viewModel.updateResponse.observe(viewLifecycleOwner) {
             //If event update is successful
             showToast(requireContext(), it.message)
             Log.d("EditEvent", it.message)
 
             //There is some issue todo: Solve it , getting responses again and again
-//            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
-//            navController.navigateUp()
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            navController.navigateUp()
+
         }
 
-        viewModel.loading.observe(viewLifecycleOwner){
-            if(it) {
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) {
                 showDialogProgress(requireContext())
-                if(!isInternetAvailable(requireContext())){
+                if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
                     showSnackBar(binding.root, "No Internet Connection!")
                 }
-            }else hideProgressDialog()
+            } else hideProgressDialog()
         }
 
         binding.btnSelectImage.setOnClickListener {
@@ -120,15 +124,16 @@ class EditEventFragment : Fragment() {
         }
 
 
-        binding.btnSave.setOnClickListener{
-            if(isDetailsValid()){
+        binding.btnSave.setOnClickListener {
+            if (isDetailsValid()) {
                 Log.d("EditEvent", "btnSave clicked")
                 viewModel.updateEvent(requireContext(), eventModel)
             }
         }
 
-        binding.btnCancel.setOnClickListener{
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+        binding.btnCancel.setOnClickListener {
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
@@ -138,18 +143,21 @@ class EditEventFragment : Fragment() {
     private fun isDetailsValid(): Boolean {
 
         return when {
-            binding.editEventTitle.text.isNullOrBlank() ->{
+            binding.editEventTitle.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Title can't be empty!")
                 false
             }
-            binding.editEventDescription.text.isNullOrBlank() ->{
+
+            binding.editEventDescription.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Description can't be empty!")
                 false
             }
-            binding.editEventLocation.text.isNullOrBlank() ->{
+
+            binding.editEventLocation.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Location can't be empty!")
                 false
             }
+
             else -> true
         }
 
@@ -200,7 +208,7 @@ class EditEventFragment : Fragment() {
 
             // Upload to cloud
             // Will show loading until upload complete
-            uploadToCloudinary(requireContext(), filePath?:"") { cloudUrl ->
+            uploadToCloudinary(requireContext(), filePath ?: "") { cloudUrl ->
                 // After URL received from cloud
                 Glide.with(requireContext())
                     .load(cloudUrl)

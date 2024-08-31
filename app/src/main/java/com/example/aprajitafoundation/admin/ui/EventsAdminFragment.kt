@@ -3,6 +3,7 @@ package com.example.aprajitafoundation.admin.ui
 import android.media.tv.TableRequest
 import android.os.Binder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,9 @@ class EventsAdminFragment : Fragment() {
         viewModel.deleteResponse.observe(viewLifecycleOwner){
             showToast(requireContext(), it.message)
 
-            //re-fetch the events from server
+            //do this before calling fetch again
+            hideProgressDialog()
+            //Again fetch events
             viewModel.fetchAllEvents()
         }
 
@@ -53,12 +56,14 @@ class EventsAdminFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             // Handle loading state (e.g., show/hide a ProgressBar)
             if (isLoading) {
+                Log.d("Events", "isLoading")
                 showDialogProgress(requireContext())
                 if(!isInternetAvailable(requireContext())){
                     hideProgressDialog()
                     showSnackBar(requireView(), "No Internet Connection!")
                 }
             } else {
+                Log.d("Events", "not isLoading")
                 hideProgressDialog()
             }
         }

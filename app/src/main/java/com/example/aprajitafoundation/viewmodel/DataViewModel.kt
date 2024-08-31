@@ -106,7 +106,7 @@ class DataViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
-                    handleError("Error fetching data", response.message())
+                    handleError("Error fetching response", response.message())
                 }
 
             }catch (e: Exception){
@@ -120,14 +120,13 @@ class DataViewModel : ViewModel() {
     fun updateTeamMember(context: Context, teamMember: MemberModel?){
         viewModelScope.launch {
             _loading.value = true
-
             try {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
                 val response = apiService.updateTeamMember(token,teamMember?.id, teamMember )
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
-                    handleError("Error fetching data", response.message())
+                    handleError("Error fetching response", response.message())
                 }
 
             }catch (e: Exception){
