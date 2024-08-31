@@ -10,14 +10,35 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_background"
         android:orientation="vertical">
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All Members"
-            android:paddingStart="16dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="All Members"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_add_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Member"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:drawableLeft="@drawable/add_person"
+                android:elevation="4dp" />
+
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -28,5 +49,4 @@
             android:scrollbars="vertical"/>
 
     </LinearLayout>
-
 </FrameLayout>

@@ -57,12 +57,6 @@ class AdminActivity : AppCompatActivity() {
             if(it) showDialogProgress(this) else hideProgressDialog()
         }
 
-
-        binding.appBarAdmin.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_admin)
