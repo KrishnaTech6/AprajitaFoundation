@@ -164,7 +164,7 @@ class DataViewModel : ViewModel() {
             _loading.value = true
             try {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
-                val response = apiService.updateTeamMember(token,teamMember?.id, teamMember )
+                val response = apiService.updateTeamMember(token,teamMember?.id, teamMember)
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {

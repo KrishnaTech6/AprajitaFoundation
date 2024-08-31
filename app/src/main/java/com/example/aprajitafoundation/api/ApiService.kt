@@ -5,6 +5,7 @@ import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.model.Socials
 import com.example.aprajitafoundation.model.UserData
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -52,7 +53,7 @@ interface GalleryApi {
     suspend fun updateTeamMember(
         @Header("Authorization") token: String?,
         @Path("id") id: String?,
-        @Body member: MemberModel?
+        @Body member: MemberModel?,
     ): Response<GenericResponse>
 
     @GET("get-team-members")
