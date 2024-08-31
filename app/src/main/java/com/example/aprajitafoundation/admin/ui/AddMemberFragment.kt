@@ -6,21 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentAddMemberBinding
 import com.example.aprajitafoundation.ui.adapter.ImageAdapter
-import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
-import com.example.aprajitafoundation.ui.fragments.MemberFragment
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.DataViewModel
-import com.google.android.play.integrity.internal.l
 
 class AddMemberFragment : Fragment() {
     private lateinit var binding: FragmentAddMemberBinding
@@ -78,6 +75,13 @@ class AddMemberFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner) {
             showToast(requireContext(), it)
+        }
+
+
+        binding.btnAddMember.setOnClickListener{
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            navController.navigate(R.id.action_nav_team_member_to_editMemberFragment)
+
         }
 
         // Fetch the all events

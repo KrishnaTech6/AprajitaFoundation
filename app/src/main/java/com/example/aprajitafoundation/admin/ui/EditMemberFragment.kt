@@ -1,7 +1,6 @@
 package com.example.aprajitafoundation.admin.ui
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,8 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -21,7 +18,7 @@ import com.example.aprajitafoundation.databinding.FragmentEditMemberBinding
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.utility.onTextChanged
+import com.example.aprajitafoundation.utility.afterTextChanged
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
@@ -66,35 +63,35 @@ class EditMemberFragment : Fragment() {
             binding.editTwitter.setText(member.socials?.twitter ?: "")
         }
 
-        binding.editMemberName.onTextChanged { text ->
+        binding.editMemberName.afterTextChanged { text ->
             memberModel.name = text
         }
 
-        binding.editMemberPosition.onTextChanged { text ->
+        binding.editMemberPosition.afterTextChanged { text ->
             memberModel.position = text
         }
 
-        binding.editMemberDescription.onTextChanged { text ->
+        binding.editMemberDescription.afterTextChanged { text ->
             memberModel.description = text
         }
 
-        binding.editMemberQuote.onTextChanged { text ->
+        binding.editMemberQuote.afterTextChanged { text ->
             memberModel.quote = text
         }
 
-        binding.editLinkedin.onTextChanged { text ->
+        binding.editLinkedin.afterTextChanged { text ->
             memberModel.socials?.linkedin = text
         }
 
-        binding.editFacebook.onTextChanged { text ->
+        binding.editFacebook.afterTextChanged { text ->
             memberModel.socials?.facebook = text
         }
 
-        binding.editInstagram.onTextChanged { text ->
+        binding.editInstagram.afterTextChanged { text ->
             memberModel.socials?.instagram = text
         }
 
-        binding.editTwitter.onTextChanged { text ->
+        binding.editTwitter.afterTextChanged { text ->
             memberModel.socials?.twitter = text
         }
 

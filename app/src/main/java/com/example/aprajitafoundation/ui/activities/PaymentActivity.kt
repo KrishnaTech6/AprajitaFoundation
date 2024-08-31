@@ -7,8 +7,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -22,7 +20,7 @@ import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
-import com.example.aprajitafoundation.utility.onTextChanged
+import com.example.aprajitafoundation.utility.afterTextChanged
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
@@ -120,15 +118,15 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             startActivity(intent)
         }
 
-        binding.userName.onTextChanged { text ->
+        binding.userName.afterTextChanged { text ->
             saveInputToPreferences(this@PaymentActivity, "name", text)
         }
 
-        binding.userEmail.onTextChanged { text ->
+        binding.userEmail.afterTextChanged { text ->
             saveInputToPreferences(this@PaymentActivity, "email", text)
         }
 
-        binding.userContact.onTextChanged { text ->
+        binding.userContact.afterTextChanged { text ->
             saveInputToPreferences(this@PaymentActivity, "phone", text)
         }
     }

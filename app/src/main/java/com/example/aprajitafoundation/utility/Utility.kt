@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
@@ -62,7 +61,7 @@ fun hideProgressDialog() = mProgressDialog.dismiss()
     editor.apply()
 }
 
-fun EditText.onTextChanged(action: (text: String) -> Unit) {
+fun EditText.afterTextChanged(action: (text: String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             s?.let { action(it.toString()) }

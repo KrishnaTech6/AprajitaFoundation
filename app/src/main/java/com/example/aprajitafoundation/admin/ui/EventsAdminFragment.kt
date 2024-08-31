@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEvents2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
@@ -69,6 +70,12 @@ class EventsAdminFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner){
             showToast(requireContext(), it)
+        }
+
+        binding.btnAddEvent.setOnClickListener{
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            navController.navigate(R.id.action_nav_events_admin_to_editEventFragment)
+
         }
 
         // Fetch the all events

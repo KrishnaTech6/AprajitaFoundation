@@ -26,7 +26,7 @@ interface GalleryApi {
 
     @Multipart
     @POST("upload-gallery-image")
-    suspend fun uploadGalleryImage(
+    suspend fun uploadGalleryImages(
         @Header("Authorization") token: String?,
         @Part file: MultipartBody.Part
     ): Response<GenericResponse>
@@ -45,7 +45,7 @@ interface GalleryApi {
     @POST("add-team-member")
     suspend fun addTeamMember(
         @Header("Authorization") token: String?,
-        @Body member: MemberModel
+        @Body member: MemberModel?
     ): Response<GenericResponse>
 
     @PUT("update-team-member/{id}")
@@ -69,7 +69,7 @@ interface GalleryApi {
     @POST("add-event")
     suspend fun addEvent(
         @Header("Authorization") token: String?,
-        @Body event: EventModel
+        @Body event: EventModel?
     ): Response<GenericResponse>
 
     @PUT("update-event/{id}")

@@ -25,6 +25,7 @@ class DataViewModel : ViewModel() {
     val allPayments: LiveData<PaymentDetailResponse> get() = _allPayments
     val deleteResponse: LiveData<GenericResponse> get() = _deleteResponse
     val updateResponse: LiveData<GenericResponse> get() = _updateResponse
+    val uploadResponse: LiveData<GenericResponse> get() = _uploadResponse
     val loading: LiveData<Boolean> get() = _loading
     val error: LiveData<String> get() = _error
 
@@ -38,6 +39,7 @@ class DataViewModel : ViewModel() {
     private val _allPayments = MutableLiveData<PaymentDetailResponse>()
     private val _deleteResponse = MutableLiveData<GenericResponse>()
     private val _updateResponse = MutableLiveData<GenericResponse>()
+    private val _uploadResponse = MutableLiveData<GenericResponse>()
     private val _loading = MutableLiveData<Boolean>()
     private val _error = MutableLiveData<String>()
 
@@ -96,6 +98,46 @@ class DataViewModel : ViewModel() {
     fun deleteMember(context: Context, memberId: String?) = makeApiCallWithToken(context, { apiService.deleteMember(it, memberId) }, _deleteResponse)
 
 
+
+    fun addEvent(context: Context, event: EventModel?){
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val response = apiService.addEvent(token, event )
+                if (response.isSuccessful) {
+                    _uploadResponse.value = response.body()
+                } else {
+                    handleError("Error fetching response", response.message())
+                }
+
+            }catch (e: Exception){
+                handleError("Exception: ${e.message}")
+            }finally {
+                _loading.value = false
+            }
+        }
+    }
+
+    fun addMember(context: Context, member: MemberModel?){
+        viewModelScope.launch {
+            _loading.value = true
+            try {
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val response = apiService.addTeamMember(token, member )
+                if (response.isSuccessful) {
+                    _uploadResponse.value = response.body()
+                } else {
+                    handleError("Error fetching response", response.message())
+                }
+
+            }catch (e: Exception){
+                handleError("Exception: ${e.message}")
+            }finally {
+                _loading.value = false
+            }
+        }
+    }
     fun updateEvent(context: Context, eventModel: EventModel?){
         viewModelScope.launch {
             _loading.value = true

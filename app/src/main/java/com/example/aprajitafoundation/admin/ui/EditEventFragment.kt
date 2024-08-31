@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -21,7 +20,7 @@ import com.example.aprajitafoundation.databinding.FragmentEditEventBinding
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.utility.onTextChanged
+import com.example.aprajitafoundation.utility.afterTextChanged
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
@@ -29,34 +28,35 @@ import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class EditEventFragment : Fragment() {
+    //add Event and Edit Event Screen
 
     private lateinit var binding: FragmentEditEventBinding
     private val PICK_IMAGE_REQUEST = 1
 
     private lateinit var viewModel: DataViewModel
 
-    private lateinit var eventModel: EventModel
+    private var eventModel: EventModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        Log.d("EditEvent", "Start")
-        binding = FragmentEditEventBinding.inflate(layoutInflater)
+        binding = FragmentEditEventBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed event data
-        val event = arguments?.getParcelable<EventModel>("event")
-        Log.d("EditEventFargment", event.toString())
+        eventModel = arguments?.getParcelable("event")
 
-        if (event != null) {
+        // Set default title
+        val isEditing = eventModel != null
+        (activity as AppCompatActivity).supportActionBar?.title = if (isEditing) "Edit Team Member" else "Add Team Member"
 
-            eventModel = event
-
+        eventModel?.let { event ->
             binding.editEventTitle.setText(event.title)
             binding.editEventDescription.setText(event.description)
             binding.editEventLocation.setText(event.location)
@@ -68,23 +68,25 @@ class EditEventFragment : Fragment() {
             val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = formattedDate.format(event.date)
             binding.editEventDate.setText(date)
-
         }
+
+        // Initialise with default values in add member screen
+        if(!isEditing) eventModel= EventModel("", "", "",  Date(), "", "")
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             showSnackBar(binding.root, error)
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
-            //If event update is successful
             showToast(requireContext(), it.message)
-            Log.d("EditEvent", it.message)
-
-            //There is some issue todo: Solve it , getting responses again and again
-            val navController =
-                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
+        }
 
+        viewModel.uploadResponse.observe(viewLifecycleOwner){
+            showToast(requireContext(), it.message)
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            navController.navigateUp()
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {
@@ -97,43 +99,41 @@ class EditEventFragment : Fragment() {
             } else hideProgressDialog()
         }
 
+
         binding.btnSelectImage.setOnClickListener {
             openGallery()
         }
 
-
-        // Set up the click listener for the date field
         binding.editEventDate.setOnClickListener {
             showDatePickerDialog()
         }
 
-        binding.editEventTitle.onTextChanged { text ->
-            //updated title
-            eventModel.title = text
-
+        binding.editEventTitle.afterTextChanged { text ->
+            eventModel?.title = text
         }
-        binding.editEventLocation.onTextChanged { text ->
-            //updated location
-            eventModel.location = text
-
+        binding.editEventLocation.afterTextChanged { text ->
+            eventModel?.location = text
         }
-
-        binding.editEventDescription.onTextChanged { text ->
-            //updated description
-            eventModel.description = text
+        binding.editEventDescription.afterTextChanged { text ->
+            eventModel?.description = text
         }
-
 
         binding.btnSave.setOnClickListener {
+
+            Log.d("Event", "$eventModel")
             if (isDetailsValid()) {
-                Log.d("EditEvent", "btnSave clicked")
-                viewModel.updateEvent(requireContext(), eventModel)
+                if (isEditing) {
+                    eventModel?.let { viewModel.updateEvent(requireContext(), it) }
+                } else {
+                    eventModel?.let {
+                        viewModel.addEvent(requireContext(), it)
+                    }
+                }
             }
         }
 
         binding.btnCancel.setOnClickListener {
-            val navController =
-                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
@@ -141,26 +141,29 @@ class EditEventFragment : Fragment() {
     }
 
     private fun isDetailsValid(): Boolean {
-
         return when {
             binding.editEventTitle.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Title can't be empty!")
                 false
             }
-
             binding.editEventDescription.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Description can't be empty!")
                 false
             }
-
             binding.editEventLocation.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Location can't be empty!")
                 false
             }
-
+            binding.editEventDate.text.isNullOrBlank() -> {
+                showSnackBar(binding.root, "Date can't be empty!")
+                false
+            }
+            eventModel?.image.isNullOrBlank() ->{
+                showSnackBar(binding.root, "Please select an image!")
+                false
+            }
             else -> true
         }
-
     }
 
     private fun openGallery() {
@@ -183,10 +186,7 @@ class EditEventFragment : Fragment() {
                     set(Calendar.DAY_OF_MONTH, selectedDay)
                 }
 
-                //updated date
-                eventModel.date = selectedCalendar.time
-
-                // Format the date as needed and set it to the TextInputEditText
+                eventModel?.date = selectedCalendar.time
                 val formattedDate = "${selectedDay}/${selectedMonth + 1}/${selectedYear}"
                 binding.editEventDate.setText(formattedDate)
             },
@@ -200,22 +200,13 @@ class EditEventFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-            Log.d("Cloud", imageUri.toString())
-
-            // Get the file path from the URI
             val filePath = getRealPathFromURI(imageUri)
-            Log.d("File Path", filePath ?: "Path not found")
-
-            // Upload to cloud
-            // Will show loading until upload complete
             uploadToCloudinary(requireContext(), filePath ?: "") { cloudUrl ->
-                // After URL received from cloud
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.editEventImage)
 
-                //updated image
-                eventModel.image = cloudUrl
+                eventModel?.image = cloudUrl
             }
         }
     }
@@ -231,5 +222,4 @@ class EditEventFragment : Fragment() {
         }
         return null
     }
-
 }
