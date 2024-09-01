@@ -14,7 +14,8 @@
         <!-- TableLayout to display the payment details as a table -->
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="8dp">
             <TableLayout
                 android:id="@+id/table_layout_payments"
                 android:layout_width="match_parent"
@@ -71,7 +72,7 @@
             android:text="Download"
             android:layout_margin="16dp"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_download"/>
+            android:drawableLeft="@drawable/ic_download"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

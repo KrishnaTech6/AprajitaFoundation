@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 data class ImageModel(
     @SerializedName("_id")
     val id: String?,
-    val image: String
+    var image: String
 )

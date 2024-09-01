@@ -12,6 +12,7 @@ import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.*
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class DataViewModel : ViewModel() {
 
@@ -92,58 +93,73 @@ class DataViewModel : ViewModel() {
     }
 
 
-    fun getAllPayments(context: Context) = makeApiCallWithToken(context, apiService::getAllPayments, _allPayments)
-    fun deleteGalleryImage(context: Context, imageId: String?) = makeApiCallWithToken(context, { apiService.deleteGalleryImage(it, imageId) }, _deleteResponse)
-    fun deleteEvent(context: Context, eventId: String?) = makeApiCallWithToken(context, { apiService.deleteEvent(it, eventId) }, _deleteResponse)
-    fun deleteMember(context: Context, memberId: String?) = makeApiCallWithToken(context, { apiService.deleteMember(it, memberId) }, _deleteResponse)
+    fun getAllPayments(context: Context) =
+        makeApiCallWithToken(context, apiService::getAllPayments, _allPayments)
+
+    fun deleteGalleryImage(context: Context, imageId: String?) = makeApiCallWithToken(
+        context,
+        { apiService.deleteGalleryImage(it, imageId) },
+        _deleteResponse
+    )
+
+    fun deleteEvent(context: Context, eventId: String?) =
+        makeApiCallWithToken(context, { apiService.deleteEvent(it, eventId) }, _deleteResponse)
+
+    fun deleteMember(context: Context, memberId: String?) =
+        makeApiCallWithToken(context, { apiService.deleteMember(it, memberId) }, _deleteResponse)
 
 
-
-    fun addEvent(context: Context, event: EventModel?){
+    fun addEvent(context: Context, event: EventModel?) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
-                val response = apiService.addEvent(token, event )
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+
+                Log.d("ViewModel", "$token")
+                val response = apiService.addEvent(token, event)
                 if (response.isSuccessful) {
                     _uploadResponse.value = response.body()
                 } else {
                     handleError("Error fetching response", response.message())
                 }
 
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 handleError("Exception: ${e.message}")
-            }finally {
+            } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun addMember(context: Context, member: MemberModel?){
+    fun addMember(context: Context, member: MemberModel?) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
-                val response = apiService.addTeamMember(token, member )
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.addTeamMember(token, member)
                 if (response.isSuccessful) {
                     _uploadResponse.value = response.body()
                 } else {
                     handleError("Error fetching response", response.message())
                 }
 
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 handleError("Exception: ${e.message}")
-            }finally {
+            } finally {
                 _loading.value = false
             }
         }
     }
-    fun updateEvent(context: Context, eventModel: EventModel?){
+
+    fun updateEvent(context: Context, eventModel: EventModel?) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
-                val response = apiService.updateEvent(token,eventModel?.id, eventModel )
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.updateEvent(token, eventModel?.id, eventModel)
                 Log.d("ViewModel", "$token")
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
@@ -151,35 +167,39 @@ class DataViewModel : ViewModel() {
                     handleError("Error fetching response", response.message())
                 }
 
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 handleError("Exception: ${e.message}")
-            }finally {
+            } finally {
                 _loading.value = false
             }
         }
     }
 
-    fun updateTeamMember(context: Context, teamMember: MemberModel?){
+    fun updateTeamMember(context: Context, teamMember: MemberModel?) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
-                val response = apiService.updateTeamMember(token,teamMember?.id, teamMember)
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.updateTeamMember(token, teamMember?.id, teamMember)
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
                     handleError("Error fetching response", response.message())
                 }
 
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 handleError("Exception: ${e.message}")
-            }finally {
+            } finally {
                 _loading.value = false
             }
         }
     }
 
-    private fun <T> makeApiCall(apiCall: suspend () -> retrofit2.Response<T>, liveData: MutableLiveData<T>?) {
+    private fun <T> makeApiCall(
+        apiCall: suspend () -> retrofit2.Response<T>,
+        liveData: MutableLiveData<T>?,
+    ) {
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -197,11 +217,16 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    private fun <T> makeApiCallWithToken(context: Context, apiCall: suspend (String) -> retrofit2.Response<T>, liveData: MutableLiveData<T>) {
+    private fun <T> makeApiCallWithToken(
+        context: Context,
+        apiCall: suspend (String) -> retrofit2.Response<T>,
+        liveData: MutableLiveData<T>,
+    ) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE).getString("token", "") ?: ""
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
                 val response = apiCall(token)
                 if (response.isSuccessful) {
                     liveData.value = response.body()
@@ -220,4 +245,29 @@ class DataViewModel : ViewModel() {
         _error.value = "$message: $details"
         Log.e("DataViewModel", "$message: $details")
     }
+
+    fun uploadGalleryImages(context: Context, list: List<String>) {
+        viewModelScope.launch {
+            val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                .getString("token", "") ?: ""
+
+            _loading.value = true
+            try {
+                val response = apiService.uploadGalleryImages(token, list)
+                if (response.isSuccessful) {
+                    // Handle success for each file
+                    _uploadResponse.value = response.body()
+                } else {
+                    handleError("Error uploading image", response.message())
+
+                    Log.d("ViewModel" , "${response.errorBody()?.string() ?: "Error body empty"}")
+                }
+            } catch (e: Exception) {
+                handleError("Exception: ${e.message}")
+            } finally {
+                _loading.value = false
+            }
+        }
+    }
+
 }

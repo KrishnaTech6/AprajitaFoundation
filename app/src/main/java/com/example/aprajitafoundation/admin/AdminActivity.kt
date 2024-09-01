@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -16,11 +18,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
@@ -28,6 +33,8 @@ import com.example.aprajitafoundation.utility.initCloudinary
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class AdminActivity : AppCompatActivity() {
 
@@ -49,12 +56,12 @@ class AdminActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
 
 
-        viewModel.error.observe(this){
+        viewModel.error.observe(this) {
             showToast(this, it)
         }
 
-        viewModel.loading.observe(this){
-            if(it) showDialogProgress(this) else hideProgressDialog()
+        viewModel.loading.observe(this) {
+            if (it) showDialogProgress(this) else hideProgressDialog()
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -70,11 +77,35 @@ class AdminActivity : AppCompatActivity() {
                 R.id.nav_register_admin,
                 R.id.nav_team_member,
                 R.id.nav_payments,
-                R.id.nav_profile_admin,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+        val navHeader = navView.getHeaderView(0)
+        val tvAdminName = navHeader.findViewById<TextView>(R.id.text_admin_name)
+        val tvAdminProfileImage = navHeader.findViewById<ImageView>(R.id.iv_admin)
+        val tvAdminEmail = navHeader.findViewById<TextView>(R.id.text_admin_email)
+        val editProfile = navHeader.findViewById<ImageView>(R.id.iv_edit_profile_admin)
+        val gson = Gson()
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        val savedUserJson = sharedPreferences.getString("user", "")
+        val type = object : TypeToken<User>() {}.type
+
+        val savedUser = gson.fromJson<User>(savedUserJson, type)
+        tvAdminName.text = savedUser.name
+        tvAdminEmail.text = savedUser.email
+        Glide.with(this)
+            .load(savedUser.profileImg)
+            .thumbnail(0.1f)
+            .into(tvAdminProfileImage)
+
+        editProfile.setOnClickListener{
+            // Navigate to ProfileFragment
+            navController.navigate(R.id.action_nav_home_admin_to_nav_profile_admin)
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -84,15 +115,15 @@ class AdminActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
-            R.id.action_signout ->{
+        return when (item.itemId) {
+            R.id.action_signout -> {
                 viewModel.logout(this@AdminActivity)
 
-                viewModel.genericResponse.observe(this@AdminActivity){
+                viewModel.genericResponse.observe(this@AdminActivity) {
                     showToast(this@AdminActivity, it.message)
 
                     //clear tasks and go to LoginActivity
-                    val intent = Intent (this , LoginAdminActivity::class.java)
+                    val intent = Intent(this, LoginAdminActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }

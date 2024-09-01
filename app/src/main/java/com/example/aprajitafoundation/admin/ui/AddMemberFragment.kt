@@ -37,14 +37,14 @@ class AddMemberFragment : Fragment() {
             ImageAdapter(requireContext(), listOf(), viewModel = viewModel, isAdmin = true) {
                 //action onclick
             }
-// Set the adapter and layout manager
+        // Set the adapter and layout manager
         binding.rvAddMembers.adapter = memberAdapter
         val staggeredGridLayoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
         binding.rvAddMembers.layoutManager = staggeredGridLayoutManager
         binding.rvAddMembers.setHasFixedSize(true)
 
-// Observe the members LiveData from the ViewModel
+        // Observe the members LiveData from the ViewModel
         viewModel.members.observe(viewLifecycleOwner) { members ->
             // Update the adapter with the new list
             Log.d("Members Data", "Members: $members")

@@ -32,23 +32,25 @@ class EventsAdminFragment : Fragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
-        //val imageItem = DataSource().loadImageData()
-        binding.rvEvents.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel, isAdmin = true)
-        binding.rvEvents.setHasFixedSize(true)
-
         //if item deleted then result is obtained here
-        viewModel.deleteResponse.observe(viewLifecycleOwner){
+        viewModel.deleteResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
 
             //do this before calling fetch again
             hideProgressDialog()
             //Again fetch events
             viewModel.fetchAllEvents()
+
         }
 
         // Observe the images LiveData
-        viewModel.events.observe(viewLifecycleOwner){ events ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events, viewModel = viewModel, isAdmin = true)
+        viewModel.events.observe(viewLifecycleOwner) { events ->
+            val imageEventAdapter = ImageEventAdapter(
+                requireContext(),
+                eventItems = events,
+                viewModel = viewModel,
+                isAdmin = true
+            )
             binding.rvEvents.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
@@ -59,7 +61,7 @@ class EventsAdminFragment : Fragment() {
             if (isLoading) {
                 Log.d("Events", "isLoading")
                 showDialogProgress(requireContext())
-                if(!isInternetAvailable(requireContext())){
+                if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
                     showSnackBar(requireView(), "No Internet Connection!")
                 }
@@ -75,7 +77,6 @@ class EventsAdminFragment : Fragment() {
         binding.btnAddEvent.setOnClickListener{
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigate(R.id.action_nav_events_admin_to_editEventFragment)
-
         }
 
         // Fetch the all events

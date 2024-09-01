@@ -25,12 +25,13 @@ interface GalleryApi {
     @GET("get-gallery-images")
     suspend fun getGalleryImages(): Response<List<ImageModel>>  // to retrieve 15 images
 
-    @Multipart
+
     @POST("upload-gallery-image")
     suspend fun uploadGalleryImages(
         @Header("Authorization") token: String?,
-        @Part file: MultipartBody.Part
+        @Body images: List<String>
     ): Response<GenericResponse>
+
 
     @DELETE("delete-gallery-image/{id}")
     suspend fun deleteGalleryImage(

@@ -31,11 +31,6 @@
             android:icon="@drawable/donate"
             android:title="@string/menu_payments" />
 
-        <item
-            android:id="@+id/nav_profile_admin"
-            android:icon="@drawable/baseline_profile"
-            android:title="@string/menu_profile" />
-
 
     </group>
 </menu>
