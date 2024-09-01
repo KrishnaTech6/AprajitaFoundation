@@ -42,5 +42,10 @@
     <string name="password">Password</string>
     <string name="admin_image_desc">Admin image desc</string>
     <string name="register_admin">Register Admin</string>
+    <string name="profile_image_desc">Profile image description</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="confirm_password">Confirm Password</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

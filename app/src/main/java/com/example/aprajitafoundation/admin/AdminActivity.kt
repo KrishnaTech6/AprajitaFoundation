@@ -25,6 +25,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.admin.ui.ProfileAdminFragment
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
@@ -36,7 +37,7 @@ import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class AdminActivity : AppCompatActivity() {
+class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdatedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityAdminBinding
@@ -103,7 +104,7 @@ class AdminActivity : AppCompatActivity() {
 
         editProfile.setOnClickListener{
             // Navigate to ProfileFragment
-            navController.navigate(R.id.action_nav_home_admin_to_nav_profile_admin)
+            navController.navigate(R.id.nav_profile_admin)
             drawerLayout.closeDrawer(GravityCompat.START)
         }
     }
@@ -157,6 +158,22 @@ class AdminActivity : AppCompatActivity() {
             // This is not the last activity, perform normal back button behavior
             super.onBackPressed()
         }
+    }
+
+    override fun onProfileUpdated(name: String, email: String, profileImg: String?) {
+        val navView: NavigationView = binding.navView
+        val navHeader = navView.getHeaderView(0)
+        val tvAdminName = navHeader.findViewById<TextView>(R.id.text_admin_name)
+        val tvAdminProfileImage = navHeader.findViewById<ImageView>(R.id.iv_admin)
+        val tvAdminEmail = navHeader.findViewById<TextView>(R.id.text_admin_email)
+
+        tvAdminName.text = name
+        tvAdminEmail.text = email
+        Glide.with(this)
+            .load(profileImg)
+            .thumbnail(0.1f)
+            .into(tvAdminProfileImage)
+
     }
 
 }

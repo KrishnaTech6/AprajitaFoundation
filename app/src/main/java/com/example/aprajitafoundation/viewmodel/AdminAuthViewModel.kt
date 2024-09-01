@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.AuthResponse
 import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.LoginRequest
-import com.example.aprajitafoundation.api.ProfileUpdateRequest
 import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.api.User
@@ -87,7 +86,7 @@ class AdminAuthViewModel : ViewModel() {
         }
     }
 
-    fun updateProfile(context: Context, request: ProfileUpdateRequest) {
+    fun updateProfile(context: Context, request: User) {
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -107,13 +106,27 @@ class AdminAuthViewModel : ViewModel() {
         }
     }
 
-    fun fetchProfile() {
+    fun fetchProfile(context: Context) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = apiService.fetchProfile()
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.fetchProfile(token)
                 if (response.isSuccessful) {
                     _authResponse.value = response.body()
+                    response.body()?.let { authResponse ->
+                        val gson = Gson()
+                        val userJson = gson.toJson(authResponse.user)
+                        // Store token and user info in SharedPreferences
+                        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                        with(sharedPreferences.edit()) {
+                            putString("user", userJson) // saving the json object
+                            apply()
+                        }
+
+                        Log.d("ViewModel", userJson)
+                    }
                 } else {
                     _error.value = "Profile fetch failed: ${response.message()}"
                 }
