@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -73,13 +72,6 @@ class ProfileAdminFragment : Fragment() {
             openGallery()
         }
 
-        binding.editName.setOnClickListener{
-            binding.editName.selectAll()
-        }
-        binding.editEmail.setOnClickListener{
-            binding.editEmail.selectAll()
-        }
-
         // Handle save button click
         binding.btnSave.setOnClickListener {
             val name = binding.editName.text.toString()
@@ -110,7 +102,7 @@ class ProfileAdminFragment : Fragment() {
 
         viewModel.genericResponse.observe(viewLifecycleOwner){
             showToast(requireContext(), it.message)
-            hideProgressDialog()
+
             //fetch profile from the server after updating
             viewModel.fetchProfile(requireContext())
         }
@@ -128,7 +120,6 @@ class ProfileAdminFragment : Fragment() {
         viewModel.authResponse.observe(viewLifecycleOwner){
             showToast(requireContext(), it.message)
             // Notify activity to update header
-            hideProgressDialog()
             profileUpdatedListener?.onProfileUpdated(it.user.name, it.user.email, it.user.profileImg)
         }
 
@@ -168,8 +159,6 @@ class ProfileAdminFragment : Fragment() {
             }
         }
     }
-
-
 
     private fun getRealPathFromURI(contentUri: Uri): String? {
         val proj = arrayOf(MediaStore.Images.Media.DATA)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Selection.selectAll
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -101,28 +100,6 @@ class EditMemberFragment : Fragment() {
         binding.editTwitter.afterTextChanged { text ->
             memberModel?.socials?.twitter = text
         }
-
-        /*
-        If the ET is clicked and it has data , then all the data will be selected
-        */
-        val editTexts = arrayOf(
-            binding.editMemberName,
-            binding.editFacebook,
-            binding.editTwitter,
-            binding.editInstagram,
-            binding.editLinkedin,
-            binding.editMemberQuote,
-            binding.editMemberDescription,
-            binding.editMemberPosition
-        )
-
-        editTexts.forEach { editText ->
-            editText.setOnClickListener {
-                editText.selectAll()
-            }
-        }
-
-
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             showSnackBar(binding.root, error)

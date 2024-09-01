@@ -129,20 +129,6 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         binding.userContact.afterTextChanged { text ->
             saveInputToPreferences(this@PaymentActivity, "phone", text)
         }
-
-        val editTexts = arrayOf(
-            binding.userName,
-            binding.userEmail,
-            binding.userContact,
-            binding.paymentAmount
-        )
-
-        editTexts.forEach { editText ->
-            editText.setOnClickListener {
-                editText.selectAll()
-            }
-        }
-
     }
 
     private fun isDetailsFilled(): Boolean {
