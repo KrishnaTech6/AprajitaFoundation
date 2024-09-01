@@ -118,6 +118,20 @@ class EditEventFragment : Fragment() {
             eventModel?.description = text
         }
 
+        val editTexts = arrayOf(
+            binding.editEventTitle,
+            binding.editEventDescription,
+            binding.editEventLocation,
+            binding.editEventDate
+        )
+
+        editTexts.forEach { editText ->
+            editText.setOnClickListener {
+                editText.selectAll()
+            }
+        }
+
+
         binding.btnSave.setOnClickListener {
 
             Log.d("Event", "$eventModel")

@@ -50,6 +50,7 @@
                 android:drawableTint="@color/grey"
                 android:drawablePadding="4dp"
                 android:inputType="text"
+                android:focusableInTouchMode="true"
                 android:maxLength="50" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,6 +67,7 @@
                 android:drawableRight="@drawable/email"
                 android:drawableTint="@color/grey"
                 android:drawablePadding="4dp"
+                android:focusableInTouchMode="true"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,6 +84,7 @@
                 android:drawableRight="@drawable/lock_icon"
                 android:drawableTint="@color/grey"
                 android:drawablePadding="4dp"
+                android:focusableInTouchMode="true"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 

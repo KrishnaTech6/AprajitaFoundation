@@ -64,6 +64,19 @@ class RegisterAdminFragment : Fragment() {
             registerRequest.password = text
         }
 
+        val editTexts = arrayOf(
+            binding.addAdminEmail,
+            binding.addEventPassword,
+            binding.addEventTitle,
+        )
+
+        editTexts.forEach { editText ->
+            editText.setOnClickListener {
+                editText.selectAll()
+            }
+        }
+
+
         // Save button click listener
         binding.btnSave.setOnClickListener {
             if (isDetailsValid()) {

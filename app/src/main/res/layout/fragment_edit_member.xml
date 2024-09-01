@@ -23,6 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:focusableInTouchMode="true"
                 android:maxLength="50" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
+                android:focusableInTouchMode="true"
                 android:maxLength="50" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:maxLength="200"
+                android:focusableInTouchMode="true"
                 android:minLines="3"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,6 +71,7 @@
                 android:id="@+id/edit_member_quote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +114,7 @@
                 android:id="@+id/edit_linkedin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -123,6 +128,7 @@
                 android:id="@+id/edit_facebook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -135,6 +141,7 @@
                 android:id="@+id/edit_instagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -147,6 +154,7 @@
                 android:id="@+id/edit_twitter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
