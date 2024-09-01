@@ -9,10 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.AuthResponse
 import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.LoginRequest
-import com.example.aprajitafoundation.api.LogoutRequest
 import com.example.aprajitafoundation.api.ProfileUpdateRequest
 import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.api.RetrofitClient
+import com.example.aprajitafoundation.api.User
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -33,15 +33,18 @@ class AdminAuthViewModel : ViewModel() {
 
     private val apiService = RetrofitClient.authApi
 
-    fun registerAdmin(request: RegisterRequest) {
+    fun registerAdmin(context: Context , request: RegisterRequest) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = apiService.registerAdmin(request)
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.registerAdmin(token, request)
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
                     _error.value = "Registration failed: ${response.message()}"
+                    Log.d("Register", "${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
                 _error.value = "Exception: ${e.message}"
@@ -84,11 +87,13 @@ class AdminAuthViewModel : ViewModel() {
         }
     }
 
-    fun updateProfile(request: ProfileUpdateRequest) {
+    fun updateProfile(context: Context, request: ProfileUpdateRequest) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val response = apiService.updateProfile(request)
+                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                    .getString("token", "") ?: ""
+                val response = apiService.updateProfile(token, request)
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
@@ -125,8 +130,6 @@ class AdminAuthViewModel : ViewModel() {
             _loading.value = true
             val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
             val token = sharedPreferences.getString("token", "")
-            Log.d("ViewModel", "token: "+token.toString())
-
             try {
                 val response = apiService.logout(token.toString())
                 if (response.isSuccessful) {
@@ -150,5 +153,4 @@ class AdminAuthViewModel : ViewModel() {
             }
         }
     }
-
 }
