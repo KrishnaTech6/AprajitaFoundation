@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.FragmentHome2Binding
 import com.google.gson.Gson
@@ -41,6 +44,13 @@ class HomeAdminFragment : Fragment() {
 
         binding.welcomeText.text = "Welcome, ${savedUser.name}!"
         binding.dateTimeText.text = "Today is $date"
+
+        binding.btnDonationDetails.setOnClickListener{
+            findNavController().navigate(R.id.action_nav_home_admin_to_nav_payments)
+        }
+        binding.btnRegisterNewAdmin.setOnClickListener{
+            findNavController().navigate(R.id.action_nav_home_admin_to_nav_register_admin)
+        }
 
         return binding.root
     }

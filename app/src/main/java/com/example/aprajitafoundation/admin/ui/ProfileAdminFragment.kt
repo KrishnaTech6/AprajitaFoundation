@@ -103,6 +103,7 @@ class ProfileAdminFragment : Fragment() {
         viewModel.genericResponse.observe(viewLifecycleOwner){
             showToast(requireContext(), it.message)
 
+            hideProgressDialog()
             //fetch profile from the server after updating
             viewModel.fetchProfile(requireContext())
         }
@@ -120,6 +121,7 @@ class ProfileAdminFragment : Fragment() {
         viewModel.authResponse.observe(viewLifecycleOwner){
             showToast(requireContext(), it.message)
             // Notify activity to update header
+            hideProgressDialog()
             profileUpdatedListener?.onProfileUpdated(it.user.name, it.user.email, it.user.profileImg)
         }
 

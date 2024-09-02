@@ -2,10 +2,13 @@ package com.example.aprajitafoundation.admin
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -53,6 +56,18 @@ class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdated
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarAdmin.toolbar)
+
+        //to hide statusbar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
+        else{
+            //for lower version of Android
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
 

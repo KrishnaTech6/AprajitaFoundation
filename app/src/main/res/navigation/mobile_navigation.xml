@@ -13,6 +13,18 @@
         <action
             android:id="@+id/action_nav_home_admin_to_nav_profile_admin"
             app:destination="@id/nav_profile_admin" />
+        <action
+            android:id="@+id/action_nav_home_admin_to_nav_payments"
+            app:destination="@id/nav_payments"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_home_admin"
+            app:launchSingleTop="true"/>
+        <action
+            android:id="@+id/action_nav_home_admin_to_nav_register_admin"
+            app:destination="@id/nav_register_admin"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_home_admin"
+            app:launchSingleTop="true"/>
     </fragment>
 
     <fragment

@@ -123,6 +123,7 @@
             android:layout_marginTop="16dp">
 
             <Button
+                android:id="@+id/btn_register_new_admin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -133,6 +134,7 @@
                 android:textAllCaps="false" />
 
             <Button
+                android:id="@+id/btn_donation_details"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

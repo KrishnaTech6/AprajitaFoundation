@@ -1,8 +1,11 @@
 package com.example.aprajitafoundation.admin
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
@@ -22,6 +25,18 @@ class LoginAdminActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //to hide statusbar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
+        else{
+            //for lower version of Android
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
 
