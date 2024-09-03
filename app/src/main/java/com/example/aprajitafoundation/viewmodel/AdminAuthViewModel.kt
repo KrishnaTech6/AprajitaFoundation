@@ -20,6 +20,8 @@ class AdminAuthViewModel : ViewModel() {
 
     private val _authResponse = MutableLiveData<AuthResponse>()
     val authResponse: LiveData<AuthResponse> get() = _authResponse
+    private val _authResponseLogin = MutableLiveData<AuthResponse>()
+    val authResponseLogin: LiveData<AuthResponse> get() = _authResponseLogin
 
     private val _genericResponse = MutableLiveData<GenericResponse>()
     val genericResponse: LiveData<GenericResponse> get() = _genericResponse
@@ -59,7 +61,7 @@ class AdminAuthViewModel : ViewModel() {
             try {
                 val response = apiService.loginAdmin(request)
                 if (response.isSuccessful) {
-                    _authResponse.value = response.body()
+                    _authResponseLogin.value = response.body()
                     response.body()?.let { authResponse ->
                         val gson = Gson()
                         val userJson = gson.toJson(authResponse.user)

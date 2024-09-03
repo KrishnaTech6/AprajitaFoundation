@@ -1,10 +1,9 @@
 package com.example.aprajitafoundation.admin
 
-import android.content.Context
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowInsets
@@ -12,7 +11,6 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -21,21 +19,16 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
-import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.ui.ProfileAdminFragment
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
-import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.example.aprajitafoundation.utility.CloudinaryManager
 import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.initCloudinary
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
@@ -53,7 +46,7 @@ class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdated
         super.onCreate(savedInstanceState)
 
         //Initialised Cloudinary
-        initCloudinary(this)
+        CloudinaryManager.initCloudinary(this)
 
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -112,23 +105,26 @@ class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdated
         val type = object : TypeToken<User>() {}.type
 
         val savedUser = gson.fromJson<User>(savedUserJson, type)
-        tvAdminName.text = savedUser.name
-        tvAdminEmail.text = savedUser.email
-        Glide.with(this)
-            .load(savedUser.profileImg)
-            .thumbnail(0.1f)
-            .into(tvAdminProfileImage)
 
-        tvAdminProfileImage.setOnClickListener{
+        if(savedUser!= null){
+            tvAdminName.text = savedUser.name
+            tvAdminEmail.text = savedUser.email
+            Glide.with(this)
+                .load(savedUser.profileImg)
+                .thumbnail(0.1f)
+                .into(tvAdminProfileImage)
+
+            tvAdminProfileImage.setOnClickListener{
                 val intent = Intent(this@AdminActivity, FullScreenImageActivity::class.java)
                 intent.putExtra("image_url", savedUser.profileImg)
                 startActivity(intent)
-        }
+            }
 
-        editProfile.setOnClickListener{
-            // Navigate to ProfileFragment
-            navController.navigate(R.id.nav_profile_admin)
-            drawerLayout.closeDrawer(GravityCompat.START)
+            editProfile.setOnClickListener{
+                // Navigate to ProfileFragment
+                navController.navigate(R.id.nav_profile_admin)
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
     }
 

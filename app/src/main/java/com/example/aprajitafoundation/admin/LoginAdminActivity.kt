@@ -4,11 +4,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
@@ -51,12 +52,15 @@ class LoginAdminActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.authResponse.observe(this) { response ->
+        viewModel.authResponseLogin.observe(this) { response ->
+            Log.d("LoginAdminActivity", "success response from viewmodel")
             showToast(this, response.message)
-
-            val intent = Intent(this, AdminActivity::class.java)
-            startActivity(intent)
-            finish()
+            hideProgressDialog()
+            Handler(Looper.getMainLooper()).postDelayed({
+                val intent = Intent(this, AdminActivity::class.java)
+                startActivity(intent)
+                finish()
+            }, 100)
         }
 
         viewModel.error.observe(this) { error ->

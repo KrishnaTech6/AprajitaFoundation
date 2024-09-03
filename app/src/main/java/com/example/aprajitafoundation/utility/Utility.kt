@@ -71,12 +71,18 @@ fun EditText.afterTextChanged(action: (text: String) -> Unit) {
     })
 }
 
-fun initCloudinary(context: Context) {
-    val config: HashMap<String, String> = HashMap()
-    config["cloud_name"] = Constants.cloudName
-    config["api_key"] = Constants.cloudApiKey
-    config["api_secret"] = Constants.cloudApiKeySecret
-    MediaManager.init(context, config)
+object CloudinaryManager{
+    private var isInitialized = false
+    fun initCloudinary(context: Context) {
+        if (!isInitialized) {
+            val config: HashMap<String, String> = HashMap()
+            config["cloud_name"] = Constants.cloudName
+            config["api_key"] = Constants.cloudApiKey
+            config["api_secret"] = Constants.cloudApiKeySecret
+            MediaManager.init(context, config)
+            isInitialized = true
+        }
+    }
 }
 
 fun uploadToCloudinary(context: Context, filePath: String, onSuccess: (String) -> Unit) {
