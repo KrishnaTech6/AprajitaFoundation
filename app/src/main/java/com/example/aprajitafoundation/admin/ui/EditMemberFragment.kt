@@ -67,10 +67,13 @@ class EditMemberFragment : Fragment() {
             binding.editTwitter.setText(member.socials?.twitter ?: "")
 
             binding.editMemberImage.setOnClickListener{
-                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", memberModel?.image)
-                requireActivity().startActivity(intent)
+                if(!memberModel?.image.isNullOrBlank()){
+                    val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", memberModel?.image)
+                    requireActivity().startActivity(intent)
+                }
             }
+
         } ?: run {
             // Initialize with default values in add member screen
             memberModel = MemberModel("", "", "", "", "", "", Socials("", "","",""))

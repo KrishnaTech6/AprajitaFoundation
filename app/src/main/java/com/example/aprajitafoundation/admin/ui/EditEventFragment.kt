@@ -71,9 +71,11 @@ class EditEventFragment : Fragment() {
             binding.editEventDate.setText(date)
 
             binding.editEventImage.setOnClickListener{
-                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", eventModel?.image)
-                requireActivity().startActivity(intent)
+                if(!eventModel?.image.isNullOrBlank()){
+                    val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", eventModel?.image)
+                    requireActivity().startActivity(intent)
+                }
             }
         }
 

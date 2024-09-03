@@ -67,9 +67,11 @@ class ProfileAdminFragment : Fragment() {
                 .load(it.profileImg)
                 .into(binding.profileImage)
             binding.profileImage.setOnClickListener{
-                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", user?.profileImg)
-                requireActivity().startActivity(intent)
+                if(!user?.profileImg.isNullOrBlank()){
+                    val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", user?.profileImg)
+                    requireActivity().startActivity(intent)
+                }
             }
         }?: run { user = User("", "", "", "") }
 
