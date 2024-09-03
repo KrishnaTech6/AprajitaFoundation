@@ -31,4 +31,26 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:visibility="visible" />
+
+        <!-- Share Button -->
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:drawableLeft="@drawable/share"
+            android:text="Share" />
+
+        <!-- Download Button -->
+        <Button
+            android:id="@+id/downloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:text="download"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:drawableLeft="@drawable/ic_download" />
 </FrameLayout>
