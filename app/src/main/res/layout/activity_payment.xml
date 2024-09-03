@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bgYellow"
-        android:padding="24dp"
+        android:padding="16dp"
         android:orientation="vertical">
 
         <!-- CardView containing Organization Image, Heading, and Subheading -->
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/gradient_yellow"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:gravity="center_horizontal">
 
                 <!-- Organization Image -->
