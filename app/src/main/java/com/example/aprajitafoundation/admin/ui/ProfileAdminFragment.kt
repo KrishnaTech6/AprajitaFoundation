@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.FragmentProfile2Binding
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
@@ -65,6 +66,11 @@ class ProfileAdminFragment : Fragment() {
             Glide.with(requireContext())
                 .load(it.profileImg)
                 .into(binding.profileImage)
+            binding.profileImage.setOnClickListener{
+                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", user?.profileImg)
+                requireActivity().startActivity(intent)
+            }
         }?: run { user = User("", "", "", "") }
 
         // Handle select image button click

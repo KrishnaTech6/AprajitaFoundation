@@ -197,6 +197,12 @@ class ImageEventAdapter(
                 eventHolder.eventDescription.text = item?.description
                 eventHolder.eventLocation.text = item?.location
                 eventHolder.eventDate.text = formattedDate
+
+                eventHolder.eventImage.setOnClickListener{
+                    val intent = Intent(context, FullScreenImageActivity::class.java)
+                    intent.putExtra("image_url", item?.image)
+                    context.startActivity(intent)
+                }
             }
         }
     }

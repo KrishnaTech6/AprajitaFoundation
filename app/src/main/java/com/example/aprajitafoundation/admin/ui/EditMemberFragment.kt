@@ -18,6 +18,7 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEditMemberBinding
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Socials
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.afterTextChanged
@@ -64,6 +65,12 @@ class EditMemberFragment : Fragment() {
             binding.editFacebook.setText(member.socials?.facebook ?: "")
             binding.editInstagram.setText(member.socials?.instagram ?: "")
             binding.editTwitter.setText(member.socials?.twitter ?: "")
+
+            binding.editMemberImage.setOnClickListener{
+                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", memberModel?.image)
+                requireActivity().startActivity(intent)
+            }
         } ?: run {
             // Initialize with default values in add member screen
             memberModel = MemberModel("", "", "", "", "", "", Socials("", "","",""))

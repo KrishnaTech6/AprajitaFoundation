@@ -21,6 +21,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -31,6 +32,7 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.ui.ProfileAdminFragment
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.ui.activities.LoginActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.initCloudinary
@@ -116,6 +118,12 @@ class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdated
             .load(savedUser.profileImg)
             .thumbnail(0.1f)
             .into(tvAdminProfileImage)
+
+        tvAdminProfileImage.setOnClickListener{
+                val intent = Intent(this@AdminActivity, FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", savedUser.profileImg)
+                startActivity(intent)
+        }
 
         editProfile.setOnClickListener{
             // Navigate to ProfileFragment

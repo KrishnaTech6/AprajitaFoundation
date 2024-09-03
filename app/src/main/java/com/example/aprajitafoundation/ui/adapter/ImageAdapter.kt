@@ -82,7 +82,7 @@ class ImageAdapter(
 
         // Using Glide for image loading
         Glide.with(context)
-            .load(item?.image)
+            .load(item.image)
             .thumbnail(0.1f)
             .into(holder.ivImage)
 

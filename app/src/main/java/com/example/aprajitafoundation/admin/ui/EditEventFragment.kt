@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEditEventBinding
 import com.example.aprajitafoundation.model.EventModel
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.afterTextChanged
@@ -68,6 +69,12 @@ class EditEventFragment : Fragment() {
             val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = formattedDate.format(event.date)
             binding.editEventDate.setText(date)
+
+            binding.editEventImage.setOnClickListener{
+                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", eventModel?.image)
+                requireActivity().startActivity(intent)
+            }
         }
 
         // Initialise with default values in add member screen

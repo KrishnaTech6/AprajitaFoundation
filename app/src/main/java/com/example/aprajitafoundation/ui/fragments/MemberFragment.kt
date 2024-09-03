@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.databinding.FragmentMemberBinding
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Socials
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 
 
 class MemberFragment : BaseFragment() {
@@ -32,6 +34,12 @@ class MemberFragment : BaseFragment() {
 
             binding.profileAbout.text = member.description
             binding.profilePunchline.text = member.quote
+
+            binding.profilePhoto.setOnClickListener{
+                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", member.image)
+                requireActivity().startActivity(intent)
+            }
 
             // Manage social media visibility and click listeners
             setupSocialMedia(member.socials)

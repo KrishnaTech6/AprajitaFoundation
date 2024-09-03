@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.databinding.FragmentRegisterAdminBinding
+import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.afterTextChanged
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
@@ -53,6 +54,14 @@ class RegisterAdminFragment : Fragment() {
             openGallery()
         }
 
+        binding.addAdminImage.setOnClickListener {
+            if (!registerRequest.profileImg.isNullOrBlank()) {
+                val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
+                intent.putExtra("image_url", registerRequest.profileImg)
+                requireActivity().startActivity(intent)
+            }
+        }
+
         // Set text change listeners to update RegisterRequest
         binding.addEventTitle.afterTextChanged { text ->
             registerRequest.name = text
@@ -74,7 +83,8 @@ class RegisterAdminFragment : Fragment() {
         // Cancel button click listener
         binding.btnCancel.setOnClickListener {
             // Navigate up on cancel
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
     }
@@ -86,7 +96,8 @@ class RegisterAdminFragment : Fragment() {
 
         viewModel.genericResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
@@ -107,18 +118,22 @@ class RegisterAdminFragment : Fragment() {
                 showSnackBar(binding.root, "Name can't be empty!")
                 false
             }
+
             binding.addAdminEmail.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Email can't be empty!")
                 false
             }
+
             binding.addEventPassword.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Password can't be empty!")
                 false
             }
+
             registerRequest.profileImg.isNullOrBlank() -> {
                 showSnackBar(binding.root, "Please select a profile image!")
                 false
             }
+
             else -> true
         }
     }
