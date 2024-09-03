@@ -56,7 +56,6 @@ class GalleryAdminFragment : Fragment() {
                     for (uri in imageUris) {
                         val filePath = getRealPathFromURI(uri)
                         filePath?.let {
-                            Log.d("UploadImage", "Path of image: $filePath")
                             val cloudUrl = suspendUploadToCloudinary(requireContext(), it)
                             imageList.add(cloudUrl)
                         }

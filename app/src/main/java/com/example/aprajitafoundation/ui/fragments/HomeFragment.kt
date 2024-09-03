@@ -48,10 +48,6 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,19 +62,16 @@ class HomeFragment : BaseFragment() {
         viewModel.fetchGalleryImages()
         viewModel.fetchTeamMembers()
 
-
-        // Setup ViewPager
-        viewPager = binding.viewPager
-        viewPager.adapter = ImageEventAdapter(requireContext(), listOf(), isSlider = true, viewModel = viewModel)
-
-        binding.rvImageItem.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
-        binding.rvImageItem.setHasFixedSize(true)
-
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
             val imageEventAdapter = ImageEventAdapter(requireContext(), images, viewModel = viewModel)
             binding.rvImageItem.adapter = imageEventAdapter
+            val staggeredGridLayoutManager =
+                StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+            binding.rvImageItem.layoutManager = staggeredGridLayoutManager
+            binding.rvImageItem.setHasFixedSize(true)
 
+            //For runnable
             sliderDataList = images
             /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
             viewPager = binding.viewPager
@@ -106,11 +99,8 @@ class HomeFragment : BaseFragment() {
             showToast(requireContext(), it)
         }
 
-        val staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-        binding.rvImageItem.layoutManager = staggeredGridLayoutManager
-
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
+
         val memberAdapter = ImageAdapter(requireContext(), listOf(), viewModel = viewModel) { member ->
             //OnClick Action
             val memberFragment = MemberFragment.newInstance(member)
@@ -120,16 +110,17 @@ class HomeFragment : BaseFragment() {
                 .commit()
         }
 
-// Set the adapter and layout manager
+        // Set the adapter and layout manager
         binding.rvItems.adapter = memberAdapter
         binding.rvItems.setHasFixedSize(true)
 
-// Observe the members LiveData from the ViewModel
+        // Observe the members LiveData from the ViewModel
         viewModel.members.observe(viewLifecycleOwner) { members ->
             // Update the adapter with the new list
             Log.d("Members Data", "Members: $members")
             memberAdapter.updateMembers(members)
         }
+        //for donations:razorpay
         binding.btnDonate.setOnClickListener {
             val intent = Intent(requireActivity(), PaymentActivity::class.java)
             startActivity(intent)
@@ -148,25 +139,6 @@ class HomeFragment : BaseFragment() {
         return binding.root
 
     }
-
-//    private fun recyclerItemView(item: List<MemberItem>){
-//        val newRecyclerView: RecyclerView = RecyclerView(requireContext())
-//        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        newRecyclerView.layoutManager = layoutManager
-//        newRecyclerView.adapter = ImageAdapter(requireContext(), item, this)
-//        newRecyclerView.setHasFixedSize(true)
-//
-//        val layoutParams= ViewGroup.MarginLayoutParams(
-//            ViewGroup.LayoutParams.MATCH_PARENT,
-//            ViewGroup.LayoutParams.WRAP_CONTENT
-//        )
-//        layoutParams.setMargins(0, 10, 0, 0 )
-//        newRecyclerView.layoutParams = layoutParams
-//        val parentLayout: ViewGroup  = binding.llScroll
-//        parentLayout.addView(newRecyclerView)
-//
-//    }
-
     private fun createDots(dotsLayout: LinearLayout, size: Int) {
         dotsLayout.removeAllViews()
         val dots = arrayOfNulls<ImageView>(size)

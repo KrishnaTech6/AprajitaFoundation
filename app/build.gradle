@@ -85,4 +85,7 @@ dependencies {
     //Cloudinary dependency
     implementation 'com.cloudinary:cloudinary-android:2.8.0'
 
+    implementation 'com.jsibbold:zoomage:1.3.1'
+
+
 }

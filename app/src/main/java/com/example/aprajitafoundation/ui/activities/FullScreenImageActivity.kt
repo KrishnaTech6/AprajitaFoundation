@@ -37,15 +37,5 @@ class FullScreenImageActivity : AppCompatActivity() {
         Glide.with(this)
             .load(imageData)
             .into(binding.fullScreenImageView)
-
-//        binding.titleView.text = imageData?.title
-//
-//        if (imageData?.title.isNullOrBlank()){
-//            binding.titleView.visibility = View.GONE
-//        }else{
-//            binding.titleView.visibility = View.VISIBLE
-//        }
-
-
     }
 }

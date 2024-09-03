@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.User
@@ -14,7 +13,6 @@ import com.example.aprajitafoundation.databinding.FragmentHome2Binding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class HomeAdminFragment : Fragment() {
@@ -42,8 +40,9 @@ class HomeAdminFragment : Fragment() {
         val dateFormat = SimpleDateFormat("EEEE, dd MMMM yyyy", Locale.getDefault()) //Monday , 29 August 2024
         val date = dateFormat.format(System.currentTimeMillis())
 
-        binding.welcomeText.text = "Welcome, ${savedUser.name}!"
-        binding.dateTimeText.text = "Today is $date"
+        binding.welcomeText.text = getString(R.string.welcome_message, savedUser.name)
+
+        binding.dateTimeText.text = getString(R.string.today_date_message, date)
 
         binding.btnDonationDetails.setOnClickListener{
             findNavController().navigate(R.id.action_nav_home_admin_to_nav_payments)

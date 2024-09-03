@@ -47,5 +47,7 @@
     <string name="email">Email</string>
     <string name="save_changes">Save Changes</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="welcome_message">Welcome, %1$s!</string>
+    <string name="today_date_message">"Today is %s "</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -35,7 +35,6 @@ class EventsAdminFragment : Fragment() {
         //if item deleted then result is obtained here
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
-
             //do this before calling fetch again
             hideProgressDialog()
             //Again fetch events
@@ -59,14 +58,12 @@ class EventsAdminFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
             // Handle loading state (e.g., show/hide a ProgressBar)
             if (isLoading) {
-                Log.d("Events", "isLoading")
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
                     showSnackBar(requireView(), "No Internet Connection!")
                 }
             } else {
-                Log.d("Events", "not isLoading")
                 hideProgressDialog()
             }
         }

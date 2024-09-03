@@ -44,7 +44,7 @@ class EditEventFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentEditEventBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]

@@ -21,14 +21,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        //to hide actionbar
-        supportActionBar?.hide()
-
         //to hide statusbar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             window.insetsController?.hide(WindowInsets.Type.statusBars())
-        }
-        else{
+        } else{
             window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -41,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val theme = sharedPreferences.getString("appTheme", "Light Mode")
 
-// Check if the current mode does not match the stored theme
+        // Check if the current mode does not match the stored theme
         if (theme == "Dark Mode" && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else if (theme == "Light Mode" && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
