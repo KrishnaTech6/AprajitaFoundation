@@ -41,10 +41,12 @@ class HomeFragment : BaseFragment() {
 
     private val autoSlideRunnable = object : Runnable {
         override fun run() {
-            val nextItem =
-                if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
-            viewPager.setCurrentItem(nextItem, true)
-            handler.postDelayed(this, autoSlideDelay) // Schedule next slide
+            if(sliderDataList.isNotEmpty()){
+                val nextItem =
+                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+                viewPager.setCurrentItem(nextItem, true)
+                handler.postDelayed(this, autoSlideDelay) // Schedule next slide
+            }
         }
     }
 
@@ -64,21 +66,23 @@ class HomeFragment : BaseFragment() {
 
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
-            val imageEventAdapter = ImageEventAdapter(requireContext(), images, viewModel = viewModel)
-            binding.rvImageItem.adapter = imageEventAdapter
-            val staggeredGridLayoutManager =
-                StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-            binding.rvImageItem.layoutManager = staggeredGridLayoutManager
-            binding.rvImageItem.setHasFixedSize(true)
+            if(images!=null){
+                val imageEventAdapter = ImageEventAdapter(requireContext(), images, viewModel = viewModel)
+                binding.rvImageItem.adapter = imageEventAdapter
+                val staggeredGridLayoutManager =
+                    StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+                binding.rvImageItem.layoutManager = staggeredGridLayoutManager
+                binding.rvImageItem.setHasFixedSize(true)
 
-            //For runnable
-            sliderDataList = images
-            /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
-            viewPager = binding.viewPager
-            viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true, viewModel = viewModel)
+                //For runnable
+                sliderDataList = images
+                /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
+                viewPager = binding.viewPager
+                viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true, viewModel = viewModel)
 
-            imageEventAdapter.notifyDataSetChanged()
-            createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
+                imageEventAdapter.notifyDataSetChanged()
+                createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
+            }
         }
 
 
@@ -116,9 +120,11 @@ class HomeFragment : BaseFragment() {
 
         // Observe the members LiveData from the ViewModel
         viewModel.members.observe(viewLifecycleOwner) { members ->
-            // Update the adapter with the new list
-            Log.d("Members Data", "Members: $members")
-            memberAdapter.updateMembers(members)
+            if(members!=null){
+                // Update the adapter with the new list
+                Log.d("Members Data", "Members: $members")
+                memberAdapter.updateMembers(members)
+            }
         }
         //for donations:razorpay
         binding.btnDonate.setOnClickListener {
