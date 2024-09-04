@@ -11,12 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.User
-import com.example.aprajitafoundation.databinding.FragmentProfile2Binding
+import com.example.aprajitafoundation.databinding.FragmentEditAdminProfileBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
@@ -25,14 +24,12 @@ import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
-import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import org.bouncycastle.cms.RecipientId.password
 
-class ProfileAdminFragment : Fragment() {
+class EditProfileAdminFragment : Fragment() {
 
-    private lateinit var binding: FragmentProfile2Binding
+    private lateinit var binding: FragmentEditAdminProfileBinding
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var viewModel: AdminAuthViewModel
     private var user: User? = null
@@ -48,7 +45,7 @@ class ProfileAdminFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentProfile2Binding.inflate(inflater, container, false)
+        binding = FragmentEditAdminProfileBinding.inflate(inflater, container, false)
 
         viewModel = ViewModelProvider(this).get(AdminAuthViewModel::class.java)
 

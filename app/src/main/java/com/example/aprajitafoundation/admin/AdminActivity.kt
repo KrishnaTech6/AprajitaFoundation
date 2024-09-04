@@ -23,7 +23,7 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.admin.ui.ProfileAdminFragment
+import com.example.aprajitafoundation.admin.ui.EditProfileAdminFragment
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
@@ -35,7 +35,7 @@ import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class AdminActivity : AppCompatActivity(), ProfileAdminFragment.OnProfileUpdatedListener {
+class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpdatedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityAdminBinding

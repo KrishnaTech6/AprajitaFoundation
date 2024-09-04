@@ -35,9 +35,9 @@
 
     <fragment
         android:id="@+id/nav_profile_admin"
-        android:name="com.example.aprajitafoundation.admin.ui.ProfileAdminFragment"
+        android:name="com.example.aprajitafoundation.admin.ui.EditProfileAdminFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile_2" />
+        tools:layout="@layout/fragment_edit_admin_profile" />
     <fragment
         android:id="@+id/nav_events_admin"
         android:name="com.example.aprajitafoundation.admin.ui.EventsAdminFragment"

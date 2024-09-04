@@ -68,10 +68,10 @@
                 android:id="@+id/edit_event_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
+                android:drawableRight="@drawable/calendar_24"
+                android:drawableTint="@color/grey"
                 android:focusable="false"
-                android:inputType="date"
-                android:onClick="showDatePickerDialog" />
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Event Image -->
