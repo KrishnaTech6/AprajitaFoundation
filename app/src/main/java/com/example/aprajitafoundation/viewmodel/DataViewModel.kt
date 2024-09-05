@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.GenericResponse
+import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.api.PaymentDetailResponse
 import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.*
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 
 class DataViewModel : ViewModel() {
 
@@ -247,14 +247,16 @@ class DataViewModel : ViewModel() {
         Log.e("DataViewModel", "$message: $details")
     }
 
-    fun uploadGalleryImages(context: Context, list: List<String>) {
+    fun uploadGalleryImages(context: Context, images: ImagesRequest) {
         viewModelScope.launch {
             val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                 .getString("token", "") ?: ""
 
             _loading.value = true
             try {
-                val response = apiService.uploadGalleryImages(token, list)
+                val response = apiService.uploadGalleryImages(token, images)
+//                val jsonString = Gson().toJson(images)
+//                Log.d("RequestBody", jsonString)
                 if (response.isSuccessful) {
                     // Handle success for each file
                     _uploadResponse.value = response.body()

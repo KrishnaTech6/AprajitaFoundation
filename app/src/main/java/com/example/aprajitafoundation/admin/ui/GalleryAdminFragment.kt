@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.utility.hideProgressDialog
@@ -39,6 +40,7 @@ class GalleryAdminFragment : Fragment() {
     private val PICK_IMAGE_REQUEST = 1
 
     private var _binding: FragmentGallery2Binding? = null
+    private var isSwitched = false
 
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
@@ -63,10 +65,13 @@ class GalleryAdminFragment : Fragment() {
 
                     Log.d("UploadImage", "list: $imageList")
                     // Call the ViewModel function with the completed list
-                    if (imageList.isNotEmpty()) viewModel.uploadGalleryImages(
-                        requireContext(),
-                        imageList
-                    )
+                    if (imageList.isNotEmpty()){
+                        viewModel.uploadGalleryImages(
+                            requireContext(),
+                            ImagesRequest(imageList)
+                        )
+                        isSwitched=true
+                    }
 
                 }
             }
@@ -94,19 +99,20 @@ class GalleryAdminFragment : Fragment() {
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->
-            // Response after successful deletion of image
-            showToast(requireContext(), response.message)
-            // Now again fetch the updated list from the server
-            hideProgressDialog()
-            viewModel.fetchAllGalleryImages()
+                // Response after successful deletion of image
+                showToast(requireContext(), response.message)
+                // Now again fetch the updated list from the server
+                hideProgressDialog()
+                viewModel.fetchAllGalleryImages()
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
-            hideProgressDialog()
-            val navController =
-                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
-            navController.navigateUp()
+            if(isSwitched){
+                showToast(requireContext(), it.message)
+                hideProgressDialog()
+                viewModel.fetchAllGalleryImages()
+                isSwitched=true
+            }
         }
 
         val staggeredGridLayoutManager =

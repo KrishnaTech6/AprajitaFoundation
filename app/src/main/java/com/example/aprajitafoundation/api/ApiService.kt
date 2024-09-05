@@ -30,7 +30,7 @@ interface GalleryApi {
     @POST("upload-gallery-image")
     suspend fun uploadGalleryImages(
         @Header("Authorization") token: String?,
-        @Body images: List<String>
+        @Body images: ImagesRequest
     ): Response<GenericResponse>
 
 
@@ -103,6 +103,10 @@ interface GalleryApi {
     suspend fun getAllPayments(@Header("Authorization") token: String?):Response<PaymentDetailResponse>
 
 }
+
+data class ImagesRequest(
+    val images: List<String>
+)
 data class GenericResponse(val message: String)
 data class PaymentRequest(val amount: Double)
 data class PaymentResponse(val order: Order)
