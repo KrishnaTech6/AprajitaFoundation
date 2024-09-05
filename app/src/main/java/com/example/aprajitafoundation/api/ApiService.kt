@@ -4,6 +4,7 @@ import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
+import com.example.aprajitafoundation.model.MemberModel2
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.model.Socials
 import com.example.aprajitafoundation.model.UserData
@@ -47,17 +48,17 @@ interface GalleryApi {
     @POST("add-team-member")
     suspend fun addTeamMember(
         @Header("Authorization") token: String?,
-        @Body member: MemberModel?
+        @Body member: MemberModel2?,
     ): Response<GenericResponse>
 
     @PUT("update-team-member/{id}")
     suspend fun updateTeamMember(
         @Header("Authorization") token: String?,
         @Path("id") id: String?,
-        @Body member: MemberModel?,
+        @Body member: MemberModel2?
     ): Response<GenericResponse>
 
-    @GET("get-team-members")
+    @GET("get-all-team-members")
     suspend fun getTeamMembers(): Response <List <MemberModel>>
     @DELETE("delete-team-member/{id}")
     suspend fun deleteMember(

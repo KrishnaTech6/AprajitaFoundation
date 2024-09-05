@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEditMemberBinding
 import com.example.aprajitafoundation.model.MemberModel
+import com.example.aprajitafoundation.model.MemberModel2
 import com.example.aprajitafoundation.model.Socials
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.hideProgressDialog
@@ -27,7 +28,9 @@ import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
+import com.google.gson.Gson
 
+//Edit update team member
 class EditMemberFragment : Fragment() {
 
     private lateinit var binding: FragmentEditMemberBinding
@@ -76,7 +79,7 @@ class EditMemberFragment : Fragment() {
 
         } ?: run {
             // Initialize with default values in add member screen
-            memberModel = MemberModel("", "", "", "", "", "", Socials("", "","",""))
+            memberModel = MemberModel("", "", "", "", "", "", Socials())
         }
 
         binding.editMemberName.afterTextChanged { text ->
@@ -118,6 +121,15 @@ class EditMemberFragment : Fragment() {
         viewModel.updateResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
             Log.d("EditMember", it.message)
+            hideProgressDialog()
+            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            navController.navigateUp()
+        }
+
+        viewModel.uploadResponse.observe(viewLifecycleOwner) {
+            showToast(requireContext(), it.message)
+            Log.d("EditMember", it.message)
+            hideProgressDialog()
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
@@ -139,10 +151,23 @@ class EditMemberFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             if (isDetailsValid()) {
                 memberModel?.let {
+                    //Converting socials object to json string
+                    //as server is accepting as json string , and sending as object
+                    val socialsJson = Gson().toJson(it.socials)
+
+                    val memberModel2 = MemberModel2(
+                        it.id,
+                        it.name,
+                        it.position,
+                        it.image,
+                        it.description,
+                        it.quote,
+                        socialsJson
+                    )
                     if (isEditing) {
-                        viewModel.updateTeamMember(requireContext(), it)
+                        viewModel.updateTeamMember(requireContext(), memberModel2)
                     } else {
-                        viewModel.addMember(requireContext(), it)
+                        viewModel.addMember(requireContext(), memberModel2)
                     }
                 }
             }

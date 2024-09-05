@@ -11,6 +11,7 @@ import com.example.aprajitafoundation.api.PaymentDetailResponse
 import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.*
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 
@@ -132,7 +133,7 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    fun addMember(context: Context, member: MemberModel?) {
+    fun addMember(context: Context, member: MemberModel2?) {
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -175,7 +176,7 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    fun updateTeamMember(context: Context, teamMember: MemberModel?) {
+    fun updateTeamMember(context: Context, teamMember: MemberModel2?) {
         viewModelScope.launch {
             _loading.value = true
             try {
