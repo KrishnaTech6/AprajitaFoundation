@@ -69,10 +69,9 @@
                     android:id="@+id/iv_image_profile"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@drawable/logo_12"
+                    android:src="@drawable/image_placeholder"
                     android:padding="2dp"
                     android:elevation="4dp"
-                    android:scaleType="centerCrop"
                     android:background="@drawable/image_circular_background"
                     android:layout_gravity="center" />
 

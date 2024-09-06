@@ -25,5 +25,7 @@
     <color name="orange">#FF9800</color>
     <color name="cardBackground1">#C8E6C9</color>
     <color name="cardBackground2">#E3F2FD</color>
+    <color name="colorButtonIcon">#6200EE</color>
+    <color name="colorButtonIcon2">#ffffff</color>
 
 </resources>

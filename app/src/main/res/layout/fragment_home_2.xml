@@ -51,6 +51,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        app:tint="@color/black"
                         android:src="@drawable/baseline_profile" />
 
                     <TextView
@@ -91,6 +92,7 @@
                     <ImageView
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        app:tint="@color/black"
                         android:src="@drawable/bill_receipt_icon" />
 
                     <TextView
@@ -129,7 +131,7 @@
                 android:layout_weight="1"
                 android:text="Register New Admin"
                 android:padding="16dp"
-                android:backgroundTint="@color/yellowDark"
+                android:backgroundTint="#F57C00"
                 android:layout_margin="8dp"
                 android:textAllCaps="false" />
 

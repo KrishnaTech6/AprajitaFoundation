@@ -20,7 +20,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:padding="2dp"
-            android:src="@drawable/baseline_profile"
+            android:src="@drawable/image_placeholder"
             android:scaleType="centerCrop"
             android:background="@drawable/image_circular_background"
             app:layout_constraintEnd_toEndOf="parent"

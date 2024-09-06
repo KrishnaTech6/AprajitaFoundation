@@ -18,4 +18,13 @@
     <color name="greyBottomNav">#A8A8A8</color>
     <color name="defaultColor">#4A4C51</color>
     <color name="selectedColorRb">#373F4E</color>
+
+    <color name="selectedColor">#FFFFFF</color> <!-- Red for selected -->
+    <color name="unselectedColor">#808080</color>
+    <color name="colorButtonIcon">#d0bcff</color>
+    <color name="colorButtonIcon2">#381e72</color>
+
+    <color name="cardBackground1">#388E3C</color>
+    <color name="cardBackground2">#2E5B7C</color>
+
 </resources>

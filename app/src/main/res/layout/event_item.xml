@@ -8,7 +8,7 @@
     android:visibility="visible"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +23,7 @@
             android:layout_height="200dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/event_image_description"
+            android:src="@drawable/image_placeholder"
             android:scaleType="centerCrop" />
 
         <!-- TextView for displaying the event title -->
@@ -31,8 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/black"
             android:textSize="18sp"
+            tools:text="This is the title of the event"
             android:textStyle="bold" />
 
         <!-- TextView for displaying the event description -->
@@ -41,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:textColor="@android:color/black"
+            tools:text="This block describes the description of the event that our organisation holds "
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <!-- LinearLayout for date and location -->

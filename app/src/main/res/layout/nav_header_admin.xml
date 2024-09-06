@@ -19,7 +19,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/logo_12"
+        android:src="@drawable/image_placeholder"
         android:layout_marginTop="16dp"
         android:background="@drawable/image_circular_background"
         android:layout_marginStart="16dp"
@@ -66,6 +66,4 @@
             android:layout_marginEnd="16dp"/>
 
     </LinearLayout>
-
-
 </LinearLayout>

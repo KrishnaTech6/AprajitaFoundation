@@ -304,7 +304,7 @@
                             android:layout_marginEnd="8dp"
                             style="?attr/materialButtonOutlinedStyle"
                             android:drawableLeft="@drawable/ic_download"
-                            android:drawableTint="@color/design_default_color_primary"
+                            android:drawableTint="@color/colorButtonIcon"
                             android:layout_weight="1"
                             android:drawablePadding="4dp"/>
 
@@ -314,6 +314,7 @@
                             android:layout_height="wrap_content"
                             android:text="Share"
                             android:drawableLeft="@drawable/share"
+                            android:drawableTint="@color/colorButtonIcon2"
                             android:layout_weight="1"
                             android:drawablePadding="4dp"/>
                     </LinearLayout>
