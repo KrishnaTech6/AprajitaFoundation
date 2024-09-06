@@ -139,7 +139,14 @@ class ProfileFragment : BaseFragment() {
                             showToast(requireContext(), "Signed Out Successfully!")
 
                             // Clear the google_user_data from SharedPreferences
-                            sharedPreferences.edit().remove("google_user_data").apply()
+                            with(sharedPreferences.edit()) {
+                                //remove payment details on signout
+                                remove("name")
+                                remove("email")
+                                remove("phone")
+                                //remove google user data
+                                remove("google_user_data")
+                            }.apply()
 
                             // Reset UI elements
                             binding.btnLogin.visibility = View.VISIBLE
