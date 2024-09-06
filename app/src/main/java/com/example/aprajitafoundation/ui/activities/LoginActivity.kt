@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
@@ -129,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
 
                         val gson = Gson()
                         val userDataJson = gson.toJson(userData)
-                        saveInputToPreferences(this, "google_user_data", userDataJson)
+                        saveInputToPreferences(this, getString(R.string.google_user_data), userDataJson)
 
                         onAuthSuccess()
                     } else {

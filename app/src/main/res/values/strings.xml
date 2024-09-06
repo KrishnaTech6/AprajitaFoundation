@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">Aprajita Foundation</string>
     <string name="aprajita_subheading">An NGO for women and kids Empowerment</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="event_image_description">Event Image\n</string>
+    <string name="aprajita_subheading_donation">Donation for a cause</string>
+    <string name="event_image_description">Event Image</string>
     <string name="twitter">twitter\n</string>
     <string name="linkedin">linkedin\n</string>
     <string name="instagram">instagram\n</string>
     <string name="facebook">facebook\n</string>
-    <string name="aprajita_subheading_donation">Donation for a cause</string>
     <string name="title_activity_admin">AdminActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -19,8 +18,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_events">Events</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_register_admin">Register new Admin</string>
@@ -49,5 +46,47 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="welcome_message">Welcome, %1$s!</string>
     <string name="today_date_message">"Today is %s "</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+
+    <string name="gallery_fragment_tag">Gallery</string>
+    <string name="events_fragment_tag">Events</string>
+    <string name="home_fragment_tag">Home</string>
+    <string name="profile_fragment_tag">Profile</string>
+
+<!--    Shared Preferences-->
+    <string name="apppreferences">AppPreferences</string>
+    <string name="name_payment">name</string>
+    <string name="email_payment">email</string>
+    <string name="phone_payment">phone</string>
+    <string name="google_user_data">google_user_data</string>
+    <string name="apptheme">appTheme</string>
+    <string name="token_login_admin">token</string>
+    <string name="user_data_admin">user</string>
+
+    <string name="no_internet_connection">No Internet Connection!</string>
+
+    <string name="event_parcelable">event</string>
+    <string name="member_parcelable">member</string>
+    <string name="image_url_bundle">image_url</string>
+    <string name="transaction_detail">transaction_detail</string>
+
+<!--    Empty field msgs -->
+    <string name="error_select_image">Please select an image!</string>
+    <string name="error_date_empty">Date can\'t be empty!</string>
+    <string name="error_location_empty">Location can\'t be empty!</string>
+    <string name="error_description_empty">Description can\'t be empty!</string>
+    <string name="error_title_empty">Title can\'t be empty!</string>
+    <string name="error_name_empty">Name can\'t be empty!</string>
+    <string name="error_position_empty">Position can\'t be empty!</string>
+    <string name="error_quote_empty">Quote can\'t be empty!</string>
+    <string name="error_invalid_email_address">Invalid email address!</string>
+    <string name="error_password_empty">Password can\'t be empty!</string>
+    <string name="error_email_empty">Email can\'t be empty!</string>
+    <string name="enter_the_phone_number">Enter the phone number!</string>
+    <string name="enter_a_valid_10_digit_phone_number">Enter a valid 10-digit phone number!</string>
+    <string name="enter_an_amount">Enter an amount!</string>
+
 </resources>

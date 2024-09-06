@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.AuthResponse
 import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.LoginRequest
@@ -34,13 +35,16 @@ class AdminAuthViewModel : ViewModel() {
 
     private val apiService = RetrofitClient.authApi
 
+    private fun getToken(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
+        return sharedPreferences.getString(context.getString(R.string.token_login_admin), "") ?: ""
+    }
+
     fun registerAdmin(context: Context , request: RegisterRequest) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                    .getString("token", "") ?: ""
-                val response = apiService.registerAdmin(token, request)
+                val response = apiService.registerAdmin(getToken(context), request)
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
@@ -67,10 +71,10 @@ class AdminAuthViewModel : ViewModel() {
                         val userJson = gson.toJson(authResponse.user)
                         // Store token and user info in SharedPreferences
                         val sharedPreferences = context
-                            .getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+                            .getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
                         with(sharedPreferences.edit()) {
-                            putString("token", authResponse.token)
-                            putString("user", userJson) // saving the json object
+                            putString(context.getString(R.string.token_login_admin), authResponse.token)
+                            putString(context.getString(R.string.user_data_admin), userJson) // saving the json object
                             apply()
                         }
 
@@ -92,9 +96,7 @@ class AdminAuthViewModel : ViewModel() {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                    .getString("token", "") ?: ""
-                val response = apiService.updateProfile(token, request)
+                val response = apiService.updateProfile(getToken(context), request)
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
@@ -112,18 +114,16 @@ class AdminAuthViewModel : ViewModel() {
         viewModelScope.launch {
             _loading.value = true
             try {
-                val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-                    .getString("token", "") ?: ""
-                val response = apiService.fetchProfile(token)
+                val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
+                val response = apiService.fetchProfile(getToken(context))
                 if (response.isSuccessful) {
                     _authResponse.value = response.body()
                     response.body()?.let { authResponse ->
                         val gson = Gson()
                         val userJson = gson.toJson(authResponse.user)
                         // Store token and user info in SharedPreferences
-                        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                         with(sharedPreferences.edit()) {
-                            putString("user", userJson) // saving the json object
+                            putString(context.getString(R.string.user_data_admin), userJson) // saving the json object
                             apply()
                         }
 
@@ -143,15 +143,14 @@ class AdminAuthViewModel : ViewModel() {
     fun logout(context: Context) {
         viewModelScope.launch {
             _loading.value = true
-            val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-            val token = sharedPreferences.getString("token", "")
+            val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
             try {
-                val response = apiService.logout(token.toString())
+                val response = apiService.logout(getToken(context))
                 if (response.isSuccessful) {
                     // Clear the token and user info from SharedPreferences
                     with(sharedPreferences.edit()) {
-                        remove("token")
-                        remove("user")  // Change "userId" to match how you're storing user data
+                        remove(context.getString(R.string.token_login_admin))
+                        remove(context.getString(R.string.user_data_admin))  // Change "userId" to match how you're storing user data
                         apply()
                     }
                     _genericResponse.value = response.body()

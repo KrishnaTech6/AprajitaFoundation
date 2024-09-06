@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityFullScreenImageBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -40,7 +41,7 @@ class FullScreenImageActivity : AppCompatActivity() {
             )
         }
 
-        imageUrl = intent.getStringExtra("image_url")
+        imageUrl = intent.getStringExtra(getString(R.string.image_url_bundle))
         Log.d("FullScreenImage", imageUrl.toString())
 
         // Using Glide for image loading

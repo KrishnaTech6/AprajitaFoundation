@@ -27,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
+import com.itextpdf.kernel.pdf.PdfName.r
 
 
 class ProfileFragment : BaseFragment() {
@@ -53,9 +54,9 @@ class ProfileFragment : BaseFragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
-        sharedPreferences = requireContext().getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
         // Retrieve JSON string from SharedPreferences
-        val userDataJson = sharedPreferences.getString("google_user_data", null)
+        val userDataJson = sharedPreferences.getString(getString(R.string.google_user_data), null)
 
         // Convert JSON string back to UserData object
         val gson = Gson()
@@ -118,8 +119,8 @@ class ProfileFragment : BaseFragment() {
 
         val themeItem = popupMenu.menu.findItem(R.id.app_theme)
 
-        val theme = sharedPreferences.getString("appTheme", "Light Mode")
-        themeItem.title = if (theme == "Light Mode") "Dark Mode" else "Light Mode"
+        val theme = sharedPreferences.getString(getString(R.string.apptheme), getString(R.string.light_mode))
+        themeItem.title = if (theme == getString(R.string.light_mode)) getString(R.string.dark_mode) else getString(R.string.light_mode)
 
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
@@ -141,11 +142,11 @@ class ProfileFragment : BaseFragment() {
                             // Clear the google_user_data from SharedPreferences
                             with(sharedPreferences.edit()) {
                                 //remove payment details on signout
-                                remove("name")
-                                remove("email")
-                                remove("phone")
+                                remove(getString(R.string.name_payment))
+                                remove(getString(R.string.email_payment))
+                                remove(getString(R.string.phone_payment))
                                 //remove google user data
-                                remove("google_user_data")
+                                remove(getString(R.string.google_user_data))
                             }.apply()
 
                             // Reset UI elements
@@ -174,13 +175,13 @@ class ProfileFragment : BaseFragment() {
                     if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
                         // Switch to light mode
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        saveInputToPreferences(requireContext(), "appTheme", "Light Mode")
-                        themeItem.title = "Dark Mode"
+                        saveInputToPreferences(requireContext(), getString(R.string.apptheme), getString(R.string.light_mode))
+                        themeItem.title = getString(R.string.dark_mode)
                     } else {
                         // Switch to dark mode
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        saveInputToPreferences(requireContext(), "appTheme", "Dark Mode")
-                        themeItem.title = "Light Mode"
+                        saveInputToPreferences(requireContext(), getString(R.string.apptheme), getString(R.string.dark_mode))
+                        themeItem.title = getString(R.string.light_mode)
                     }
 
                     activity?.recreate()

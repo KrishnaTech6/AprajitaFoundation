@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
@@ -53,7 +54,6 @@ class LoginAdminActivity : AppCompatActivity() {
         }
 
         viewModel.authResponseLogin.observe(this) { response ->
-            Log.d("LoginAdminActivity", "success response from viewmodel")
             showToast(this, response.message)
             hideProgressDialog()
             Handler(Looper.getMainLooper()).postDelayed({
@@ -79,15 +79,15 @@ class LoginAdminActivity : AppCompatActivity() {
         val emailPattern = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
         return when{
             binding.emailEditText.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Email field is empty!")
+                showSnackBar(binding.root, getString(R.string.error_email_empty))
                 false
             }
-            binding.emailEditText.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Email field is empty!")
+            binding.passwordEditText.text.isNullOrBlank() -> {
+                showSnackBar(binding.root, getString(R.string.error_password_empty))
                 false
             }
             !binding.emailEditText.text.toString().matches(emailPattern)->{
-                showSnackBar(binding.root, "Invalid email!")
+                showSnackBar(binding.root, getString(R.string.error_invalid_email_address))
                 false
             }
             else -> true

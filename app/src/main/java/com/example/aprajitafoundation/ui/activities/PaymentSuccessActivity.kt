@@ -11,6 +11,7 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.FileProvider
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityPaymentSuccessBinding
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.utility.showToast
@@ -33,7 +34,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
         binding = ActivityPaymentSuccessBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        paymentDetails = intent.getParcelableExtra("transaction_detail")
+        paymentDetails = intent.getParcelableExtra(getString(R.string.transaction_detail))
 
         paymentDetails?.let {
             val dateFormat = SimpleDateFormat("dd-MMM-yyyy hh:mm:ss a", Locale.getDefault())

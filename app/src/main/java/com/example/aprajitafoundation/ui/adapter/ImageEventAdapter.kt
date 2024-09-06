@@ -137,7 +137,7 @@ class ImageEventAdapter(
                     .into(imageHolder.imageView)
                 imageHolder.itemView.setOnClickListener {
                     val intent = Intent(context, FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", item?.image)
+                    intent.putExtra(context.getString(R.string.image_url_bundle), item?.image)
                     context.startActivity(intent)
                 }
             }
@@ -150,7 +150,7 @@ class ImageEventAdapter(
                     .into(imageHolder.imageView)
                 imageHolder.itemView.setOnClickListener {
                     val intent = Intent(context, FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", item?.image)
+                    intent.putExtra(context.getString(R.string.image_url_bundle), item?.image)
                     context.startActivity(intent)
                 }
             }
@@ -181,7 +181,7 @@ class ImageEventAdapter(
                     }
                     eventHolder.editEvent.setOnClickListener {
                         val bundle = Bundle().apply {
-                            putParcelable("event", item)
+                            putParcelable(context.getString(R.string.event_parcelable), item)
                         }
                         val navController = (context as? AppCompatActivity)?.findNavController(R.id.nav_host_fragment_content_admin)
                         navController?.navigate(R.id.action_nav_events_admin_to_editEventFragment, bundle)
@@ -200,7 +200,7 @@ class ImageEventAdapter(
 
                 eventHolder.eventImage.setOnClickListener{
                     val intent = Intent(context, FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", item?.image)
+                    intent.putExtra(context.getString(R.string.image_url_bundle), item?.image)
                     context.startActivity(intent)
                 }
             }

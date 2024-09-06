@@ -48,12 +48,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         setContentView(binding.root)
 
         //Shared preference
-        sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
 
         // Retrieve and set values to EditText
-        binding.userName.setText(getInputFromPreferences("name"))
-        binding.userEmail.setText(getInputFromPreferences("email"))
-        binding.userContact.setText(getInputFromPreferences("phone"))
+        binding.userName.setText(getInputFromPreferences(getString(R.string.phone_payment)))
+        binding.userEmail.setText(getInputFromPreferences(getString(R.string.email_payment)))
+        binding.userContact.setText(getInputFromPreferences(getString(R.string.phone_payment)))
 
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
@@ -87,7 +87,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
                 showDialogProgress(this)
                 if(!isInternetAvailable(this)){
                     hideProgressDialog()
-                    showSnackBar(binding.root, "No Internet Connection")
+                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
                 }
             }else{
                 hideProgressDialog()
@@ -114,20 +114,20 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             showToast(this, it)
             //after msg go to success screen
             val intent = Intent(this@PaymentActivity, PaymentSuccessActivity::class.java)
-            intent.putExtra("transaction_detail", payment)
+            intent.putExtra(getString(R.string.transaction_detail), payment)
             startActivity(intent)
         }
 
         binding.userName.afterTextChanged { text ->
-            saveInputToPreferences(this@PaymentActivity, "name", text)
+            saveInputToPreferences(this@PaymentActivity, getString(R.string.name_payment), text)
         }
 
         binding.userEmail.afterTextChanged { text ->
-            saveInputToPreferences(this@PaymentActivity, "email", text)
+            saveInputToPreferences(this@PaymentActivity, getString(R.string.email_payment), text)
         }
 
         binding.userContact.afterTextChanged { text ->
-            saveInputToPreferences(this@PaymentActivity, "phone", text)
+            saveInputToPreferences(this@PaymentActivity, getString(R.string.phone_payment), text)
         }
     }
 
@@ -138,27 +138,27 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         return when{
             binding.userContact.text.toString().isEmpty() ->{
-                showSnackBar(binding.root,"Enter the phone number!")
+                showSnackBar(binding.root,getString(R.string.enter_the_phone_number))
                 false
             }
             !binding.userContact.text.toString().matches(phonePattern) -> {
-                showSnackBar(binding.root,"Enter a valid 10-digit phone number!")
+                showSnackBar(binding.root,getString(R.string.enter_a_valid_10_digit_phone_number))
                 false
             }
             binding.userEmail.text.toString().isEmpty() -> {
-                showSnackBar(binding.root,"Enter your email!")
+                showSnackBar(binding.root,getString(R.string.error_email_empty))
                 false
             }
             !binding.userEmail.text.toString().matches(emailPattern) -> {
-                showSnackBar(binding.root,"Enter a valid email!")
+                showSnackBar(binding.root,getString(R.string.error_invalid_email_address))
                 false
             }
             binding.userName.text.toString().isEmpty() -> {
-                showSnackBar(binding.root,"Enter your name!")
+                showSnackBar(binding.root,getString(R.string.error_name_empty))
                 false
             }
             binding.paymentAmount.text.toString().isEmpty() -> {
-                showSnackBar(binding.root, "Enter an amount!")
+                showSnackBar(binding.root, getString(R.string.enter_an_amount))
                 false
             }
             else -> true
@@ -176,7 +176,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             val options = JSONObject()
 
             options.put("name", getString(R.string.app_name))
-            options.put("description", "NGO for women and child empowerment")
+            options.put("description", getString(R.string.aprajita_subheading))
             options.put("image", Constants.logoLink)
             options.put("theme.color", getColorHex(this, R.color.yellow))
             options.put("currency", "INR")

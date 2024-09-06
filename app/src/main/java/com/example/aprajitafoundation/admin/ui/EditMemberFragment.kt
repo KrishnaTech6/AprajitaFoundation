@@ -47,7 +47,7 @@ class EditMemberFragment : Fragment() {
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed member data
-        memberModel = arguments?.getParcelable("member")
+        memberModel = arguments?.getParcelable(getString(R.string.member_parcelable))
 
         val isEditing = memberModel != null
         (activity as AppCompatActivity).supportActionBar?.title = if (isEditing) "Edit Team Member" else "Add Team Member"
@@ -72,7 +72,7 @@ class EditMemberFragment : Fragment() {
             binding.editMemberImage.setOnClickListener{
                 if(!memberModel?.image.isNullOrBlank()){
                     val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", memberModel?.image)
+                    intent.putExtra(getString(R.string.image_url_bundle), memberModel?.image)
                     requireActivity().startActivity(intent)
                 }
             }
@@ -139,7 +139,7 @@ class EditMemberFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(binding.root, "No Internet Connection!")
+                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
                 }
             } else hideProgressDialog()
         }
@@ -184,27 +184,27 @@ class EditMemberFragment : Fragment() {
     private fun isDetailsValid(): Boolean {
         return when {
             binding.editMemberName.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Name can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_name_empty))
                 false
             }
 
             binding.editMemberPosition.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Position can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_position_empty))
                 false
             }
 
             binding.editMemberQuote.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Quote can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_quote_empty))
                 false
             }
 
             binding.editMemberDescription.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Description can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_description_empty))
                 false
             }
 
             memberModel?.image.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Please select an image!")
+                showSnackBar(binding.root, getString(R.string.error_select_image))
                 false
             }
 

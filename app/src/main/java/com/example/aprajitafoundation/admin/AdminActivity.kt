@@ -100,8 +100,8 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
         val tvAdminEmail = navHeader.findViewById<TextView>(R.id.text_admin_email)
         val editProfile = navHeader.findViewById<ImageView>(R.id.iv_edit_profile_admin)
         val gson = Gson()
-        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        val savedUserJson = sharedPreferences.getString("user", "")
+        val sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
+        val savedUserJson = sharedPreferences.getString(getString(R.string.user_data_admin), "")
         val type = object : TypeToken<User>() {}.type
 
         val savedUser = gson.fromJson<User>(savedUserJson, type)
@@ -116,7 +116,7 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
 
             tvAdminProfileImage.setOnClickListener{
                 val intent = Intent(this@AdminActivity, FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", savedUser.profileImg)
+                intent.putExtra(getString(R.string.image_url_bundle), savedUser.profileImg)
                 startActivity(intent)
             }
 

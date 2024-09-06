@@ -62,8 +62,6 @@ class GalleryAdminFragment : Fragment() {
                             imageList.add(cloudUrl)
                         }
                     }
-
-                    Log.d("UploadImage", "list: $imageList")
                     // Call the ViewModel function with the completed list
                     if (imageList.isNotEmpty()){
                         viewModel.uploadGalleryImages(
@@ -126,7 +124,7 @@ class GalleryAdminFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(requireView(), "No Internet Connection!")
+                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
                 }
             } else {
                 hideProgressDialog()

@@ -30,9 +30,9 @@ class HomeAdminFragment : Fragment() {
     ): View {
         _binding = FragmentHome2Binding.inflate(inflater, container, false)
 
-        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences",MODE_PRIVATE )
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.apppreferences),MODE_PRIVATE )
 
-        val savedUserJson = sharedPreferences.getString("user", null)
+        val savedUserJson = sharedPreferences.getString(getString(R.string.user_data_admin), null)
         val type = object : TypeToken<User>() {}.type
         val savedUser = Gson().fromJson<User>(savedUserJson, type)
 

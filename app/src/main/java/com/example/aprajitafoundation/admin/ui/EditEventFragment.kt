@@ -51,7 +51,7 @@ class EditEventFragment : Fragment() {
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed event data
-        eventModel = arguments?.getParcelable("event")
+        eventModel = arguments?.getParcelable(getString(R.string.event_parcelable))
 
         // Set default title
         val isEditing = eventModel != null
@@ -73,7 +73,7 @@ class EditEventFragment : Fragment() {
             binding.editEventImage.setOnClickListener{
                 if(!eventModel?.image.isNullOrBlank()){
                     val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", eventModel?.image)
+                    intent.putExtra(getString(R.string.image_url_bundle), eventModel?.image)
                     requireActivity().startActivity(intent)
                 }
             }
@@ -103,7 +103,7 @@ class EditEventFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(binding.root, "No Internet Connection!")
+                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
                 }
             } else hideProgressDialog()
         }
@@ -152,23 +152,23 @@ class EditEventFragment : Fragment() {
     private fun isDetailsValid(): Boolean {
         return when {
             binding.editEventTitle.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Title can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_title_empty))
                 false
             }
             binding.editEventDescription.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Description can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_description_empty))
                 false
             }
             binding.editEventLocation.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Location can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_location_empty))
                 false
             }
             binding.editEventDate.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Date can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_date_empty))
                 false
             }
             eventModel?.image.isNullOrBlank() ->{
-                showSnackBar(binding.root, "Please select an image!")
+                showSnackBar(binding.root, getString(R.string.error_select_image))
                 false
             }
             else -> true

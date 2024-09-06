@@ -93,7 +93,7 @@ class HomeFragment : BaseFragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(requireView(), "No Internet Connection!")
+                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
                 }
             } else {
                 hideProgressDialog()
@@ -136,8 +136,8 @@ class HomeFragment : BaseFragment() {
         binding.llGoToGallery.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, GalleryFragment(), "Gallery")
-                .addToBackStack("Gallery")
+                .replace(R.id.frame_layout, GalleryFragment(), getString(R.string.gallery_fragment_tag))
+                .addToBackStack(getString(R.string.gallery_fragment_tag))
                 .commit()
 
         }

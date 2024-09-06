@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentMemberBinding
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.Socials
@@ -37,7 +38,7 @@ class MemberFragment : BaseFragment() {
 
             binding.profilePhoto.setOnClickListener{
                 val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", member.image)
+                intent.putExtra(getString(R.string.image_url_bundle), member.image)
                 requireActivity().startActivity(intent)
             }
 

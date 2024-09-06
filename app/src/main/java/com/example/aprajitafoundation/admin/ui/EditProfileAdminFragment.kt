@@ -51,8 +51,8 @@ class EditProfileAdminFragment : Fragment() {
 
         // Retrieve user data from shared preferences
         val gson = Gson()
-        val sharedPreferences = requireContext().getSharedPreferences("AppPreferences", Activity.MODE_PRIVATE)
-        val savedUserJson = sharedPreferences.getString("user", "")
+        val sharedPreferences = requireContext().getSharedPreferences(getString(R.string.apppreferences), Activity.MODE_PRIVATE)
+        val savedUserJson = sharedPreferences.getString(getString(R.string.user_data_admin), "")
         val type = object : TypeToken<User>() {}.type
         user = gson.fromJson(savedUserJson, type)
 
@@ -66,7 +66,7 @@ class EditProfileAdminFragment : Fragment() {
             binding.profileImage.setOnClickListener{
                 if(!user?.profileImg.isNullOrBlank()){
                     val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                    intent.putExtra("image_url", user?.profileImg)
+                    intent.putExtra(getString(R.string.image_url_bundle), user?.profileImg)
                     requireActivity().startActivity(intent)
                 }
             }
@@ -118,7 +118,7 @@ class EditProfileAdminFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(binding.root, "No Internet Connection!")
+                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
                 }
             } else hideProgressDialog()
         }
@@ -141,11 +141,11 @@ class EditProfileAdminFragment : Fragment() {
     private fun validateInputs(name: String, email: String): Boolean {
         return when {
             name.isBlank() -> {
-                binding.editName.error = "Name cannot be empty"
+                binding.editName.error = getString(R.string.error_name_empty)
                 false
             }
             email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                binding.editEmail.error = "Invalid email address"
+                binding.editEmail.error = getString(R.string.error_invalid_email_address)
                 false
             }
             else -> true

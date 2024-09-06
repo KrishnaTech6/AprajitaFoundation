@@ -70,7 +70,7 @@ class ImageAdapter(
             }
             holder.editMember.setOnClickListener{
                 val bundle = Bundle().apply {
-                    putParcelable("member", item)
+                    putParcelable(context.getString(R.string.member_parcelable), item)
                 }
                 val navController = (context as? AppCompatActivity)?.findNavController(R.id.nav_host_fragment_content_admin)
                 navController?.navigate(R.id.action_nav_team_member_to_editMemberFragment, bundle)

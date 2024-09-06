@@ -61,7 +61,7 @@ class EventsAdminFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(requireView(), "No Internet Connection!")
+                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
                 }
             } else {
                 hideProgressDialog()

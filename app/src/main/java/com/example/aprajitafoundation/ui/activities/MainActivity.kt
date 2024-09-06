@@ -41,18 +41,18 @@ class MainActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        replaceFragment(HomeFragment(), "Home")
+        replaceFragment(HomeFragment(), getString(R.string.home_fragment_tag))
         binding.bottomNavigationBar.selectedItemId = R.id.home
 
         binding.bottomNavigationBar.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.home -> { replaceFragment(HomeFragment(), "Home")
+                R.id.home -> { replaceFragment(HomeFragment(), getString(R.string.home_fragment_tag))
                     true}
-                R.id.events -> {    replaceFragment(EventsFragment(), "Events")
+                R.id.events -> {    replaceFragment(EventsFragment(), getString(R.string.events_fragment_tag))
                     true}
-                R.id.gallery -> {   replaceFragment(GalleryFragment(), "Gallery")
+                R.id.gallery -> {   replaceFragment(GalleryFragment(), getString(R.string.gallery_fragment_tag))
                     true}
-                R.id.profile -> {   replaceFragment(ProfileFragment(), "Profile")
+                R.id.profile -> {   replaceFragment(ProfileFragment(), getString(R.string.profile_fragment_tag))
                     true}
                 else -> false
 

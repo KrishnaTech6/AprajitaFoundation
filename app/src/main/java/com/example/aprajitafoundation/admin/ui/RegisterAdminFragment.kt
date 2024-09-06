@@ -57,7 +57,7 @@ class RegisterAdminFragment : Fragment() {
         binding.addAdminImage.setOnClickListener {
             if (!registerRequest.profileImg.isNullOrBlank()) {
                 val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
-                intent.putExtra("image_url", registerRequest.profileImg)
+                intent.putExtra(getString(R.string.image_url_bundle), registerRequest.profileImg)
                 requireActivity().startActivity(intent)
             }
         }
@@ -106,7 +106,7 @@ class RegisterAdminFragment : Fragment() {
                 showDialogProgress(requireContext())
                 if (!isInternetAvailable(requireContext())) {
                     hideProgressDialog()
-                    showSnackBar(binding.root, "No Internet Connection!")
+                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
                 }
             } else hideProgressDialog()
         }
@@ -115,22 +115,22 @@ class RegisterAdminFragment : Fragment() {
     private fun isDetailsValid(): Boolean {
         return when {
             binding.addEventTitle.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Name can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_name_empty))
                 false
             }
 
             binding.addAdminEmail.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Email can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_name_empty))
                 false
             }
 
             binding.addEventPassword.text.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Password can't be empty!")
+                showSnackBar(binding.root, getString(R.string.error_password_empty))
                 false
             }
 
             registerRequest.profileImg.isNullOrBlank() -> {
-                showSnackBar(binding.root, "Please select a profile image!")
+                showSnackBar(binding.root, getString(R.string.error_select_image))
                 false
             }
 

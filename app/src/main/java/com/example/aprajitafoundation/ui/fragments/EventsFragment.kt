@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
@@ -48,7 +49,7 @@ class EventsFragment : BaseFragment() {
                 showDialogProgress(requireContext())
                 if(!isInternetAvailable(requireContext())){
                     hideProgressDialog()
-                    showSnackBar(requireView(), "No Internet Connection!")
+                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
                 }
             } else {
                 hideProgressDialog()
