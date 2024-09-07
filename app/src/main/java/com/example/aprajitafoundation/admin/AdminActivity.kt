@@ -117,8 +117,12 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
                 .into(tvAdminProfileImage)
 
             tvAdminProfileImage.setOnClickListener{
+                val _savedUserJson = sharedPreferences.getString(getString(R.string.user_data_admin), "")
+                //So as to get new instance of savedUser when button clicked if updated through interface
+                val _savedUser = gson.fromJson<User>(_savedUserJson, type)
+
                 val intent = Intent(this@AdminActivity, FullScreenImageActivity::class.java)
-                intent.putExtra(getString(R.string.image_url_bundle), savedUser.profileImg)
+                intent.putExtra(getString(R.string.image_url_bundle), _savedUser.profileImg)
                 startActivity(intent)
             }
 
@@ -134,18 +138,14 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.admin, menu)
 
-        // Iterate through all menu items
+        // Set the text color (e.g., to black)
         for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i) // Get each menu item
             val spannableTitle = SpannableString(menuItem.title)
-
-            // Set the text color (e.g., to black)
             spannableTitle.setSpan(ForegroundColorSpan(getColor(R.color.black)), 0, spannableTitle.length, 0)
-
             // Apply the SpannableString as the title
             menuItem.title = spannableTitle
         }
-
         return true
     }
 
