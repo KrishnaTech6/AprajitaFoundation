@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation.ui.activities
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -86,6 +87,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
         val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, uri)
+            clipData = ClipData.newUri(contentResolver, "Receipt_image", uri)
             type = "image/png"
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
