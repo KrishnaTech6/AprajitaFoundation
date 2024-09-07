@@ -40,7 +40,7 @@ class AddMemberFragment : Fragment() {
         // Set the adapter and layout manager
         binding.rvAddMembers.adapter = memberAdapter
         val staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
+            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
         binding.rvAddMembers.layoutManager = staggeredGridLayoutManager
         binding.rvAddMembers.setHasFixedSize(true)
 

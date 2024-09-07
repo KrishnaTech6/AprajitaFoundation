@@ -4,6 +4,8 @@ package com.example.aprajitafoundation.admin
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowInsets
@@ -131,6 +133,19 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.admin, menu)
+
+        // Iterate through all menu items
+        for (i in 0 until menu.size()) {
+            val menuItem = menu.getItem(i) // Get each menu item
+            val spannableTitle = SpannableString(menuItem.title)
+
+            // Set the text color (e.g., to black)
+            spannableTitle.setSpan(ForegroundColorSpan(getColor(R.color.black)), 0, spannableTitle.length, 0)
+
+            // Apply the SpannableString as the title
+            menuItem.title = spannableTitle
+        }
+
         return true
     }
 
