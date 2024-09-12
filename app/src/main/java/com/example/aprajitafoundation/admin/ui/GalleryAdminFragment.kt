@@ -30,9 +30,6 @@ import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -149,7 +146,7 @@ class GalleryAdminFragment : Fragment() {
 
     private suspend fun suspendUploadToCloudinary(context: Context, filePath: String): String {
         return suspendCoroutine { continuation ->
-            uploadToCloudinary(context, filePath) { cloudUrl ->
+            uploadToCloudinary(context, filePath, binding.progressBar ) { cloudUrl ->
                 continuation.resume(cloudUrl)
             }
         }

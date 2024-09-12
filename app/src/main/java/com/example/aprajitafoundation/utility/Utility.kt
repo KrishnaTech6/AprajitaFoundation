@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
@@ -85,34 +86,30 @@ object CloudinaryManager{
     }
 }
 
-fun uploadToCloudinary(context: Context, filePath: String, onSuccess: (String) -> Unit) {
+fun uploadToCloudinary(context: Context, filePath: String, progressBar: ProgressBar, onSuccess: (String) -> Unit) {
     val transformation = Transformation<Transformation<*>>()
         .quality("auto:best") // Automatically adjust the quality
         .fetchFormat("auto") // Automatically determine the best format
         .crop("limit")
         .height(1920).width(1920)
 
-
-
     MediaManager.get().upload(filePath)
         .option("transformation", transformation) // Apply the transformation
         .callback(object : UploadCallback {
             override fun onStart(requestId: String) {
-                // Upload started
-                showDialogProgress(context)
+                progressBar.visibility = View.VISIBLE
             }
 
             override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
                 // Upload progress
                 if (!isInternetAvailable(context)) {
-                    hideProgressDialog()
+                    progressBar.visibility = View.GONE
                     showToast(context, "No Internet Connection!")
                 }
             }
 
             override fun onSuccess(requestId: String, resultData: Map<*, *>) {
-                // Handle successful upload
-                hideProgressDialog()
+                progressBar.visibility = View.GONE
                 val secureUrl = resultData["secure_url"].toString()
                 Log.d("Cloud", "URL: $secureUrl")
                 onSuccess(secureUrl)
@@ -120,7 +117,7 @@ fun uploadToCloudinary(context: Context, filePath: String, onSuccess: (String) -
 
             override fun onError(requestId: String, error: ErrorInfo) {
                 // Handle error
-                hideProgressDialog()
+                progressBar.visibility = View.GONE
                 showToast(context, "Error: ${error.description}")
             }
 

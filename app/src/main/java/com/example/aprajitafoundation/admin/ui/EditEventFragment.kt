@@ -210,7 +210,7 @@ class EditEventFragment : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
             val filePath = getRealPathFromURI(imageUri)
-            uploadToCloudinary(requireContext(), filePath ?: "") { cloudUrl ->
+            uploadToCloudinary(requireContext(), filePath ?: "", binding.progressBar) { cloudUrl ->
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.editEventImage)

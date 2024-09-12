@@ -80,12 +80,23 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/edit_event_image"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:contentDescription="@string/menu_team_member"
-                android:src="@drawable/image_placeholder" />
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/edit_event_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/menu_team_member"
+                    android:src="@drawable/image_placeholder" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:id="@+id/progress_bar"
+                    android:indeterminateTint="@color/grey" />
+            </FrameLayout>
 
             <Button
                 android:id="@+id/btn_select_image"
