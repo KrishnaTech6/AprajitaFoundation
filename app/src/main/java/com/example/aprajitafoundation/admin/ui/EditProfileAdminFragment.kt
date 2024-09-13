@@ -27,10 +27,9 @@ import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class EditProfileAdminFragment : Fragment() {
+class EditProfileAdminFragment : BaseFragment() {
 
     private lateinit var binding: FragmentEditAdminProfileBinding
-    private val PICK_IMAGE_REQUEST = 1
     private lateinit var viewModel: AdminAuthViewModel
     private var user: User? = null
 
@@ -74,7 +73,7 @@ class EditProfileAdminFragment : Fragment() {
 
         // Handle select image button click
         binding.btnSelectImage.setOnClickListener {
-            openGallery()
+            checkStoragePermissionAndOpenGallery()
         }
 
         // Handle save button click
@@ -131,11 +130,6 @@ class EditProfileAdminFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     private fun validateInputs(name: String, email: String): Boolean {

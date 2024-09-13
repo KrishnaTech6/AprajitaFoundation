@@ -1,9 +1,12 @@
 package com.example.aprajitafoundation.admin.ui
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -11,12 +14,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.ImagesRequest
@@ -29,6 +30,9 @@ import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -48,26 +52,32 @@ class GalleryAdminFragment : Fragment() {
     private val pickImagesLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
             uris?.let { imageUris ->
-                lifecycleScope.launch {
-                    val imageList = mutableListOf<String>()
-
-                    // Launch a coroutine for each image URI
-                    for (uri in imageUris) {
-                        val filePath = getRealPathFromURI(uri)
-                        filePath?.let {
-                            val cloudUrl = suspendUploadToCloudinary(requireContext(), it)
-                            imageList.add(cloudUrl)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val imageList = imageUris.map { uri ->
+                        async {
+                            val filePath = getRealPathFromURI(uri)
+                            filePath?.let {
+                                try {
+                                    suspendUploadToCloudinary(requireContext(), it)
+                                } catch (e: Exception) {
+                                    Log.e("GalleryUpload", "Failed to upload image: $it", e)
+                                    null // return null in case of failure
+                                }
+                            }
                         }
-                    }
-                    // Call the ViewModel function with the completed list
-                    if (imageList.isNotEmpty()){
+                    }.awaitAll()
+
+                    // Filter out null results and upload only successfully uploaded URLs
+                    val uploadedUrls = imageList.filterNotNull()
+
+                    if (uploadedUrls.isNotEmpty()) {
+                        // Call the ViewModel function with the completed list of URLs
                         viewModel.uploadGalleryImages(
                             requireContext(),
-                            ImagesRequest(imageList)
+                            ImagesRequest(uploadedUrls)
                         )
-                        isSwitched=true
+                        isSwitched = true
                     }
-
                 }
             }
         }
@@ -94,19 +104,19 @@ class GalleryAdminFragment : Fragment() {
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->
-                // Response after successful deletion of image
-                showToast(requireContext(), response.message)
-                // Now again fetch the updated list from the server
-                hideProgressDialog()
-                viewModel.fetchAllGalleryImages()
+            // Response after successful deletion of image
+            showToast(requireContext(), response.message)
+            // Now again fetch the updated list from the server
+            hideProgressDialog()
+            viewModel.fetchAllGalleryImages()
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            if(isSwitched){
+            if (isSwitched) {
                 showToast(requireContext(), it.message)
                 hideProgressDialog()
                 viewModel.fetchAllGalleryImages()
-                isSwitched=true
+                isSwitched = true
             }
         }
 
@@ -128,7 +138,7 @@ class GalleryAdminFragment : Fragment() {
             }
         }
 
-        viewModel.error.observe(viewLifecycleOwner){
+        viewModel.error.observe(viewLifecycleOwner) {
             showToast(requireContext(), it)
         }
 
@@ -138,7 +148,26 @@ class GalleryAdminFragment : Fragment() {
         binding.btnAddImages.setOnClickListener {
             //Pick multiple images from the gallery
             //and upload to the server
-            pickImagesLauncher.launch("image/*")
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    PICK_IMAGE_REQUEST
+                )
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    pickImagesLauncher.launch("image/*")
+                } else {
+                    val intent =
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                    startActivityForResult(intent, PICK_IMAGE_REQUEST)
+                }
+            }
         }
 
         return root
@@ -146,7 +175,7 @@ class GalleryAdminFragment : Fragment() {
 
     private suspend fun suspendUploadToCloudinary(context: Context, filePath: String): String {
         return suspendCoroutine { continuation ->
-            uploadToCloudinary(context, filePath, binding.progressBar ) { cloudUrl ->
+            uploadToCloudinary(context, filePath, binding.progressBar) { cloudUrl ->
                 continuation.resume(cloudUrl)
             }
         }
@@ -162,6 +191,75 @@ class GalleryAdminFragment : Fragment() {
             }
         }
         return null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            lifecycleScope.launch {
+                val imageList = mutableListOf<String>()
+
+                // Handle both single and multiple images
+                val uris = getUrisFromIntent(data)
+
+                // Use async for parallel uploading of images
+                val uploadJobs = uris.map { uri ->
+                    async {
+                        val filePath = getRealPathFromURI(uri)
+                        filePath?.let {
+                            try {
+                                suspendUploadToCloudinary(requireContext(), it)
+                            } catch (e: Exception) {
+                                Log.e("GalleryUpload", "Failed to upload image: $it", e)
+                                null // return null in case of failure
+                            }
+                        }
+                    }
+                }
+
+                // Await all image uploads and filter out any null results
+                imageList.addAll(uploadJobs.awaitAll().filterNotNull())
+
+                // Call the ViewModel function with the completed list
+                if (imageList.isNotEmpty()) {
+                    viewModel.uploadGalleryImages(requireContext(), ImagesRequest(imageList))
+                    isSwitched = true
+                }
+            }
+        }
+    }
+
+    private fun getUrisFromIntent(data: Intent?): List<Uri> {
+        val uris = mutableListOf<Uri>()
+
+        // Handle multiple image selection
+        data?.clipData?.let {
+            for (i in 0 until it.itemCount) {
+                uris.add(it.getItemAt(i).uri)
+            }
+        }
+
+        // Handle single image selection
+        data?.data?.let {
+            uris.add(it)
+        }
+
+        return uris
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        if (requestCode == PICK_IMAGE_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImagesLauncher.launch("image/*")
+            } else {
+                // Permission denied, handle accordingly (e.g., show Snackbar)
+                showSnackBar(binding.root, "Permission denied to access gallery")
+            }
+        }
     }
 
 

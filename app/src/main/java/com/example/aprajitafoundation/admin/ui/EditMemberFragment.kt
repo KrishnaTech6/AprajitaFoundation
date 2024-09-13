@@ -31,10 +31,9 @@ import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.gson.Gson
 
 //Edit update team member
-class EditMemberFragment : Fragment() {
+class EditMemberFragment : BaseFragment() {
 
     private lateinit var binding: FragmentEditMemberBinding
-    private val PICK_IMAGE_REQUEST = 1
 
     private lateinit var viewModel: DataViewModel
     private var memberModel: MemberModel? = null
@@ -145,7 +144,7 @@ class EditMemberFragment : Fragment() {
         }
 
         binding.btnSelectImage.setOnClickListener {
-            openGallery()
+            checkStoragePermissionAndOpenGallery()
         }
 
         binding.btnSave.setOnClickListener {
@@ -210,11 +209,6 @@ class EditMemberFragment : Fragment() {
 
             else -> true
         }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

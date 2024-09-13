@@ -1,8 +1,10 @@
 package com.example.aprajitafoundation.admin.ui
 
+import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -32,11 +35,10 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class EditEventFragment : Fragment() {
+class EditEventFragment : BaseFragment() {
     //add Event and Edit Event Screen
 
     private lateinit var binding: FragmentEditEventBinding
-    private val PICK_IMAGE_REQUEST = 1
 
     private lateinit var viewModel: DataViewModel
 
@@ -110,7 +112,7 @@ class EditEventFragment : Fragment() {
 
 
         binding.btnSelectImage.setOnClickListener {
-            openGallery()
+            checkStoragePermissionAndOpenGallery()
         }
 
         binding.editEventDate.setOnClickListener {
@@ -173,11 +175,6 @@ class EditEventFragment : Fragment() {
             }
             else -> true
         }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     private fun showDatePickerDialog() {

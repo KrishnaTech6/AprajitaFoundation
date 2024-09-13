@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -25,15 +26,13 @@ import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 
-class RegisterAdminFragment : Fragment() {
+class RegisterAdminFragment : BaseFragment() {
 
     private lateinit var binding: FragmentRegisterAdminBinding
     private lateinit var viewModel: AdminAuthViewModel
 
     // Initializing RegisterRequest with empty values
     private var registerRequest: RegisterRequest = RegisterRequest("", "", "", "")
-
-    private val PICK_IMAGE_REQUEST = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +50,7 @@ class RegisterAdminFragment : Fragment() {
     private fun setupUI() {
         // Set click listener for image selection
         binding.btnSelectImage.setOnClickListener {
-            openGallery()
+            checkStoragePermissionAndOpenGallery()
         }
 
         binding.addAdminImage.setOnClickListener {
@@ -136,11 +135,6 @@ class RegisterAdminFragment : Fragment() {
 
             else -> true
         }
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

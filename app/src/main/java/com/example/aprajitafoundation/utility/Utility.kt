@@ -1,10 +1,14 @@
 package com.example.aprajitafoundation.utility
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,6 +16,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
