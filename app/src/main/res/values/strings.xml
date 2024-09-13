@@ -88,5 +88,6 @@
     <string name="enter_the_phone_number">Enter the phone number!</string>
     <string name="enter_a_valid_10_digit_phone_number">Enter a valid 10-digit phone number!</string>
     <string name="enter_an_amount">Enter an amount!</string>
+    <string name="permission_denied">"Permission denied. Give permission from app settings. "</string>
 
 </resources>

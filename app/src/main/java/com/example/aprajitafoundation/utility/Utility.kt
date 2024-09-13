@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -93,14 +94,14 @@ object CloudinaryManager{
     }
 }
 
-fun uploadToCloudinary(context: Context, filePath: String, progressBar: ProgressBar, onSuccess: (String) -> Unit) {
+fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onSuccess: (String) -> Unit) {
     val transformation = Transformation<Transformation<*>>()
         .quality("auto:best") // Automatically adjust the quality
         .fetchFormat("auto") // Automatically determine the best format
         .crop("limit")
         .height(1920).width(1920)
 
-    MediaManager.get().upload(filePath)
+    MediaManager.get().upload(uri)
         .option("transformation", transformation) // Apply the transformation
         .callback(object : UploadCallback {
             override fun onStart(requestId: String) {

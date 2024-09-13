@@ -142,8 +142,7 @@ class RegisterAdminFragment : BaseFragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-            val filePath = getRealPathFromURI(imageUri)
-            uploadToCloudinary(requireContext(), filePath ?: "", binding.progressBar) { cloudUrl ->
+            uploadToCloudinary(requireContext(), imageUri, binding.progressBar) { cloudUrl ->
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.addAdminImage)
@@ -151,17 +150,5 @@ class RegisterAdminFragment : BaseFragment() {
                 registerRequest.profileImg = cloudUrl
             }
         }
-    }
-
-    private fun getRealPathFromURI(contentUri: Uri): String? {
-        val proj = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = requireContext().contentResolver.query(contentUri, proj, null, null, null)
-        cursor?.use {
-            val column_index = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            if (it.moveToFirst()) {
-                return it.getString(column_index)
-            }
-        }
-        return null
     }
 }
