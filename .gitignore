@@ -15,4 +15,4 @@
 local.properties
 app/google-services.json
 /.idea
-/app/src/main/java/utility/Constants
+/app/src/main/java/com/example/aprajitafoundation/utility/Constants.kt
