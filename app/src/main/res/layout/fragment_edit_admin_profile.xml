@@ -42,6 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:drawableLeft="@drawable/baseline_upload"
+                android:drawableTint="@color/btnColor"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:text="@string/select_image" />
         </LinearLayout>

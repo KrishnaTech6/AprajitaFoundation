@@ -13,8 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <!-- ImageView for displaying the event image -->
         <ImageView
@@ -34,6 +33,7 @@
             android:layout_marginBottom="4dp"
             android:textColor="@color/black"
             android:textSize="18sp"
+            android:layout_marginHorizontal="16dp"
             tools:text="This is the title of the event"
             android:textStyle="bold" />
 
@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_marginHorizontal="16dp"
             tools:text="This block describes the description of the event that our organisation holds "
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_marginHorizontal="16dp"
             android:orientation="horizontal">
 
             <!-- ImageView and TextView for displaying the event date -->
@@ -78,6 +80,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -104,7 +108,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             android:visibility="gone">
 
