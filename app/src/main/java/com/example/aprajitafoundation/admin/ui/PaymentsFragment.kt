@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -33,6 +34,10 @@ import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.OutputStream
 import java.text.SimpleDateFormat
@@ -42,6 +47,7 @@ class PaymentsFragment : Fragment() {
 
     private lateinit var binding: FragmentPaymentsBinding
     private var paymentsList: List<Payment> = listOf()
+    private var parentPaymentsList: List<Payment> = listOf()
     private lateinit var viewModel: DataViewModel
 
     override fun onCreateView(
@@ -55,7 +61,8 @@ class PaymentsFragment : Fragment() {
 
         viewModel.allPayments.observe(viewLifecycleOwner) {
             paymentsList = it.payments
-            populateTable()
+            parentPaymentsList = it.payments
+            populateTable(paymentsList)
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
@@ -65,9 +72,27 @@ class PaymentsFragment : Fragment() {
             if (it) showDialogProgress(requireContext()) else hideProgressDialog()
         }
 
+        binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    paymentsList = parentPaymentsList
+                } else {
+                    paymentsList = parentPaymentsList.filter {
+                        it.name.contains(newText, ignoreCase = true)
+                    }
+                }
+                populateTable(paymentsList)
+                return true
+            }
+        })
+
         binding.downloadPayments.setOnClickListener {
             if (checkPermissions()) {
-                savePdfFile()
+                savePdfFile(paymentsList)
             } else {
                 requestPermissions()
             }
@@ -76,7 +101,7 @@ class PaymentsFragment : Fragment() {
         return binding.root
     }
 
-    private fun populateTable() {
+    private fun populateTable(paymentsList: List<Payment>) {
         val tableLayout = binding.tableLayoutPayments
 
         // Clear any existing rows (except the header)
@@ -126,41 +151,45 @@ class PaymentsFragment : Fragment() {
         }
     }
 
-    private fun savePdfFile() {
-        val fileName = "AllPayments_Aprajita.pdf"
+    private fun savePdfFile(paymentsList: List<Payment>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val fileName = "AllPayments_Aprajita.pdf"
 
-        val pdfUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val resolver = requireContext().contentResolver
-            val contentValues = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-            }
-            resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
-        } else {
-            val file = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                fileName
-            )
-            Uri.fromFile(file)
-        }
-
-        try {
-            pdfUri?.let { uri ->
-                requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    writePdf(outputStream)
+            val pdfUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val resolver = requireContext().contentResolver
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
                 }
-
-                Snackbar
-                    .make(binding.root, "PDF saved successfully.", Snackbar.LENGTH_SHORT)
-                    .setAction("Open") {
-                        openFileLocation(uri)
-                    }
-                    .show()
+                resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+            } else {
+                val file = File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    fileName
+                )
+                Uri.fromFile(file)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            showToast(requireContext(), "Failed to save PDF: ${e.message}")
+                try {
+                    pdfUri?.let { uri ->
+                        requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
+                            writePdf(outputStream, paymentsList)
+                        }
+                        withContext(Dispatchers.Main){
+                            Snackbar
+                                .make(binding.root, "PDF saved successfully.", Snackbar.LENGTH_SHORT)
+                                .setAction("Open") {
+                                    openFileLocation(uri)
+                                }
+                                .show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    withContext(Dispatchers.Main){
+                        showToast(requireContext(), "Failed to save PDF: ${e.message}")
+                    }
+                }
         }
     }
     private fun openFileLocation(uri: Uri) {
@@ -176,7 +205,7 @@ class PaymentsFragment : Fragment() {
         }
     }
 
-    private fun writePdf(outputStream: OutputStream) {
+    private fun writePdf(outputStream: OutputStream, paymentsList: List<Payment>) {
         val pdfWriter = PdfWriter(outputStream)
         val pdfDocument = PdfDocument(pdfWriter)
         val document = Document(pdfDocument)
@@ -268,7 +297,7 @@ class PaymentsFragment : Fragment() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            savePdfFile()
+            savePdfFile(paymentsList)
         } else {
             showToast(requireContext(), "Permission Denied")
         }
