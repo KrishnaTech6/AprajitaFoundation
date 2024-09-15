@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             tools:text="Welcome, Admin!"
             android:textSize="24sp"
-            android:textStyle="bold"
+            style="@style/TextAppearance.MaterialComponents.Headline1"
             android:textColor="@color/black" />
 
         <TextView

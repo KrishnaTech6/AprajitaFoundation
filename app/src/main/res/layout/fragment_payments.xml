@@ -16,7 +16,8 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:paddingStart="8dp"
+            android:paddingVertical="8dp">
             <TableLayout
                 android:id="@+id/table_layout_payments"
                 android:layout_width="match_parent"

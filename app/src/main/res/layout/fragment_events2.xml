@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".admin.ui.EventsAdminFragment">
@@ -11,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:background="@drawable/rounded_background"
         android:orientation="vertical">
         <LinearLayout
@@ -26,7 +26,7 @@
                 android:text="All Events"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                style="@style/TextAppearance.MaterialComponents.Headline1" />
 
             <Button
                 android:id="@+id/btn_add_event"

@@ -25,7 +25,8 @@
                 android:text="All Members"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                style="@style/TextAppearance.MaterialComponents.Headline1"
+                />
 
             <Button
                 android:id="@+id/btn_add_member"
