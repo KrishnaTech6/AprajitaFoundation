@@ -21,18 +21,22 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.databinding.FragmentPaymentsBinding
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.colors.ColorConstants
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
 import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.HorizontalAlignment
 import com.itextpdf.layout.properties.TextAlignment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,22 +61,25 @@ class PaymentsFragment : Fragment() {
         binding = FragmentPaymentsBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
-        viewModel.getAllPayments(requireContext())
+        setupObservers()
+        setupSearchBar()
+        setupDownloadPayments()
 
-        viewModel.allPayments.observe(viewLifecycleOwner) {
-            paymentsList = it.payments
-            parentPaymentsList = it.payments
-            populateTable(paymentsList)
-        }
+        return binding.root
+    }
 
-        viewModel.error.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it)
+    private fun setupDownloadPayments() {
+        binding.downloadPayments.setOnClickListener {
+            if (checkPermissions()) {
+                savePdfFile(paymentsList)
+            } else {
+                requestPermissions()
+            }
         }
-        viewModel.loading.observe(viewLifecycleOwner) {
-            if (it) showDialogProgress(requireContext()) else hideProgressDialog()
-        }
+    }
 
-        binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+    private fun setupSearchBar() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 return false
             }
@@ -89,16 +96,23 @@ class PaymentsFragment : Fragment() {
                 return true
             }
         })
+    }
 
-        binding.downloadPayments.setOnClickListener {
-            if (checkPermissions()) {
-                savePdfFile(paymentsList)
-            } else {
-                requestPermissions()
-            }
+    private fun setupObservers() {
+        viewModel.getAllPayments(requireContext())
+
+        viewModel.allPayments.observe(viewLifecycleOwner) {
+            paymentsList = it.payments
+            parentPaymentsList = it.payments
+            populateTable(paymentsList)
         }
 
-        return binding.root
+        viewModel.error.observe(viewLifecycleOwner) {
+            showToast(requireContext(), it)
+        }
+        viewModel.loading.observe(viewLifecycleOwner) {
+            if (it) showDialogProgress(requireContext()) else hideProgressDialog()
+        }
     }
 
     private fun populateTable(paymentsList: List<Payment>) {
@@ -210,6 +224,11 @@ class PaymentsFragment : Fragment() {
         val pdfDocument = PdfDocument(pdfWriter)
         val document = Document(pdfDocument)
 
+        val image = Image(ImageDataFactory.create(Constants.logoLink))
+            .setWidth(80f)
+            .setHeight(80f)
+            .setHorizontalAlignment(HorizontalAlignment.CENTER)
+
         // Add title and subheading
         val title = Paragraph("Aprajita Foundation")
             .setFontSize(20f)
@@ -219,11 +238,12 @@ class PaymentsFragment : Fragment() {
             .setFontSize(14f)
             .setFontColor(ColorConstants.BLACK)
             .setTextAlignment(TextAlignment.CENTER)
-        val paymentDetails = Paragraph("\n\nPayment Details")
+        val paymentDetails = Paragraph("\nPayment Details")
             .setFontSize(18f)
             .setFontColor(ColorConstants.BLACK)
             .setTextAlignment(TextAlignment.CENTER)
 
+        document.add(image)
         document.add(title)
         document.add(subheading)
         document.add(paymentDetails)

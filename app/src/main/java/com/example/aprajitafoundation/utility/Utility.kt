@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Color.RED
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -42,8 +43,8 @@ fun isInternetAvailable(context: Context): Boolean {
 }
 
 
-fun showSnackBar(view: View,text:String){
-    Snackbar.make(view, text,Snackbar.LENGTH_SHORT ).setBackgroundTint(Color.RED).show()
+fun showSnackBar(view: View,text:String, color:Int = RED){
+    Snackbar.make(view, text,Snackbar.LENGTH_SHORT ).setBackgroundTint(color).show()
 }
 
 fun showToast(context: Context, message: String) {

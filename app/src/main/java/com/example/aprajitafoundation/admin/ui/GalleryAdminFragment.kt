@@ -1,14 +1,11 @@
 package com.example.aprajitafoundation.admin.ui
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,21 +27,13 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GalleryAdminFragment : Fragment() {
-    private val PICK_IMAGE_REQUEST = 1
-
+class GalleryAdminFragment : BaseFragment() {
     private var _binding: FragmentGallery2Binding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: DataViewModel
     private var isSwitched = false
 
-    // Define a result launcher for selecting multiple images
-    private val pickImagesLauncher =
-        registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uris ->
-            Log.d("GalleryAdminFragment", "Image uris: $uris")
-            uris?.let { handleImageUpload(uris) }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,21 +41,20 @@ class GalleryAdminFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGallery2Binding.inflate(inflater, container, false)
-        val root: View = binding.root
-
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         setupRecyclerView()
         observeViewModel()
 
+        // Add images button click listener
         binding.btnAddImages.setOnClickListener {
-            handleImageSelection()
+            checkStoragePermissionAndOpenGallery(isMultipleImages = true)
         }
 
         // Fetch all images initially
         viewModel.fetchAllGalleryImages()
 
-        return root
+        return binding.root
     }
 
     private fun setupRecyclerView() {
@@ -114,86 +102,54 @@ class GalleryAdminFragment : Fragment() {
         }
     }
 
-    private fun handleImageSelection() {
-        Log.d("GalleryAdminFragment", "select button clicked ")
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Log.d("GalleryAdminFragment", "permission requested")
-            requestPermission()
-        } else {
-            Log.d("GalleryAdminFragment", "permission already given ")
-            pickImages()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == -1) { // RESULT_OK = -1
+            val clipData = data?.clipData
+            val uris = mutableListOf<Uri>()
+            if (clipData != null) {
+                // Handle multiple images
+                for (i in 0 until clipData.itemCount) {
+                    val imageUri = clipData.getItemAt(i).uri
+                    uris.add(imageUri)
+                }
+            }
+
+            handleImageUpload(uris)
         }
     }
 
-    private fun requestPermission() {
-        requestPermissions(
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            PICK_IMAGE_REQUEST
-        )
-    }
-
-    private fun pickImages() {
-        Log.d("GalleryAdminFragment", "pickImages called")
-        pickImagesLauncher.launch("image/*")
-    }
-
     private fun handleImageUpload(uris: List<Uri>) {
-        Log.d("GalleryAdminFragment", "handleImageUpload called")
-        Log.d("GalleryAdminFragment", "uris: $uris")
+        Log.d("GalleryAdminFragment", "Handling image upload for URIs: $uris")
         lifecycleScope.launch(Dispatchers.IO) {
             coroutineScope {
                 val uploadedUrls = uris.map { uri ->
-                    Log.d("GalleryUpload", "Processing URI: $uri")
                     async {
-                        uri.let {
-                            try {
-                                Log.d("GalleryUpload", "Uploading image: $it")
-                                suspendUploadToCloudinary(requireContext(), it)
-                            } catch (e: Exception) {
-                                Log.e("GalleryUpload", "Failed to upload image: $it", e)
-                                null
-                            }
+                        try {
+                            Log.d("GalleryAdminFragment", "Uploading image: $uri")
+                            suspendUploadToCloudinary(requireContext(), uri)
+                        } catch (e: Exception) {
+                            Log.e("GalleryUpload", "Failed to upload image: $uri", e)
+                            null
                         }
                     }
                 }.awaitAll().filterNotNull()
-                Log.d("GalleryUpload", "Uploaded URLs: $uploadedUrls")
 
                 if (uploadedUrls.isNotEmpty()) {
-                    Log.d("GalleryUpload", "All images uploaded successfully")
+                    Log.d("GalleryAdminFragment", "Uploaded URLs: $uploadedUrls")
                     viewModel.uploadGalleryImages(requireContext(), ImagesRequest(uploadedUrls))
                     isSwitched = true
                 }
-
             }
-
         }
     }
 
     private suspend fun suspendUploadToCloudinary(context: Context, uri: Uri): String =
         suspendCoroutine { continuation ->
             uploadToCloudinary(context, uri, binding.progressBar) { cloudUrl ->
-                Log.d("GalleryUpload", "Image uploaded to Cloudinary: $cloudUrl")
                 continuation.resume(cloudUrl)
             }
         }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        if (requestCode == PICK_IMAGE_REQUEST && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d("GalleryAdminFragment", "permission granted")
-            pickImages()
-        } else {
-            Log.d("GalleryAdminFragment", "permission denied")
-            showSnackBar(binding.root, getString(R.string.permission_denied))
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
