@@ -33,7 +33,7 @@ class AdminAuthViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val apiService = RetrofitClient.authApi
+    private val apiService = RetrofitClient.adminAuthApi
 
     private fun getToken(context: Context): String {
         val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
