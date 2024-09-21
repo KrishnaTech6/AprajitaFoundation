@@ -175,23 +175,26 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
     }
 
     override fun onBackPressed() {
-        if (isTaskRoot) {
+        if (isTaskRoot)
             // This is the last activity, show the dialog
-            AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Do you really want to exit the app?")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    dialog.dismiss()
-                    finish()
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        } else {
+            showExitAppDialog()
+        else
             // This is not the last activity, perform normal back button behavior
             super.onBackPressed()
-        }
+    }
+
+    private fun showExitAppDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Exit App")
+            .setMessage("Do you really want to exit the app?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onProfileUpdated(name: String, email: String, profileImg: String?) {

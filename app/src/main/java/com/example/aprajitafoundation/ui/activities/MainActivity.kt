@@ -66,26 +66,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
-        if (supportFragmentManager.backStackEntryCount > 1) {
+        if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
-        }else if (mAuth.currentUser == null) {
-            finish()
-        }
-        else {
-            // Create an AlertDialog to ask the user if they want to exit
-            AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Do you really want to exit the app?")
-                .setPositiveButton("Yes") { dialog, _ ->
-                    dialog.dismiss()
-                    finish()
-                }
-                .setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
+        else if (mAuth.currentUser == null) finish()
+        else showExitAppDialog()
+    }
+
+    private fun showExitAppDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Exit App")
+            .setMessage("Do you really want to exit the app?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun replaceFragment(fragment: Fragment, tag:String){

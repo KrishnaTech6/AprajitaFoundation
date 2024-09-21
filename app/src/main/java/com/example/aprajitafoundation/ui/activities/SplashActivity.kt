@@ -49,15 +49,13 @@ class SplashActivity : AppCompatActivity() {
         } else if (theme == getString(R.string.light_mode) && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
-
         val adminLogin = sharedPreferences.getString(getString(R.string.token_login_admin), "")
 
 
 
-        //to show splash screen for 15s and go to main screen
+        //to show splash screen for 2s and go to main screen
         Handler(Looper.getMainLooper()).postDelayed(
             {
-
                 if (mAuth.currentUser != null) {// Check if user is already signed in
                     gotoActivity(MainActivity::class.java)
                 }else if(!adminLogin.isNullOrBlank()){ // check if admin is already signed in
