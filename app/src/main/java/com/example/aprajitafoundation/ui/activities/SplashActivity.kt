@@ -12,14 +12,17 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.AdminActivity
+import com.example.aprajitafoundation.utility.AnimationUtils
+import com.example.aprajitafoundation.databinding.ActivitySplashBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
-
+    private lateinit var binding:ActivitySplashBinding
     private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding= ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //to hide statusbar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
@@ -32,6 +35,9 @@ class SplashActivity : AppCompatActivity() {
         }
 
         mAuth = FirebaseAuth.getInstance()
+
+        AnimationUtils.fadeIn(binding.imageView, 1000)
+        AnimationUtils.fadeIn(binding.tvLogoText, 1000)
 
 
         val sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)

@@ -2,9 +2,6 @@ package com.example.aprajitafoundation.ui.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,22 +13,18 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavHostController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.admin.ui.EditEventFragment
-import com.example.aprajitafoundation.admin.ui.EventsAdminFragment
+import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.ServiceLoader
 
 class ImageEventAdapter(
     private val context: Context,
@@ -109,6 +102,7 @@ class ImageEventAdapter(
             TYPE_IMAGE -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as ImageViewHolder
+                AnimationUtils.slideInFromBottom(imageHolder.imageView, 500)
 
                 if (isAdmin) {
                     imageHolder.deleteImage.visibility = View.VISIBLE
@@ -145,6 +139,7 @@ class ImageEventAdapter(
             TYPE_IMAGE_SLIDER -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as SliderViewHolder
+                AnimationUtils.fadeIn(imageHolder.itemView, 500)
                 Glide.with(context)
                     .load(item?.image)
                     .into(imageHolder.imageView)
@@ -159,6 +154,7 @@ class ImageEventAdapter(
                 val item = eventItems.getOrNull(position - imageItems.size)
                 val formattedDate = formatDate(item?.date)
                 val eventHolder = holder as EventViewHolder
+                AnimationUtils.slideInFromBottom(eventHolder.eventImage, 500)
 
                 if (isAdmin) {
                     eventHolder.llDelEditEvents.visibility = View.VISIBLE

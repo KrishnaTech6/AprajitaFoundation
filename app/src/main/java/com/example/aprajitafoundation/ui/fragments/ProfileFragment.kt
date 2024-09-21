@@ -23,6 +23,7 @@ import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.example.aprajitafoundation.utility.AnimationUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -62,6 +63,9 @@ class ProfileFragment : BaseFragment() {
         val gson = Gson()
         val userData: UserData? = gson.fromJson(userDataJson, UserData::class.java)
 
+        AnimationUtils.fadeIn(binding.tvNameProfile, 700)
+        // Slide in the profile image from the bottom
+        AnimationUtils.slideInFromBottom(binding.ivImageProfile, 700)
         // Check if the object is not null
         if (userData != null) {
             binding.btnLogin.visibility = View.INVISIBLE

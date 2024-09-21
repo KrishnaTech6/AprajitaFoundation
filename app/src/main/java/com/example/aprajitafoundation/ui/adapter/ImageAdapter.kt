@@ -3,7 +3,6 @@ package com.example.aprajitafoundation.ui.adapter
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
+import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 
@@ -88,6 +87,7 @@ class ImageAdapter(
 
         holder.tvName.text = item.name ?: ""
         holder.tvDesignation.text = item.position ?: ""
+        AnimationUtils.fadeIn(holder.itemView, 500)
 
         holder.itemView.setOnClickListener {
             onItemClickListener(item)
