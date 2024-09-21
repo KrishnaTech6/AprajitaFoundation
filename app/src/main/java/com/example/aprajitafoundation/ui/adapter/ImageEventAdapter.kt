@@ -139,7 +139,7 @@ class ImageEventAdapter(
             TYPE_IMAGE_SLIDER -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as SliderViewHolder
-                AnimationUtils.fadeIn(imageHolder.itemView, 500)
+                AnimationUtils.fadeIn(imageHolder.imageView, 500)
                 Glide.with(context)
                     .load(item?.image)
                     .into(imageHolder.imageView)
