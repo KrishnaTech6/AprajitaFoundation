@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
@@ -52,7 +53,6 @@ class SplashActivity : AppCompatActivity() {
         val adminLogin = sharedPreferences.getString(getString(R.string.token_login_admin), "")
 
 
-
         //to show splash screen for 2s and go to main screen
         Handler(Looper.getMainLooper()).postDelayed(
             {
@@ -61,6 +61,7 @@ class SplashActivity : AppCompatActivity() {
                 }else if(!adminLogin.isNullOrBlank()){ // check if admin is already signed in
                     gotoActivity(AdminActivity::class.java)
                 }else{
+                    Log.d("SplashActivity", "onCreate: ${mAuth.currentUser}")
                     gotoActivity(LoginActivity::class.java)
                 }
             }, 2000
@@ -68,6 +69,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun gotoActivity(activityClass: Class<out Activity>){
+        Log.d("SplashActivity", "gotoActivity: ${activityClass.simpleName}")
         val intent=  Intent(this@SplashActivity, activityClass)
         startActivity(intent)
         finish()

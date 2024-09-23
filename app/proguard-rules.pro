@@ -35,7 +35,5 @@
 -keepclasseswithmembers class * {
   public void onPayment*(...);
 }
-# Obfuscate the entire Constants class, including its fields
--keep class com.example.aprajitafoundation.utility.Constants {
-    <fields>;
-}
+# Allow full obfuscation of the Constants class and its fields
+-dontwarn com.example.aprajitafoundation.utility.Constants

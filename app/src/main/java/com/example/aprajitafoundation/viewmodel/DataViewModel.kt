@@ -263,7 +263,7 @@ class DataViewModel : ViewModel() {
                 } else {
                     handleError("Error uploading image", response.message())
 
-                    Log.d("ViewModel" , "${response.errorBody()?.string() ?: "Error body empty"}")
+                    Log.d("ViewModel" , response.errorBody()?.string() ?: "Error body empty")
                 }
             } catch (e: Exception) {
                 handleError("Exception: ${e.message}")
