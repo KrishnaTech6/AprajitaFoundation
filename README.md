@@ -16,6 +16,32 @@ This project is an Android application developed for the Aprajita Foundation. Th
 - Interaface used for simultanoes data changes
 - sharedPreferneces for saving important data required by the user: object to json string
 and much more
+
+## App Screenshots
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/164bb127-efd7-479f-a9a9-cf9afe3ced25" width="200" />
+    <img src="https://github.com/user-attachments/assets/de30d433-0a29-4a8d-807b-0042d673848c" width="200" />
+    <img src="https://github.com/user-attachments/assets/3746c297-5341-4c57-a620-0fbc7b53a62b" width="200" />
+   b<img src="https://github.com/user-attachments/assets/ef03e9f9-ae15-4780-8bd7-9d243737aabe" width="200" />
+</p>
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/db5e6103-861f-4fed-b831-9f0ca32c6ef4" width="200" />
+    <img src="https://github.com/user-attachments/assets/9fe8e1ff-f919-4002-8ed1-9a35f95291cc" width="200" />
+    <img src="https://github.com/user-attachments/assets/5c8095a1-a017-4829-a09e-41a8f0a66df9" width="200" />
+    <img src="https://github.com/user-attachments/assets/00f95e89-c085-4d70-9402-f05e86b22cde" width="200" />
+</p>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/1d466df8-17db-4c21-909b-e820344ac569" width="200" />
+<img src="https://github.com/user-attachments/assets/30cd3ad6-1ab5-41d8-99b8-fae1b6c9a1f4" width="200" />
+
+<img src="https://github.com/user-attachments/assets/3ec21ee7-4065-4eff-821c-983688b8a942" width="200" />
+  <img src="https://github.com/user-attachments/assets/42d6cae8-5f56-41b3-9009-02f7cac6b667" width="200" />
+  
+</p>
+
 ## How to Use
 
 1. **Download the App**: [Download APK](https://drive.google.com/file/d/1MdKfK8mmhE6lGTHWpNMpLOAQGzRM2hVl/view?usp=share_link)
@@ -25,31 +51,6 @@ and much more
     - Browse through the Gallery to see images.
     - View the list of Team Members.
     - Make a donation through the secure Razorpay gateway.
-
-## App Screenshots
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/a6858752-22e5-4def-ba64-553ced8359e3" width="200" />
-  <img src="https://github.com/user-attachments/assets/11ffa8f0-032a-40d9-b109-4e851415bebb" width="200" />
-  <img src="https://github.com/user-attachments/assets/8484a16a-95b1-467f-b1f3-f00401f34ab1" width="200" />
-  <img src="https://github.com/user-attachments/assets/1b188d14-2e30-4491-a639-cf01911763f2" width="200" />
-</p>
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/db5e6103-861f-4fed-b831-9f0ca32c6ef4" width="200" />
-  <img src="https://github.com/user-attachments/assets/5c8095a1-a017-4829-a09e-41a8f0a66df9" width="200" />
-  <img src="https://github.com/user-attachments/assets/db645ce5-5d45-409d-897b-87fff9a7504a" width="200" />
-  <img src="https://github.com/user-attachments/assets/93864e5c-0ea2-48ed-be70-660c252015aa" width="200" />
-</p>
-
-<p align="center">
-  
-  <img src="https://github.com/user-attachments/assets/9fe8e1ff-f919-4002-8ed1-9a35f95291cc" width="200" />
-   <img src="https://github.com/user-attachments/assets/69f4cc35-ee9d-47a3-8f72-ef54a909f005" width="200" />
-  <img src="https://github.com/user-attachments/assets/3a468446-55c9-43b7-9d37-1768fb43fc50" width="200" />
-
-  <img src="https://github.com/user-attachments/assets/5e37fb0a-ee42-4078-bfbe-d276a92640f6" width="200" />
-</p>
 
 ## Technologies Used
 
