@@ -1,21 +1,37 @@
 # Aprajita Foundation Android App
 
-This project is an Android application developed for the Aprajita Foundation. The app features a gallery where users can view, upload, and delete images. It also includes a profile section that allows users to contact the foundation through various means, make donations through Razorpay, and more.
-- I have provided interface for admin, where they can get , post, delete, update gallery images , events , members .
-- Razorpay payment is also integrated: You can download and share receipt after payment
-- Cloudinary for saving the images on cloud: Found some issues with dependency and helped in stackoverflow problem for that
-- Server calls using Retrofit library.
-- Creating pdf from code using Itext library: converting payments details list to table and saving in the pdf
-- Dark mode/Light mode 
-- Firebase google login for users and normal server login for admin.
-- Multiple image selection to upload to the server 
-- Users have various options in profile like : They can share the apk , contact on wtsp , contact through gmail, 
-- Bottom navigation for user and drawer layout for Admins 
-- Coroutines used for asynchronous operations spcl: suspendCoroutine used for multiple images upload to cloud
-- getting real path from URI implemented
-- Interaface used for simultanoes data changes
-- sharedPreferneces for saving important data required by the user: object to json string
-and much more
+This Android application is developed for the **Aprajita Foundation**, aimed at empowering women and children. The app is designed with user-friendly features for both users and administrators, providing access to various sections such as the gallery, events, member information, and donation options.
+
+## Key Features
+
+### User Features
+- **Gallery**: Users can seamlessly view, upload, and delete images, browsing through photos shared by the foundation.
+- **Razorpay Integration**: A secure and easy-to-use payment gateway for donations, with the ability to download and share receipts after successful payments.
+- **Profile Section**:
+  - Users can contact the foundation via WhatsApp, email, or other methods.
+  - Share the app's APK with others.
+  - Sync profile information with Firebase Google login.
+- **Dark Mode/Light Mode**: Toggle between dark and light themes according to user preferences.
+- **Bottom Navigation**: Intuitive navigation for users, making app exploration smooth and easy.
+
+### Admin Features
+- **Admin Dashboard**: Admins can manage gallery images, events, and member information:
+  - Upload, update, and delete gallery images.
+  - Create, edit, or remove events.
+  - Manage member profiles.
+- **Multiple Image Upload**: Users can select and upload multiple images to the server in one go.
+- **Cloudinary Integration**: Cloud storage solution for saving images, including error handling for any Cloudinary dependency issues (documented on StackOverflow).
+- **Server Calls with Retrofit**: Smooth network communication handled through the Retrofit library.
+- **Receipt Management**: Admins can convert payment details into table format and generate PDF receipts using the IText library.
+- **Drawer Layout**: A dedicated layout for admins to efficiently manage app content.
+
+### Additional Features
+- **Firebase Google Login**: Integrated Google authentication for users, while admins log in using a server-based authentication system.
+- **Multiple Image Selection**: Users and admins can upload multiple images to the server, with asynchronous handling powered by Kotlin coroutines.
+- **SharedPreferences**: Store important user data locally, using JSON strings for object storage.
+- **Real Path from URI**: Implemented functionality for retrieving real file paths to facilitate smooth file uploads.
+- **Concurrent Data Updates with Interfaces**: Interface-based implementation to ensure simultaneous data updates across different app components.
+
 
 ## App Screenshots
 
