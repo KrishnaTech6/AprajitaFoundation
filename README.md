@@ -2,6 +2,32 @@
 
 This Android application is developed for the **Aprajita Foundation**, aimed at empowering women and children. The app is designed with user-friendly features for both users and administrators, providing access to various sections such as the gallery, events, member information, and donation options.
 
+
+## App Screenshots
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/164bb127-efd7-479f-a9a9-cf9afe3ced25" width="200" />
+    <img src="https://github.com/user-attachments/assets/de30d433-0a29-4a8d-807b-0042d673848c" width="200" />
+    <img src="https://github.com/user-attachments/assets/3746c297-5341-4c57-a620-0fbc7b53a62b" width="200" />
+   b<img src="https://github.com/user-attachments/assets/ef03e9f9-ae15-4780-8bd7-9d243737aabe" width="200" />
+</p>
+
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/db5e6103-861f-4fed-b831-9f0ca32c6ef4" width="200" />
+    <img src="https://github.com/user-attachments/assets/9fe8e1ff-f919-4002-8ed1-9a35f95291cc" width="200" />
+    <img src="https://github.com/user-attachments/assets/5c8095a1-a017-4829-a09e-41a8f0a66df9" width="200" />
+    <img src="https://github.com/user-attachments/assets/00f95e89-c085-4d70-9402-f05e86b22cde" width="200" />
+</p>
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/1d466df8-17db-4c21-909b-e820344ac569" width="200" />
+<img src="https://github.com/user-attachments/assets/30cd3ad6-1ab5-41d8-99b8-fae1b6c9a1f4" width="200" />
+
+<img src="https://github.com/user-attachments/assets/3ec21ee7-4065-4eff-821c-983688b8a942" width="200" />
+  <img src="https://github.com/user-attachments/assets/42d6cae8-5f56-41b3-9009-02f7cac6b667" width="200" />
+  
+</p>
+
 ## Key Features
 
 ### User Features
@@ -31,32 +57,6 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 - **SharedPreferences**: Store important user data locally, using JSON strings for object storage.
 - **Real Path from URI**: Implemented functionality for retrieving real file paths to facilitate smooth file uploads.
 - **Concurrent Data Updates with Interfaces**: Interface-based implementation to ensure simultaneous data updates across different app components.
-
-
-## App Screenshots
-
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/164bb127-efd7-479f-a9a9-cf9afe3ced25" width="200" />
-    <img src="https://github.com/user-attachments/assets/de30d433-0a29-4a8d-807b-0042d673848c" width="200" />
-    <img src="https://github.com/user-attachments/assets/3746c297-5341-4c57-a620-0fbc7b53a62b" width="200" />
-   b<img src="https://github.com/user-attachments/assets/ef03e9f9-ae15-4780-8bd7-9d243737aabe" width="200" />
-</p>
-
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/db5e6103-861f-4fed-b831-9f0ca32c6ef4" width="200" />
-    <img src="https://github.com/user-attachments/assets/9fe8e1ff-f919-4002-8ed1-9a35f95291cc" width="200" />
-    <img src="https://github.com/user-attachments/assets/5c8095a1-a017-4829-a09e-41a8f0a66df9" width="200" />
-    <img src="https://github.com/user-attachments/assets/00f95e89-c085-4d70-9402-f05e86b22cde" width="200" />
-</p>
-
-<p align="center">
-<img src="https://github.com/user-attachments/assets/1d466df8-17db-4c21-909b-e820344ac569" width="200" />
-<img src="https://github.com/user-attachments/assets/30cd3ad6-1ab5-41d8-99b8-fae1b6c9a1f4" width="200" />
-
-<img src="https://github.com/user-attachments/assets/3ec21ee7-4065-4eff-821c-983688b8a942" width="200" />
-  <img src="https://github.com/user-attachments/assets/42d6cae8-5f56-41b3-9009-02f7cac6b667" width="200" />
-  
-</p>
 
 ## How to Use
 
