@@ -129,7 +129,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/your-repo/aprajita-foundation.git
+    git clone https://github.com/KrishnaTech6/aprajita-foundation.git
     ```
 
 2. **Open the project in Android Studio**.
