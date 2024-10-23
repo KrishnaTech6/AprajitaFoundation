@@ -9,18 +9,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="8dp"
-        android:background="@drawable/rounded_background">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="8dp"
             android:text="Gallery"
-            style="@style/TextAppearance.MaterialComponents.Headline1"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            style="@style/TextAppearance.MaterialComponents.Headline5" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
     tools:context=".ui.fragments.HomeFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_background"
-            android:layout_margin="8dp"
             android:orientation="vertical">
 
             <!-- Header Section -->
@@ -72,27 +70,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginHorizontal="8dp"
                 app:cardElevation="4dp"
                 android:padding="4dp"
-                android:layout_margin="8dp"
                 app:cardCornerRadius="8dp">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="240dp"
                     android:background="@drawable/image_placeholder"
                     android:clipToPadding="false" />
 
             </androidx.cardview.widget.CardView>
-
             <LinearLayout
                 android:id="@+id/dotsLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aprajita_intro"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:textColor="@color/black"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:gravity="center" />
 
             <!-- Core Members Section -->
             <TextView
@@ -102,46 +109,118 @@
                 android:text="Core Members"
                 android:layout_marginHorizontal="8dp"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                style="@style/TextAppearance.MaterialComponents.Headline5" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/member_item" />
+                tools:listitem="@layout/member_item"
+                android:layout_marginBottom="16dp"/>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:text="Our Mission"
+                style="@style/TextAppearance.MaterialComponents.Headline5"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/mission_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aprajita_mission"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:textColor="@color/black"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_gravity="start" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:text="Our Vision"
+                style="@style/TextAppearance.MaterialComponents.Headline5"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/vision_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/aprajita_vision"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="8dp"
+                android:textColor="@color/black"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_gravity="start"  />
 
             <!-- Profile Section -->
 
-            <Button
-                android:id="@+id/btn_donate"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:layout_marginHorizontal="8dp"
-                android:drawableLeft="@drawable/donate"
-                android:drawableTint="@color/paymentSuccess"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:text="Donate for a cause"
-                android:textColor="@color/paymentSuccess" />
+                app:cardElevation="8dp"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="@color/cardBackground2"
+                app:cardCornerRadius="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All donations can help change a life"
+                        style="@style/TextAppearance.MaterialComponents.Headline4"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="\nAs an NGO, we independently organize all our events and rely solely on our own resources. Your donations are crucial for us to continue our work and make a meaningful impact.\n"
+                        style="@style/TextAppearance.Material3.BodyLarge"/>
+
+
+                    <Button
+                        android:id="@+id/btn_donate"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+                        android:drawableLeft="@drawable/donate"
+                        android:drawableTint="@color/paymentSuccess"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="Donate"
+                        android:textColor="@color/paymentSuccess" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
             <!-- Gallery Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginVertical="16dp"
                 android:layout_marginHorizontal="8dp"
                 android:text="Gallery"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                style="@style/TextAppearance.MaterialComponents.Headline5" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_image_item"
@@ -183,5 +262,5 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
-</LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

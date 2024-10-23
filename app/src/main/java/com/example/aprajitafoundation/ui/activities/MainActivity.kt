@@ -1,15 +1,12 @@
 package com.example.aprajitafoundation.ui.activities
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.app.AlertDialog
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
@@ -66,8 +63,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1)
+        if (supportFragmentManager.backStackEntryCount > 1) {
             supportFragmentManager.popBackStack()
+            updateBottomNavHighlight()
+        }
         else if (mAuth.currentUser == null) finish()
         else showExitAppDialog()
     }
