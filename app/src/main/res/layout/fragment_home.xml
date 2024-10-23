@@ -91,15 +91,15 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/aprajita_intro"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:gravity="center" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/aprajita_intro"-->
+<!--                android:layout_marginHorizontal="8dp"-->
+<!--                android:layout_marginVertical="8dp"-->
+<!--                android:textColor="@color/black"-->
+<!--                style="@style/TextAppearance.Material3.BodyLarge"-->
+<!--                android:gravity="center" />-->
 
             <!-- Core Members Section -->
             <TextView
@@ -176,7 +176,7 @@
                 android:layout_height="wrap_content"
                 app:cardElevation="8dp"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="@color/cardBackground2"
+                app:cardBackgroundColor="@color/yellowDark"
                 app:cardCornerRadius="16dp">
                 <LinearLayout
                     android:layout_width="match_parent"

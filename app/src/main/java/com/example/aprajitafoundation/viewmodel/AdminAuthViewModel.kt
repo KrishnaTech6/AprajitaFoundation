@@ -1,7 +1,9 @@
 package com.example.aprajitafoundation.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +19,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 
-class AdminAuthViewModel : ViewModel() {
+class AdminAuthViewModel(application: Application) : AndroidViewModel(application ) {
 
     private val _authResponse = MutableLiveData<AuthResponse>()
     val authResponse: LiveData<AuthResponse> get() = _authResponse
@@ -33,7 +35,7 @@ class AdminAuthViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
-    private val apiService = RetrofitClient.adminAuthApi
+    private val apiService = RetrofitClient.getAdminAuthApi(application)
 
     private fun getToken(context: Context): String {
         val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
@@ -45,6 +47,11 @@ class AdminAuthViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.registerAdmin(getToken(context), request)
+                // Check if the response came from the cache
+                if (response.raw().cacheResponse != null) {
+                    // Response is from cache
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
@@ -64,6 +71,9 @@ class AdminAuthViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.loginAdmin(request)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _authResponseLogin.value = response.body()
                     response.body()?.let { authResponse ->
@@ -97,6 +107,9 @@ class AdminAuthViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.updateProfile(getToken(context), request)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _genericResponse.value = response.body()
                 } else {
@@ -116,6 +129,9 @@ class AdminAuthViewModel : ViewModel() {
             try {
                 val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
                 val response = apiService.fetchProfile(getToken(context))
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _authResponse.value = response.body()
                     response.body()?.let { authResponse ->
@@ -146,6 +162,9 @@ class AdminAuthViewModel : ViewModel() {
             val sharedPreferences = context.getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
             try {
                 val response = apiService.logout(getToken(context))
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     // Clear the token and user info from SharedPreferences
                     with(sharedPreferences.edit()) {

@@ -1,7 +1,9 @@
 package com.example.aprajitafoundation.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +16,7 @@ import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.model.*
 import kotlinx.coroutines.launch
 
-class DataViewModel : ViewModel() {
+class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     // LiveData objects for observing data in the UI
     val images: LiveData<List<ImageModel>> get() = _images
@@ -44,7 +46,7 @@ class DataViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     private val _error = MutableLiveData<String>()
 
-    private val apiService = RetrofitClient.api
+    private val apiService = RetrofitClient.getApi(application)
 
     // Simplified API call methods
     fun fetchGalleryImages() = makeApiCall(apiService::getGalleryImages, _images)
@@ -57,6 +59,9 @@ class DataViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.createPayment(PaymentRequest(amount))
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _orderId.value = response.body()?.order?.id
                 } else {
@@ -77,6 +82,9 @@ class DataViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.storeVerifiedPayment(payment)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _paymentVerificationStatus.value = "Payment Verified Successfully"
                 } else {
@@ -118,6 +126,9 @@ class DataViewModel : ViewModel() {
 
                 Log.d("ViewModel", "$token")
                 val response = apiService.addEvent(token, event)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _uploadResponse.value = response.body()
                 } else {
@@ -139,6 +150,9 @@ class DataViewModel : ViewModel() {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiService.addTeamMember(token, member)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _uploadResponse.value = response.body()
                 } else {
@@ -160,6 +174,9 @@ class DataViewModel : ViewModel() {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiService.updateEvent(token, eventModel?.id, eventModel)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 Log.d("ViewModel", "$token")
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
@@ -182,6 +199,9 @@ class DataViewModel : ViewModel() {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiService.updateTeamMember(token, teamMember?.id, teamMember)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
@@ -204,6 +224,9 @@ class DataViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiCall()
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     liveData?.value = response.body()
                 } else {
@@ -228,6 +251,9 @@ class DataViewModel : ViewModel() {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiCall(token)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
                 if (response.isSuccessful) {
                     liveData.value = response.body()
                 } else {
@@ -254,6 +280,9 @@ class DataViewModel : ViewModel() {
             _loading.value = true
             try {
                 val response = apiService.uploadGalleryImages(token, images)
+                if (response.raw().cacheResponse != null) {
+                    _loading.value = false
+                }
 //                val jsonString = Gson().toJson(images)
 //                Log.d("RequestBody", jsonString)
                 if (response.isSuccessful) {
