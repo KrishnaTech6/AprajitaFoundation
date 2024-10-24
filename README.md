@@ -31,7 +31,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 ## Key Features
 
 ### User Features
-- **Gallery**: Users can seamlessly view, upload, and delete images, browsing through photos shared by the foundation.
+- **Gallery**: Users can seamlessly view, browsing through photos shared by the foundation.
 - **Razorpay Integration**: A secure and easy-to-use payment gateway for donations, with the ability to download and share receipts after successful payments.
 - **Profile Section**:
   - Users can contact the foundation via WhatsApp, email, or other methods.
