@@ -12,6 +12,23 @@ import java.io.File
 object RetrofitClient {
     private const val BASE_URL = Constants.serverUrl
 
+    private fun getRetrofit(context: Context): Retrofit {
+        return Retrofit.Builder()
+            .client(getOkHttpClient(context)) // Use OkHttpClient with caching
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // Publicly available Retrofit API
+    fun getApi(context: Context): UserAdminApi {
+        return getRetrofit(context).create(UserAdminApi::class.java)
+    }
+
+    fun getAdminAuthApi(context: Context): AdminAuthApi {
+        return getRetrofit(context).create(AdminAuthApi::class.java)
+    }
+
     private fun getOkHttpClient(context: Context): OkHttpClient {
         val cacheSize: Long= 5 * 1024 * 1024 // 5 MB cache size
         val cacheDir = File(context.cacheDir, "http_cache") // Cache directory
@@ -31,22 +48,5 @@ object RetrofitClient {
                 chain.proceed(request)
             }
             .build()
-    }
-
-    private fun getRetrofit(context: Context): Retrofit {
-        return Retrofit.Builder()
-            .client(getOkHttpClient(context)) // Use OkHttpClient with caching
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    // Publicly available Retrofit API
-    fun getApi(context: Context): UserAdminApi {
-        return getRetrofit(context).create(UserAdminApi::class.java)
-    }
-
-    fun getAdminAuthApi(context: Context): AdminAuthApi {
-        return getRetrofit(context).create(AdminAuthApi::class.java)
     }
 }

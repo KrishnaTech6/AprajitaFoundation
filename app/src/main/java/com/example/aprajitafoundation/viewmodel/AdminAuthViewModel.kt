@@ -77,8 +77,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                 if (response.isSuccessful) {
                     _authResponseLogin.value = response.body()
                     response.body()?.let { authResponse ->
-                        val gson = Gson()
-                        val userJson = gson.toJson(authResponse.user)
+                        val userJson = Gson().toJson(authResponse.user)
                         // Store token and user info in SharedPreferences
                         val sharedPreferences = context
                             .getSharedPreferences(context.getString(R.string.apppreferences), Context.MODE_PRIVATE)
