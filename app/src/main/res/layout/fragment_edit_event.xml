@@ -90,6 +90,13 @@
                     android:layout_height="200dp"
                     android:contentDescription="@string/menu_team_member"
                     android:src="@drawable/image_placeholder" />
+                <ImageView
+                    android:id="@+id/btn_select_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:tint="@color/grey"
+                    android:src="@drawable/baseline_upload"
+                    android:layout_gravity="center"/>
                 <ProgressBar
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,16 +105,6 @@
                     android:id="@+id/progress_bar"
                     android:indeterminateTint="@color/grey" />
             </FrameLayout>
-
-            <Button
-                android:id="@+id/btn_select_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawableLeft="@drawable/baseline_upload"
-                android:drawableTint="@color/btnColor"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:text="@string/select_image" />
         </LinearLayout>
         <!-- Save and Cancel Buttons -->
         <LinearLayout

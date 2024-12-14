@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -57,7 +58,8 @@ class EditEventFragment : BaseFragment() {
 
         // Set default title
         val isEditing = eventModel != null
-        (activity as AppCompatActivity).supportActionBar?.title = if (isEditing) "Edit Team Member" else "Add Team Member"
+        (activity as AppCompatActivity).supportActionBar?.title =
+            if (isEditing) "Edit Team Member" else "Add Team Member"
 
         eventModel?.let { event ->
             binding.editEventTitle.setText(event.title)
@@ -82,7 +84,7 @@ class EditEventFragment : BaseFragment() {
         }
 
         // Initialise with default values in add member screen
-        if(!isEditing) eventModel= EventModel("", "", "",  Date(), "", "")
+        if (!isEditing) eventModel = EventModel("", "", "", Date(), "", "")
 
         viewModel.error.observe(viewLifecycleOwner) { error ->
             showSnackBar(binding.root, error)
@@ -90,13 +92,15 @@ class EditEventFragment : BaseFragment() {
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
-        viewModel.uploadResponse.observe(viewLifecycleOwner){
+        viewModel.uploadResponse.observe(viewLifecycleOwner) {
             showToast(requireContext(), it.message)
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
@@ -144,7 +148,8 @@ class EditEventFragment : BaseFragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+            val navController =
+                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
@@ -157,22 +162,27 @@ class EditEventFragment : BaseFragment() {
                 showSnackBar(binding.root, getString(R.string.error_title_empty))
                 false
             }
+
             binding.editEventDescription.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, getString(R.string.error_description_empty))
                 false
             }
+
             binding.editEventLocation.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, getString(R.string.error_location_empty))
                 false
             }
+
             binding.editEventDate.text.isNullOrBlank() -> {
                 showSnackBar(binding.root, getString(R.string.error_date_empty))
                 false
             }
-            eventModel?.image.isNullOrBlank() ->{
+
+            eventModel?.image.isNullOrBlank() -> {
                 showSnackBar(binding.root, getString(R.string.error_select_image))
                 false
             }
+
             else -> true
         }
     }
