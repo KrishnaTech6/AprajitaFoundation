@@ -23,8 +23,7 @@ open class BaseFragment : Fragment() {
             } else {
                 showSnackBar(
                     requireView(),
-                    "Permission denied.\nGo to app> settings> allow permissions",
-                    Color.DKGRAY
+                    "Permission denied.\nGo to app> settings> allow permissions"
                 )
             }
         }

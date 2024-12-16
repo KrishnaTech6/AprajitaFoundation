@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:text="Our Mission"
+            style="@style/TextAppearance.MaterialComponents.Headline5"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/mission_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aprajita_mission"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:textColor="@color/black"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:text="Our Vision"
+            style="@style/TextAppearance.MaterialComponents.Headline5"/>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/vision_icon"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/aprajita_vision"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="8dp"
+            android:textColor="@color/black"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_gravity="start"  />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="OK"
+            android:layout_marginBottom="16dp"/>
+
+    </LinearLayout>
+</ScrollView>

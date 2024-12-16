@@ -123,61 +123,14 @@
                 tools:listitem="@layout/member_item"
                 android:layout_marginBottom="16dp"/>
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="8dp"
-                android:text="Our Mission"
-                style="@style/TextAppearance.MaterialComponents.Headline5"/>
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/mission_icon"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/aprajita_mission"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_gravity="start" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="8dp"
-                android:text="Our Vision"
-                style="@style/TextAppearance.MaterialComponents.Headline5"/>
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/vision_icon"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/aprajita_vision"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="8dp"
-                android:textColor="@color/black"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_gravity="start"  />
-
-            <!-- Profile Section -->
+            <!-- Donation Section -->
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="8dp"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="@color/yellowDark"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="10dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,13 +140,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="All donations can help change a life"
+                        android:text="@string/donation_title"
+                        android:gravity="center"
                         style="@style/TextAppearance.MaterialComponents.Headline4"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="\nAs an NGO, we independently organize all our events and rely solely on our own resources. Your donations are crucial for us to continue our work and make a meaningful impact.\n"
+                        android:text="@string/donation_body"
+                        android:layout_gravity="center"
                         style="@style/TextAppearance.Material3.BodyLarge"/>
 
 

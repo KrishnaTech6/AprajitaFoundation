@@ -35,8 +35,8 @@ fun isInternetAvailable(context: Context): Boolean {
 }
 
 
-fun showSnackBar(view: View,text:String, color:Int = RED){
-    Snackbar.make(view, text,Snackbar.LENGTH_SHORT ).setBackgroundTint(color).show()
+fun showSnackBar(view: View,text:String){
+    Snackbar.make(view, text,Snackbar.LENGTH_SHORT ).show()
 }
 
 fun showToast(context: Context, message: String) {

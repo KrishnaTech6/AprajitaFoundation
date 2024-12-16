@@ -5,10 +5,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -46,6 +49,17 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         super.onCreate(savedInstanceState)
         binding= ActivityPaymentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        //to hide statusbar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
+        else{
+            //for lower version of Android
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
         //Shared preference
         sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
@@ -137,12 +151,8 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         val phonePattern = Regex("^[0-9]{10}$")
 
         return when{
-            binding.userContact.text.toString().isEmpty() ->{
-                showSnackBar(binding.root,getString(R.string.enter_the_phone_number))
-                false
-            }
-            !binding.userContact.text.toString().matches(phonePattern) -> {
-                showSnackBar(binding.root,getString(R.string.enter_a_valid_10_digit_phone_number))
+            binding.userName.text.toString().isEmpty() -> {
+                showSnackBar(binding.root,getString(R.string.error_name_empty))
                 false
             }
             binding.userEmail.text.toString().isEmpty() -> {
@@ -153,8 +163,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
                 showSnackBar(binding.root,getString(R.string.error_invalid_email_address))
                 false
             }
-            binding.userName.text.toString().isEmpty() -> {
-                showSnackBar(binding.root,getString(R.string.error_name_empty))
+            binding.userContact.text.toString().isEmpty() ->{
+                showSnackBar(binding.root,getString(R.string.enter_the_phone_number))
+                false
+            }
+            !binding.userContact.text.toString().matches(phonePattern) -> {
+                showSnackBar(binding.root,getString(R.string.enter_a_valid_10_digit_phone_number))
                 false
             }
             binding.paymentAmount.text.toString().isEmpty() -> {

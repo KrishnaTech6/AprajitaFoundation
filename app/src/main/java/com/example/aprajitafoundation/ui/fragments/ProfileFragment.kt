@@ -1,5 +1,7 @@
 package com.example.aprajitafoundation.ui.fragments
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -114,7 +117,29 @@ class ProfileFragment : BaseFragment() {
 
             popUpSettingsMenu(it)
         }
+
+        binding.llAboutus.setOnClickListener{
+            showCustomDialog()
+        }
         return binding.root
+    }
+
+    private fun showCustomDialog() {
+        // Inflate the custom layout
+        val dialogView = layoutInflater.inflate(R.layout.about_us, null)
+
+        // Create the dialog
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        val dialogButton: Button = dialogView.findViewById(R.id.btn_ok)
+        dialogButton.setOnClickListener{
+            dialog.cancel()
+        }
+
+        dialog.show()
+
     }
 
     private fun popUpSettingsMenu(view: View) {
