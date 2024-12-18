@@ -21,6 +21,7 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -33,6 +34,7 @@ class ImageEventAdapter(
     private val isSlider: Boolean = false,
     private val isAdmin: Boolean = false,
     private val viewModel: DataViewModel,
+    private val onItemClickListener: (Int) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -49,7 +51,8 @@ class ImageEventAdapter(
 
     inner class SliderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView: ImageView = itemView.findViewById(R.id.iv_slider_item)
-        val textView: TextView = itemView.findViewById(R.id.tv_title_slider)
+        val title: TextView = itemView.findViewById(R.id.tv_title)
+        val subtitle: TextView = itemView.findViewById(R.id.tv_subtitle)
     }
 
     inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -67,11 +70,11 @@ class ImageEventAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return if (position < imageItems.size) {
+            TYPE_IMAGE
+        } else {
             if (isSlider) {
                 TYPE_IMAGE_SLIDER
-            } else TYPE_IMAGE
-        } else {
-            TYPE_EVENT
+            } else TYPE_EVENT
         }
     }
 
@@ -137,15 +140,15 @@ class ImageEventAdapter(
             }
 
             TYPE_IMAGE_SLIDER -> {
-                val item = imageItems.getOrNull(position)
+                val item = eventItems.getOrNull(position- imageItems.size)
                 val imageHolder = holder as SliderViewHolder
                 Glide.with(context)
                     .load(item?.image)
                     .into(imageHolder.imageView)
+                imageHolder.title.text = item?.title
+                imageHolder.subtitle.text = item?.description
                 imageHolder.itemView.setOnClickListener {
-                    val intent = Intent(context, FullScreenImageActivity::class.java)
-                    intent.putExtra(context.getString(R.string.image_url_bundle), item?.image)
-                    context.startActivity(intent)
+                    onItemClickListener(position)
                 }
             }
 

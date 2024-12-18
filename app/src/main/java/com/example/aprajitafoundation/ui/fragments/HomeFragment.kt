@@ -20,6 +20,7 @@ import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.ui.adapter.ImageAdapter
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
+import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.ImageModel
@@ -34,7 +35,7 @@ class HomeFragment : BaseFragment() {
 
     private val handler = Handler(Looper.getMainLooper())
 
-    private var sliderDataList = listOf<ImageModel>()
+    private var sliderDataList = listOf<EventModel>()
     private val autoSlideDelay: Long = 3000 // 3 seconds
 
     private lateinit var viewModel: DataViewModel
@@ -63,6 +64,7 @@ class HomeFragment : BaseFragment() {
         // Fetch the gallery images and members
         viewModel.fetchGalleryImages()
         viewModel.fetchTeamMembers()
+        viewModel.fetchAllEvents()
 
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
@@ -74,17 +76,35 @@ class HomeFragment : BaseFragment() {
                 binding.rvImageItem.layoutManager = staggeredGridLayoutManager
                 binding.rvImageItem.setHasFixedSize(true)
 
-                //For runnable
-                sliderDataList = images
-                /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
-                viewPager = binding.viewPager
-                viewPager.adapter = ImageEventAdapter(requireContext(), images, isSlider = true, viewModel = viewModel)
-
                 imageEventAdapter.notifyDataSetChanged()
-                createDots(binding.dotsLayout, sliderDataList.size) //to show dots below slider
             }
         }
 
+        viewModel.events.observe(viewLifecycleOwner){ event ->
+            if(event != null){
+                //For runnable
+                sliderDataList = event
+                /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
+                viewPager = binding.viewPager
+                val adapter = ImageEventAdapter(requireContext(), eventItems = event, isSlider = true, viewModel = viewModel){
+
+                    val bundle = Bundle()
+                    bundle.putInt("position", it) // Put the object into the bundle
+
+                    val eventsFragment = EventsFragment()
+                    eventsFragment.arguments = bundle
+
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    fragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, eventsFragment, getString(R.string.events_fragment_tag))
+                        .addToBackStack(getString(R.string.events_fragment_tag))
+                        .commit()
+                }
+                viewPager.adapter = adapter
+                adapter.notifyDataSetChanged()
+                createDots(binding.dotsLayout, sliderDataList.size)
+            }
+        }
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->

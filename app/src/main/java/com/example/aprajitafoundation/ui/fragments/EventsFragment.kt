@@ -1,14 +1,21 @@
 package com.example.aprajitafoundation.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
+import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
@@ -28,12 +35,13 @@ class EventsFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding= FragmentEventsBinding.inflate(layoutInflater)
+
+        val eventPosition: Int? = arguments?.getInt("position")
+
+        Log.d("TAG", "onCreateView: $eventPosition")
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
-
-        //val imageItem = DataSource().loadImageData()
-        binding.rvEvents.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
-        binding.rvEvents.setHasFixedSize(true)
+        binding.rvEvents.layoutManager = LinearLayoutManager(requireContext())
 
         // Observe the images LiveData
         viewModel.events.observe(viewLifecycleOwner){ events ->
