@@ -14,6 +14,7 @@ import com.example.aprajitafoundation.ui.fragments.HomeFragment
 import com.example.aprajitafoundation.ui.fragments.EventsFragment
 import com.example.aprajitafoundation.ui.fragments.GalleryFragment
 import com.example.aprajitafoundation.ui.fragments.ProfileFragment
+import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {

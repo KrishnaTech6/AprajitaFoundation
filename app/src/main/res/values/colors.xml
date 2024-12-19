@@ -19,7 +19,7 @@
     <color name="pressedColor">#808080</color>
     <color name="blackText">#000000</color>
     <color name="btnColor">#FF6200EE</color>
-    <color name="memberItemBackground">#F3F4F6</color>
+    <color name="memberItemBackground">#FAFAFA</color>
     <color name="yellowDark">#FFC107</color>
     <color name="greyBottomNav">#6B6F77</color>
     <color name="orange">#FF9800</color>

@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_margin="4dp"
     app:cardBackgroundColor="@color/memberItemBackground"
-    android:elevation="16dp"
     android:padding="2dp"
     app:cardCornerRadius="16dp">
 

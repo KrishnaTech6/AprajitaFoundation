@@ -66,6 +66,19 @@ class HomeFragment : BaseFragment() {
         viewModel.fetchTeamMembers()
         viewModel.fetchAllEvents()
 
+        // Observe the loading LiveData
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            // Handle loading state (e.g., show/hide a ProgressBar)
+            if (isLoading && isInternetAvailable(requireContext())) {
+                showDialogProgress(requireContext())
+            } else {
+                hideProgressDialog()
+            }
+        }
+        viewModel.error.observe(viewLifecycleOwner){
+            showToast(requireContext(), it)
+        }
+
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
             if(images!=null){
@@ -75,8 +88,6 @@ class HomeFragment : BaseFragment() {
                     StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
                 binding.rvImageItem.layoutManager = staggeredGridLayoutManager
                 binding.rvImageItem.setHasFixedSize(true)
-
-                imageEventAdapter.notifyDataSetChanged()
             }
         }
 
@@ -101,26 +112,8 @@ class HomeFragment : BaseFragment() {
                         .commit()
                 }
                 viewPager.adapter = adapter
-                adapter.notifyDataSetChanged()
                 createDots(binding.dotsLayout, sliderDataList.size)
             }
-        }
-
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            // Handle loading state (e.g., show/hide a ProgressBar)
-            if (isLoading) {
-                showDialogProgress(requireContext())
-                if (!isInternetAvailable(requireContext())) {
-                    hideProgressDialog()
-                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
-                }
-            } else {
-                hideProgressDialog()
-            }
-        }
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast(requireContext(), it)
         }
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
@@ -205,6 +198,7 @@ class HomeFragment : BaseFragment() {
                         )
                     )
                 }
+
             }
         })
     }

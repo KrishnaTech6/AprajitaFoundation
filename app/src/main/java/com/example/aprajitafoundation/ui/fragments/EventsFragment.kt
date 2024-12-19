@@ -47,7 +47,8 @@ class EventsFragment : BaseFragment() {
         viewModel.events.observe(viewLifecycleOwner){ events ->
             val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events, viewModel = viewModel)
             binding.rvEvents.adapter = imageEventAdapter
-            imageEventAdapter.notifyDataSetChanged()
+// SCROLL TO POSITION NOT WORKING
+            Handler().postDelayed({ eventPosition?.let { binding.rvEvents.scrollToPosition(it) } }, 2500)
         }
 
         // Observe the loading LiveData

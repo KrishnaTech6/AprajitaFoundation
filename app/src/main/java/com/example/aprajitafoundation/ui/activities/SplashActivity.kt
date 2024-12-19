@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation.ui.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,19 +12,26 @@ import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.AdminActivity
 import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.databinding.ActivitySplashBinding
+import com.example.aprajitafoundation.utility.isInternetAvailable
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
+    private lateinit var viewModel: DataViewModel
     private lateinit var binding:ActivitySplashBinding
     private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize the ViewModel
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         //to hide statusbar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
@@ -53,19 +61,31 @@ class SplashActivity : AppCompatActivity() {
         val adminLogin = sharedPreferences.getString(getString(R.string.token_login_admin), "")
 
 
-        //to show splash screen for 2s and go to main screen
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                if (mAuth.currentUser != null) {// Check if user is already signed in
-                    gotoActivity(MainActivity::class.java)
-                }else if(!adminLogin.isNullOrBlank()){ // check if admin is already signed in
-                    gotoActivity(AdminActivity::class.java)
-                }else{
-                    Log.d("SplashActivity", "onCreate: ${mAuth.currentUser}")
-                    gotoActivity(LoginActivity::class.java)
-                }
-            }, 2000
-        )
+        if (!isInternetAvailable(this)) {
+            AlertDialog.Builder(this)
+                .setTitle("No Internet")
+                .setMessage("Internet connection is required to use this app.")
+                .setPositiveButton("Retry") { _, _ -> recreate() }
+                .setNegativeButton("Exit") { _, _ -> finish() }
+                .show()
+        }else{
+            // Fetch the gallery images and members
+            viewModel.fetchTeamMembers()
+            viewModel.fetchAllEvents()
+            //to show splash screen for 2s and go to main screen
+            Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    if (mAuth.currentUser != null) {// Check if user is already signed in
+                        gotoActivity(MainActivity::class.java)
+                    }else if(!adminLogin.isNullOrBlank()){ // check if admin is already signed in
+                        gotoActivity(AdminActivity::class.java)
+                    }else{
+                        Log.d("SplashActivity", "onCreate: ${mAuth.currentUser}")
+                        gotoActivity(LoginActivity::class.java)
+                    }
+                }, 2500
+            )
+        }
     }
 
     private fun gotoActivity(activityClass: Class<out Activity>){

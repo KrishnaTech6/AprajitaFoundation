@@ -85,7 +85,7 @@ class ImageAdapter(
             .thumbnail(0.1f)
             .into(holder.ivImage)
 
-        holder.tvName.text = item.name ?: ""
+        holder.tvName.text = item.name.trim() ?: ""
         holder.tvDesignation.text = item.position ?: ""
         AnimationUtils.fadeIn(holder.itemView, 500)
 

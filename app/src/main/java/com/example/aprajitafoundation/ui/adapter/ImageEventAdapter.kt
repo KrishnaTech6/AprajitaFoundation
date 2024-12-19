@@ -145,8 +145,8 @@ class ImageEventAdapter(
                 Glide.with(context)
                     .load(item?.image)
                     .into(imageHolder.imageView)
-                imageHolder.title.text = item?.title
-                imageHolder.subtitle.text = item?.description
+                imageHolder.title.text = item?.title?.trim()?: ""
+                imageHolder.subtitle.text = item?.description?.trim() ?:""
                 imageHolder.itemView.setOnClickListener {
                     onItemClickListener(position)
                 }
@@ -191,9 +191,9 @@ class ImageEventAdapter(
                     .load(item?.image)
                     .thumbnail(0.1f)
                     .into(eventHolder.eventImage)
-                eventHolder.eventTitle.text = item?.title
-                eventHolder.eventDescription.text = item?.description
-                eventHolder.eventLocation.text = item?.location
+                eventHolder.eventTitle.text = item?.title?.trim() ?: ""
+                eventHolder.eventDescription.text = item?.description ?: ""
+                eventHolder.eventLocation.text = item?.location?.trim() ?: ""
                 eventHolder.eventDate.text = formattedDate
 
                 eventHolder.eventImage.setOnClickListener{
