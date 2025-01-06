@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEvents2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
@@ -53,20 +54,12 @@ class EventsAdminFragment : Fragment() {
             binding.rvEvents.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
-
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            // Handle loading state (e.g., show/hide a ProgressBar)
-            if (isLoading) {
-                showDialogProgress(requireContext())
-                if (!isInternetAvailable(requireContext())) {
-                    hideProgressDialog()
-                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
-                }
-            } else {
-                hideProgressDialog()
-            }
+            if (isLoading) handleLoadingState(requireContext(), requireView())
+            else hideProgressDialog()
         }
+
         viewModel.error.observe(viewLifecycleOwner){
             showToast(requireContext(), it)
         }

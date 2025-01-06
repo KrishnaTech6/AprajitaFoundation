@@ -26,5 +26,6 @@
 
     <color name="cardBackground1">#388E3C</color>
     <color name="cardBackground2">#2E5B7C</color>
+    <color name="textBlack">#000000</color>
 
 </resources>

@@ -18,6 +18,7 @@ import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.databinding.FragmentRegisterAdminBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.afterTextChanged
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.showDialogProgress
@@ -99,15 +100,10 @@ class RegisterAdminFragment : BaseFragment() {
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
-
-        viewModel.loading.observe(viewLifecycleOwner) {
-            if (it) {
-                showDialogProgress(requireContext())
-                if (!isInternetAvailable(requireContext())) {
-                    hideProgressDialog()
-                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
-                }
-            } else hideProgressDialog()
+        // Observe the loading LiveData
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) handleLoadingState(requireContext(), requireView())
+            else hideProgressDialog()
         }
     }
 

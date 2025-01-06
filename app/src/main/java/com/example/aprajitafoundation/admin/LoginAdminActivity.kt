@@ -9,11 +9,13 @@ import android.os.Looper
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
 import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
@@ -67,12 +69,11 @@ class LoginAdminActivity : AppCompatActivity() {
             showToast(this, error)
         }
 
+        // Observe the loading LiveData
         viewModel.loading.observe(this) { isLoading ->
-            if(isLoading) showDialogProgress(this)
+            if (isLoading) handleLoadingState(this, binding.root)
             else hideProgressDialog()
         }
-
-
     }
 
     private fun isDetailsValid(): Boolean {

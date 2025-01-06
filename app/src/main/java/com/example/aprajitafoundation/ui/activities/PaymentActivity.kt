@@ -14,6 +14,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.viewmodel.DataViewModel
@@ -24,6 +25,7 @@ import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.utility.afterTextChanged
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
@@ -96,17 +98,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             }
         }
 
-        viewModel.loading.observe(this){
-            if(it){
-                showDialogProgress(this)
-                if(!isInternetAvailable(this)){
-                    hideProgressDialog()
-                    showSnackBar(binding.root, getString(R.string.no_internet_connection))
-                }
-            }else{
-                hideProgressDialog()
-            }
+        // Observe the loading LiveData
+        viewModel.loading.observe(this) { isLoading ->
+            if (isLoading) handleLoadingState(this,binding.root)
+            else hideProgressDialog()
         }
+
         viewModel.error.observe(this){
             showToast(this, it)
             Log.d(TAG, it)

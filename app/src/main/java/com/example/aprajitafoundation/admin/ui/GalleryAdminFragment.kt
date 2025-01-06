@@ -84,17 +84,10 @@ class GalleryAdminFragment : BaseFragment() {
                 isSwitched = false // Reset after upload is processed
             }
         }
-
+        // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) {
-                showDialogProgress(requireContext())
-                if (!isInternetAvailable(requireContext())) {
-                    hideProgressDialog()
-                    showSnackBar(requireView(), getString(R.string.no_internet_connection))
-                }
-            } else {
-                hideProgressDialog()
-            }
+            if (isLoading) handleLoadingState(requireContext(), requireView())
+            else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner) {

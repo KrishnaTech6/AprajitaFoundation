@@ -21,11 +21,8 @@ import com.example.aprajitafoundation.ui.adapter.ImageAdapter
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.model.EventModel
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.model.ImageModel
-import com.example.aprajitafoundation.utility.showDialogProgress
-import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.utility.showToast
 
 class HomeFragment : BaseFragment() {
@@ -42,11 +39,10 @@ class HomeFragment : BaseFragment() {
 
     private val autoSlideRunnable = object : Runnable {
         override fun run() {
-            if(sliderDataList.isNotEmpty()){
-                val nextItem =
-                    if (viewPager.currentItem == sliderDataList.size - 1) 0 else viewPager.currentItem + 1
+            if (sliderDataList.isNotEmpty()) {
+                val nextItem = (viewPager.currentItem + 1) % sliderDataList.size
                 viewPager.setCurrentItem(nextItem, true)
-                handler.postDelayed(this, autoSlideDelay) // Schedule next slide
+                handler.postDelayed(this, autoSlideDelay) // Schedule the next slide
             }
         }
     }
@@ -68,13 +64,10 @@ class HomeFragment : BaseFragment() {
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            // Handle loading state (e.g., show/hide a ProgressBar)
-            if (isLoading && isInternetAvailable(requireContext())) {
-                showDialogProgress(requireContext())
-            } else {
-                hideProgressDialog()
-            }
+            if (isLoading) handleLoadingState(requireContext(), requireView())
+            else hideProgressDialog()
         }
+
         viewModel.error.observe(viewLifecycleOwner){
             showToast(requireContext(), it)
         }
@@ -177,30 +170,57 @@ class HomeFragment : BaseFragment() {
                     )
                 )
                 layoutParams = params
+                // Set initial size
+                scaleX = 1f
+                scaleY = 1f
             }
             dotsLayout.addView(dots[i])
         }
 
-        dots[0]?.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.dot_active
+        dots[0]?.apply {
+            setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.dot_active
+                )
             )
-        )
+            animateDot(this, true)
+        }
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 dots.forEachIndexed { index, imageView ->
-                    imageView?.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            requireContext(),
-                            if (index == position) R.drawable.dot_active else R.drawable.dot_inactive
-                        )
-                    )
+                    imageView?.let {
+                        if(index == position){
+                            it.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    requireContext(),
+                                    R.drawable.dot_active
+                                )
+                            )
+                            animateDot(it, true)
+                        }else{
+                            it.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    requireContext(),
+                                    R.drawable.dot_inactive
+                                )
+                            )
+                            animateDot(it, false)
+                        }
+                    }
                 }
 
             }
         })
+    }
+    private fun animateDot(dot: ImageView, isActive: Boolean) {
+        val scale = if (isActive) 1.5f else 1f // Adjust scale for active/inactive
+        dot.animate()
+            .scaleX(scale)
+            .scaleY(scale)
+            .setDuration(200) // Animation duration in milliseconds
+            .start()
     }
 
     override fun onResume() {

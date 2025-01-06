@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.databinding.FragmentPaymentsBinding
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.utility.Constants
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
@@ -110,8 +111,11 @@ class PaymentsFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             showToast(requireContext(), it)
         }
-        viewModel.loading.observe(viewLifecycleOwner) {
-            if (it) showDialogProgress(requireContext()) else hideProgressDialog()
+
+        // Observe the loading LiveData
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) handleLoadingState(requireContext(), requireView())
+            else hideProgressDialog()
         }
     }
 

@@ -1,31 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:scrollbars="none"
+    android:background="@color/bgYellow"
     android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Foundation Logo -->
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@color/yellow"
+                android:src="@drawable/logo_12"
+                tools:ignore="ContentDescription"/>
+
+            <!-- Foundation Name and Tagline -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/textBlack"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/aprajita_subheading"
+                    android:textColor="@color/textBlack"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="24dp"
             android:text="Our Mission"
-            style="@style/TextAppearance.MaterialComponents.Headline5"/>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/mission_icon"/>
+            android:textColor="@color/yellowDark"
+            style="@style/TextAppearance.MaterialComponents.Headline6"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/aprajita_mission"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="8dp"
-            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/textBlack"
+            android:gravity="fill"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_gravity="start" />
 
@@ -33,32 +73,95 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:layout_marginVertical="8dp"
             android:text="Our Vision"
-            style="@style/TextAppearance.MaterialComponents.Headline5"/>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/vision_icon"/>
-
+            android:textColor="@color/yellowDark"
+            style="@style/TextAppearance.MaterialComponents.Headline6"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/aprajita_vision"
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
-            android:textColor="@color/black"
+            android:textColor="@color/textBlack"
+            android:gravity="fill"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_gravity="start"  />
-
-        <Button
-            android:id="@+id/btn_ok"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="OK"
-            android:layout_marginBottom="16dp"/>
+            android:layout_margin="8dp"
+            android:text="Our Projects"
+            android:textColor="@color/yellowDark"
+            style="@style/TextAppearance.MaterialComponents.Headline6"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vocational Training Programs"
+                android:textColor="@color/yellowDark"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.BodyLarge"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We offer a range of vocational training programs designed to provide women with the skills they need to start their own businesses or secure meaningful employment."
+                android:textColor="@color/textBlack"
+                android:layout_marginTop="4dp"
+                android:gravity="fill"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_gravity="start" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cultural Preservation Initiatives"
+                android:textColor="@color/yellowDark"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.BodyLarge"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Our cultural preservation initiatives focus on documenting, promoting, and supporting traditional crafts and practices, ensuring that they remain a vital part of our community."
+                android:textColor="@color/textBlack"
+                android:layout_marginTop="4dp"
+                android:gravity="fill"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_gravity="start" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Community Support Programs"
+                android:textColor="@color/yellowDark"
+                android:textStyle="bold"
+                style="@style/TextAppearance.Material3.BodyLarge"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="We work closely with local communities to provide support services, including healthcare, education, and legal aid, to ensure that women and their families have the resources they need to thrive."
+                android:textColor="@color/textBlack"
+                android:layout_marginTop="4dp"
+                android:gravity="fill"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_gravity="start" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

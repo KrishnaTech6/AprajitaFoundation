@@ -17,7 +17,7 @@
             android:layout_marginVertical="8dp"
             android:layout_marginStart="16dp"
             android:text="Gallery"
-            style="@style/TextAppearance.MaterialComponents.Headline5" />
+            style="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

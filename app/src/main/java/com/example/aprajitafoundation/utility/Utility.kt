@@ -1,5 +1,6 @@
 package com.example.aprajitafoundation.utility
 
+import android.R.color.transparent
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color.RED
@@ -13,12 +14,14 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.example.aprajitafoundation.R
 import com.google.android.material.snackbar.Snackbar
+import org.bouncycastle.crypto.params.Blake3Parameters.context
 
 fun isInternetAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -49,7 +52,18 @@ fun showDialogProgress(context: Context){
     mProgressDialog.setContentView(R.layout.progress_bar)
     mProgressDialog.setCancelable(false)
     mProgressDialog.setCanceledOnTouchOutside(false)
+    // Set the background of the dialog window to transparent
+    mProgressDialog.window?.setBackgroundDrawableResource(transparent)
     mProgressDialog.show()
+}
+
+fun handleLoadingState(context: Context, view: View) {
+    if (isInternetAvailable(context)) {
+        showDialogProgress(context)
+    } else {
+        hideProgressDialog()
+        showSnackBar(view, context.getString(R.string.no_internet_connection))
+    }
 }
 
 fun hideProgressDialog() = mProgressDialog.dismiss()

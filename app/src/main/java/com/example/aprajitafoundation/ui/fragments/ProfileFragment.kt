@@ -32,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.itextpdf.kernel.pdf.PdfName.r
+import org.bouncycastle.asn1.x500.style.RFC4519Style.member
 
 
 class ProfileFragment : BaseFragment() {
@@ -119,27 +120,14 @@ class ProfileFragment : BaseFragment() {
         }
 
         binding.llAboutus.setOnClickListener{
-            showCustomDialog()
+            val aboutUsFragment = AboutUsFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, aboutUsFragment) // Use your container ID
+                .addToBackStack(null)
+                .commit()
+
         }
         return binding.root
-    }
-
-    private fun showCustomDialog() {
-        // Inflate the custom layout
-        val dialogView = layoutInflater.inflate(R.layout.about_us, null)
-
-        // Create the dialog
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
-
-        val dialogButton: Button = dialogView.findViewById(R.id.btn_ok)
-        dialogButton.setOnClickListener{
-            dialog.cancel()
-        }
-
-        dialog.show()
-
     }
 
     private fun popUpSettingsMenu(view: View) {

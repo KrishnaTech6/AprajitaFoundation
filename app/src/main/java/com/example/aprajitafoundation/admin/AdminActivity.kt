@@ -21,6 +21,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -30,6 +31,7 @@ import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.CloudinaryManager
+import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showToast
@@ -73,8 +75,10 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
             showToast(this, it)
         }
 
-        viewModel.loading.observe(this) {
-            if (it) showDialogProgress(this) else hideProgressDialog()
+        // Observe the loading LiveData
+        viewModel.loading.observe(this) { isLoading ->
+            if (isLoading) handleLoadingState(this,binding.root)
+            else hideProgressDialog()
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
