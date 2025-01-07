@@ -18,12 +18,8 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.FragmentEditAdminProfileBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.utility.showDialogProgress
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 import com.google.gson.Gson
@@ -107,7 +103,7 @@ class EditProfileAdminFragment : BaseFragment() {
         }
 
         viewModel.genericResponse.observe(viewLifecycleOwner){
-            showToast(requireContext(), it.message)
+            showToast( it.message)
 
             hideProgressDialog()
             //fetch profile from the server after updating
@@ -116,12 +112,12 @@ class EditProfileAdminFragment : BaseFragment() {
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
 
         viewModel.authResponse.observe(viewLifecycleOwner){
-            showToast(requireContext(), it.message)
+            showToast(it.message)
             // Notify activity to update header
             hideProgressDialog()
             profileUpdatedListener?.onProfileUpdated(it.user.name, it.user.email, it.user.profileImg)

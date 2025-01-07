@@ -15,7 +15,6 @@ import androidx.core.content.FileProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityPaymentSuccessBinding
 import com.example.aprajitafoundation.model.Payment
-import com.example.aprajitafoundation.utility.showToast
 import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.io.FileOutputStream
@@ -24,7 +23,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PaymentSuccessActivity : AppCompatActivity() {
+class PaymentSuccessActivity : BaseActivity() {
 
     private var paymentDetails: Payment? = null
     private lateinit var binding: ActivityPaymentSuccessBinding
@@ -54,7 +53,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
                 if (!isDownloaded)
                     downloadReceipt()
                 else
-                    showToast(this, "File already downloaded! Check Downloads")
+                    showToast( "File already downloaded! Check Downloads")
 
             }
 
@@ -159,7 +158,7 @@ class PaymentSuccessActivity : AppCompatActivity() {
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(this, "Unable to open the file: ${e.message}")
+            showToast("Unable to open the file: ${e.message}")
         }
     }
 

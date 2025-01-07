@@ -13,15 +13,10 @@ import androidx.navigation.findNavController
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEvents2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.utility.showDialogProgress
-import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 
-class EventsAdminFragment : Fragment() {
+class EventsAdminFragment : BaseFragment() {
     private lateinit var binding: FragmentEvents2Binding
     private lateinit var viewModel: DataViewModel
     override fun onCreateView(
@@ -35,7 +30,7 @@ class EventsAdminFragment : Fragment() {
 
         //if item deleted then result is obtained here
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast( it.message)
             //do this before calling fetch again
             hideProgressDialog()
             //Again fetch events
@@ -56,12 +51,12 @@ class EventsAdminFragment : Fragment() {
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner){
-            showToast(requireContext(), it)
+            showToast(it)
         }
 
         binding.btnAddEvent.setOnClickListener{

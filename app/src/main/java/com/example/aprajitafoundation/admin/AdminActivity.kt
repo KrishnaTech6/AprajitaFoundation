@@ -29,17 +29,14 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.ui.EditProfileAdminFragment
 import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
+import com.example.aprajitafoundation.ui.activities.BaseActivity
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.CloudinaryManager
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showDialogProgress
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpdatedListener {
+class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityAdminBinding
@@ -72,12 +69,12 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
 
 
         viewModel.error.observe(this) {
-            showToast(this, it)
+            showToast( it)
         }
 
         // Observe the loading LiveData
         viewModel.loading.observe(this) { isLoading ->
-            if (isLoading) handleLoadingState(this,binding.root)
+            if (isLoading) handleLoadingState(binding.root)
             else hideProgressDialog()
         }
 
@@ -159,7 +156,7 @@ class AdminActivity : AppCompatActivity(), EditProfileAdminFragment.OnProfileUpd
                 viewModel.logout(this@AdminActivity)
 
                 viewModel.genericResponse.observe(this@AdminActivity) {
-                    showToast(this@AdminActivity, it.message)
+                    showToast( it.message)
 
                     //clear tasks and go to LoginActivity
                     val intent = Intent(this, LoginAdminActivity::class.java)

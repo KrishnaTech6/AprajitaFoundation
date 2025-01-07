@@ -1,7 +1,5 @@
 package com.example.aprajitafoundation.ui.fragments
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
@@ -11,28 +9,24 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.FragmentProfileBinding
 import com.example.aprajitafoundation.model.UserData
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.ui.activities.LoginActivity
+import com.example.aprajitafoundation.ui.activities.UpiPaymentActivity
 import com.example.aprajitafoundation.utility.AnimationUtils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
-import com.itextpdf.kernel.pdf.PdfName.r
-import org.bouncycastle.asn1.x500.style.RFC4519Style.member
 
 
 class ProfileFragment : BaseFragment() {
@@ -110,7 +104,8 @@ class ProfileFragment : BaseFragment() {
         }
 
         binding.llDonate.setOnClickListener {
-            val intent = Intent(requireActivity(), PaymentActivity::class.java)
+            //val intent = Intent(requireActivity(), PaymentActivity::class.java)
+            val intent = Intent(requireActivity(), UpiPaymentActivity::class.java)
             startActivity(intent)
         }
         binding.ivSettings.setOnClickListener {
@@ -154,7 +149,7 @@ class ProfileFragment : BaseFragment() {
                         val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
                         googleSignInClient.signOut().addOnSuccessListener {
-                            showToast(requireContext(), "Signed Out Successfully!")
+                            showToast("Signed Out Successfully!")
 
                             // Clear the google_user_data from SharedPreferences
                             with(sharedPreferences.edit()) {
@@ -180,7 +175,7 @@ class ProfileFragment : BaseFragment() {
                             showSnackBar(requireView(), "error: ${it.message}")
                         }
                     }else{
-                        showToast(requireContext(), "No User")
+                        showToast("No User")
                     }
 
                     true

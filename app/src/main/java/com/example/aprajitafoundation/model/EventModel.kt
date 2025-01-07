@@ -3,7 +3,6 @@ package com.example.aprajitafoundation.model
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.text.DateFormat
 import java.util.Date
 
 @Parcelize

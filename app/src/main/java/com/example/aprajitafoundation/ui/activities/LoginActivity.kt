@@ -2,24 +2,17 @@ package com.example.aprajitafoundation.ui.activities
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
-import com.example.aprajitafoundation.utility.hideProgressDialog
 import com.example.aprajitafoundation.model.UserData
 import com.example.aprajitafoundation.admin.LoginAdminActivity
 import com.example.aprajitafoundation.utility.saveInputToPreferences
-import com.example.aprajitafoundation.utility.showDialogProgress
-import com.example.aprajitafoundation.utility.showToast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -32,14 +25,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var binding: ActivityLoginBinding
-
-    private lateinit var viewModel: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +48,6 @@ class LoginActivity : AppCompatActivity() {
             )
         }
 
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
-
         mAuth = FirebaseAuth.getInstance()
 
         binding.skipButton.setOnClickListener {
@@ -74,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         binding.btnGoogleSignin.setOnClickListener {
-            showDialogProgress(this)
+            showDialogProgress()
             val intent = googleSignInClient.signInIntent
             startActivityForResult(intent, 1001)
         }
@@ -95,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 account = task.getResult(ApiException::class.java)
             } catch (exception: ApiException) {
-                showToast(this@LoginActivity, "Error : ${exception.message}")
+                showToast("Error : ${exception.message}")
                 hideProgressDialog()
                 return
             }
@@ -111,16 +100,6 @@ class LoginActivity : AppCompatActivity() {
                             account?.displayName,
                             account?.photoUrl.toString()
                         )
-
-
-                        viewModel.error.observe(this){
-                            Log.d("LoginActivity", it)
-                        }
-
-                        //Sending userData to Server
-                        viewModel.sendUserData(userData)
-                        
-
                         val gson = Gson()
                         val userDataJson = gson.toJson(userData)
                         saveInputToPreferences(this, getString(R.string.google_user_data), userDataJson)

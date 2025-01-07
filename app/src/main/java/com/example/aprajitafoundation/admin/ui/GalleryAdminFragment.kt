@@ -21,6 +21,7 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.*
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import kotlinx.coroutines.*
@@ -71,14 +72,14 @@ class GalleryAdminFragment : BaseFragment() {
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->
-            showToast(requireContext(), response.message)
+            showToast( response.message)
             hideProgressDialog()
             viewModel.fetchAllGalleryImages() // Fetch updated images
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
             if (isSwitched) {
-                showToast(requireContext(), it.message)
+                showToast( it.message)
                 hideProgressDialog()
                 viewModel.fetchAllGalleryImages()
                 isSwitched = false // Reset after upload is processed
@@ -86,12 +87,12 @@ class GalleryAdminFragment : BaseFragment() {
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it)
+            showToast( it)
         }
     }
 

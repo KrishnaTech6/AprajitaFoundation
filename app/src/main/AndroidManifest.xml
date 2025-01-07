@@ -66,6 +66,10 @@
             android:name=".ui.activities.FullScreenImageActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.activities.UpiPaymentActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.PaymentActivity"
             android:screenOrientation="portrait"
             android:exported="false" />

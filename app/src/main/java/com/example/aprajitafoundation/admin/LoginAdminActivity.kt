@@ -6,23 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
+import com.example.aprajitafoundation.ui.activities.BaseActivity
 import com.example.aprajitafoundation.ui.activities.LoginActivity
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 
-class LoginAdminActivity : AppCompatActivity() {
+class LoginAdminActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginAdminBinding
     private lateinit var viewModel: AdminAuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +51,7 @@ class LoginAdminActivity : AppCompatActivity() {
         }
 
         viewModel.authResponseLogin.observe(this) { response ->
-            showToast(this, response.message)
+            showToast(response.message)
             hideProgressDialog()
             Handler(Looper.getMainLooper()).postDelayed({
                 val intent = Intent(this, AdminActivity::class.java)
@@ -66,12 +61,12 @@ class LoginAdminActivity : AppCompatActivity() {
         }
 
         viewModel.error.observe(this) { error ->
-            showToast(this, error)
+            showToast( error)
         }
 
         // Observe the loading LiveData
         viewModel.loading.observe(this) { isLoading ->
-            if (isLoading) handleLoadingState(this, binding.root)
+            if (isLoading) handleLoadingState( binding.root)
             else hideProgressDialog()
         }
     }

@@ -10,11 +10,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentGalleryBinding
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showToast
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : BaseFragment() {
     private lateinit var binding: FragmentGalleryBinding
     private lateinit var viewModel: DataViewModel
     override fun onCreateView(
@@ -40,12 +37,12 @@ class GalleryFragment : Fragment() {
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner){
-            showToast(requireContext(), it)
+            showToast(it)
         }
 
         // Fetch the all images

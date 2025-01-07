@@ -21,11 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.databinding.FragmentPaymentsBinding
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.Constants
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showDialogProgress
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.io.image.ImageDataFactory
@@ -48,7 +45,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PaymentsFragment : Fragment() {
+class PaymentsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPaymentsBinding
     private var paymentsList: List<Payment> = listOf()
@@ -109,12 +106,12 @@ class PaymentsFragment : Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it)
+            showToast( it)
         }
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState(requireView())
             else hideProgressDialog()
         }
     }
@@ -205,7 +202,7 @@ class PaymentsFragment : Fragment() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     withContext(Dispatchers.Main){
-                        showToast(requireContext(), "Failed to save PDF: ${e.message}")
+                        showToast( "Failed to save PDF: ${e.message}")
                     }
                 }
         }
@@ -219,7 +216,7 @@ class PaymentsFragment : Fragment() {
             startActivity(intent)
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(requireContext(), "Unable to open the file: ${e.message}")
+            showToast("Unable to open the file: ${e.message}")
         }
     }
 
@@ -323,7 +320,7 @@ class PaymentsFragment : Fragment() {
         if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             savePdfFile(paymentsList)
         } else {
-            showToast(requireContext(), "Permission Denied")
+            showToast( "Permission Denied")
         }
     }
 }

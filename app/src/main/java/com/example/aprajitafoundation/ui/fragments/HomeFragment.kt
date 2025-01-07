@@ -16,14 +16,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.ui.activities.PaymentActivity
 import com.example.aprajitafoundation.ui.adapter.ImageAdapter
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentHomeBinding
 import com.example.aprajitafoundation.model.EventModel
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showToast
+import com.example.aprajitafoundation.ui.activities.UpiPaymentActivity
 
 class HomeFragment : BaseFragment() {
 
@@ -63,13 +60,14 @@ class HomeFragment : BaseFragment() {
         viewModel.fetchAllEvents()
 
         // Observe the loading LiveData
+
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState(requireView())
             else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner){
-            showToast(requireContext(), it)
+            showToast(it)
         }
 
         // Observe the images LiveData
@@ -100,8 +98,8 @@ class HomeFragment : BaseFragment() {
 
                     val fragmentManager = requireActivity().supportFragmentManager
                     fragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, eventsFragment, getString(R.string.events_fragment_tag))
-                        .addToBackStack(getString(R.string.events_fragment_tag))
+                        .replace(R.id.frame_layout, eventsFragment, requireContext().getString(R.string.events_fragment_tag))
+                        .addToBackStack(requireContext().getString(R.string.events_fragment_tag))
                         .commit()
                 }
                 viewPager.adapter = adapter
@@ -134,7 +132,8 @@ class HomeFragment : BaseFragment() {
         }
         //for donations:razorpay
         binding.btnDonate.setOnClickListener {
-            val intent = Intent(requireActivity(), PaymentActivity::class.java)
+            //val intent = Intent(requireActivity(), PaymentActivity::class.java)
+            val intent = Intent(requireActivity(), UpiPaymentActivity::class.java)
             startActivity(intent)
         }
 
@@ -142,8 +141,8 @@ class HomeFragment : BaseFragment() {
         binding.llGoToGallery.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, GalleryFragment(), getString(R.string.gallery_fragment_tag))
-                .addToBackStack(getString(R.string.gallery_fragment_tag))
+                .replace(R.id.frame_layout, GalleryFragment(), requireContext().getString(R.string.gallery_fragment_tag))
+                .addToBackStack(requireContext().getString(R.string.gallery_fragment_tag))
                 .commit()
 
         }

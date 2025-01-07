@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -21,13 +22,9 @@ import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.MemberModel2
 import com.example.aprajitafoundation.model.Socials
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.afterTextChanged
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.gson.Gson
@@ -120,7 +117,7 @@ class EditMemberFragment : BaseFragment() {
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast( it.message)
             Log.d("EditMember", it.message)
             hideProgressDialog()
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
@@ -128,7 +125,7 @@ class EditMemberFragment : BaseFragment() {
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast( it.message)
             Log.d("EditMember", it.message)
             hideProgressDialog()
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
@@ -137,7 +134,7 @@ class EditMemberFragment : BaseFragment() {
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
 

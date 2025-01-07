@@ -1,9 +1,6 @@
 package com.example.aprajitafoundation.utility
 
-import android.R.color.transparent
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color.RED
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -14,14 +11,21 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
-import com.example.aprajitafoundation.R
 import com.google.android.material.snackbar.Snackbar
-import org.bouncycastle.crypto.params.Blake3Parameters.context
+
+
+fun saveInputToPreferences(context: Context, key: String, value: String) {
+    //Shared preference
+    val sharedPreferences =
+        context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString(key, value)
+    editor.apply()
+}
 
 fun isInternetAvailable(context: Context): Boolean {
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -40,41 +44,6 @@ fun isInternetAvailable(context: Context): Boolean {
 
 fun showSnackBar(view: View,text:String){
     Snackbar.make(view, text,Snackbar.LENGTH_SHORT ).show()
-}
-
-fun showToast(context: Context, message: String) {
-    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-}
-private lateinit var mProgressDialog: Dialog
-
-fun showDialogProgress(context: Context){
-    mProgressDialog = Dialog(context)
-    mProgressDialog.setContentView(R.layout.progress_bar)
-    mProgressDialog.setCancelable(false)
-    mProgressDialog.setCanceledOnTouchOutside(false)
-    // Set the background of the dialog window to transparent
-    mProgressDialog.window?.setBackgroundDrawableResource(transparent)
-    mProgressDialog.show()
-}
-
-fun handleLoadingState(context: Context, view: View) {
-    if (isInternetAvailable(context)) {
-        showDialogProgress(context)
-    } else {
-        hideProgressDialog()
-        showSnackBar(view, context.getString(R.string.no_internet_connection))
-    }
-}
-
-fun hideProgressDialog() = mProgressDialog.dismiss()
-
- fun saveInputToPreferences(context: Context, key: String, value: String) {
-    //Shared preference
-    val sharedPreferences =
-        context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
-    val editor = sharedPreferences.edit()
-    editor.putString(key, value)
-    editor.apply()
 }
 
 fun EditText.afterTextChanged(action: (text: String) -> Unit) {
@@ -119,7 +88,7 @@ fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onS
                 // Upload progress
                 if (!isInternetAvailable(context)) {
                     progressBar.visibility = View.GONE
-                    showToast(context, "No Internet Connection!")
+                    Toast.makeText(context, "No Internet Connection!", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -133,7 +102,7 @@ fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onS
             override fun onError(requestId: String, error: ErrorInfo) {
                 // Handle error
                 progressBar.visibility = View.GONE
-                showToast(context, "Error: ${error.description}")
+                Toast.makeText(context, "Error: ${error.description}", Toast.LENGTH_SHORT).show()
             }
 
             override fun onReschedule(requestId: String, error: ErrorInfo) {

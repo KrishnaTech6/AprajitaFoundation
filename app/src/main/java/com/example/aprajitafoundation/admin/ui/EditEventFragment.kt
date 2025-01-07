@@ -1,21 +1,16 @@
 package com.example.aprajitafoundation.admin.ui
 
-import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -23,13 +18,9 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.FragmentEditEventBinding
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.afterTextChanged
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import java.text.SimpleDateFormat
@@ -92,14 +83,14 @@ class EditEventFragment : BaseFragment() {
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast( it.message)
             val navController =
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast( it.message)
             val navController =
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
@@ -107,7 +98,7 @@ class EditEventFragment : BaseFragment() {
 
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState(requireView())
             else hideProgressDialog()
         }
 

@@ -224,6 +224,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             _loading.value = true
             try {
                 val response = apiCall()
+                Log.d("DataViewModel", "Response class: ${response.body()!!::class.java}")
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }
@@ -251,6 +252,8 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiCall(token)
+                Log.d("DataViewModel", "Response class: ${response.body()!!::class.java}")
+
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }

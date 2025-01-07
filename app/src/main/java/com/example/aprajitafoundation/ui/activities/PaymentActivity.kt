@@ -14,22 +14,16 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityPaymentBinding
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.utility.afterTextChanged
-import com.example.aprajitafoundation.utility.handleLoadingState
 import com.example.aprajitafoundation.utility.saveInputToPreferences
-import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.razorpay.Checkout
 import com.razorpay.ExternalWalletListener
 import com.razorpay.PaymentData
@@ -38,7 +32,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.Date
 
-class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, ExternalWalletListener, DialogInterface.OnClickListener{
+class PaymentActivity : BaseActivity(), PaymentResultWithDataListener, ExternalWalletListener, DialogInterface.OnClickListener{
     private lateinit var binding: ActivityPaymentBinding
 
     private lateinit var viewModel: DataViewModel
@@ -67,7 +61,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
         sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
 
         // Retrieve and set values to EditText
-        binding.userName.setText(getInputFromPreferences(getString(R.string.phone_payment)))
+        binding.userName.setText(getInputFromPreferences(getString(R.string.name_payment)))
         binding.userEmail.setText(getInputFromPreferences(getString(R.string.email_payment)))
         binding.userContact.setText(getInputFromPreferences(getString(R.string.phone_payment)))
 
@@ -100,12 +94,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         // Observe the loading LiveData
         viewModel.loading.observe(this) { isLoading ->
-            if (isLoading) handleLoadingState(this,binding.root)
+            if (isLoading) handleLoadingState(binding.root)
             else hideProgressDialog()
         }
 
         viewModel.error.observe(this){
-            showToast(this, it)
+            showToast( it)
             Log.d(TAG, it)
         }
 
@@ -122,7 +116,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
 
         viewModel.paymentVerificationStatus.observe(this){
             //show verified successfully msg
-            showToast(this, it)
+            showToast(it)
             //after msg go to success screen
             val intent = Intent(this@PaymentActivity, PaymentSuccessActivity::class.java)
             intent.putExtra(getString(R.string.transaction_detail), payment)
@@ -237,11 +231,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultWithDataListener, Exte
             } else {
                 // Handle the case where paymentData is null
                 Log.e(TAG, "PaymentData is null")
-                showToast(this,"PaymentData is null. Please contact support.")
+                showToast("PaymentData is null. Please contact support.")
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            showToast(this, "An error occurred during payment processing.")
+            showToast("An error occurred during payment processing.")
         }
     }
 

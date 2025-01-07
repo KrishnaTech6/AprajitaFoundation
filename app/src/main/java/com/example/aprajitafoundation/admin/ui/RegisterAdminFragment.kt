@@ -17,13 +17,9 @@ import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.databinding.FragmentRegisterAdminBinding
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
+import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.afterTextChanged
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.isInternetAvailable
-import com.example.aprajitafoundation.utility.showDialogProgress
 import com.example.aprajitafoundation.utility.showSnackBar
-import com.example.aprajitafoundation.utility.showToast
 import com.example.aprajitafoundation.utility.uploadToCloudinary
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
 
@@ -95,14 +91,14 @@ class RegisterAdminFragment : BaseFragment() {
         }
 
         viewModel.genericResponse.observe(viewLifecycleOwner) {
-            showToast(requireContext(), it.message)
+            showToast(it.message)
             val navController =
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState( requireView())
             else hideProgressDialog()
         }
     }

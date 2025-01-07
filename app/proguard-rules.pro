@@ -37,3 +37,23 @@
 }
 # Allow full obfuscation of the Constants class and its fields
 -dontwarn com.example.aprajitafoundation.utility.Constants
+
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Gson serialization
+-keep class com.google.gson.** { *; }
+
+# Retrofit interface
+-keep interface com.example.aprajitafoundation.api.UserAdminApi { *; }
+-keep interface com.example.aprajitafoundation.api.AdminAuthApi { *; }
+
+# Keep classes used by Retrofit
+-keep class retrofit2.** { *; }
+-keep class okhttp3.** { *; }
+
+# Keep the generic types (for reflection purposes)
+-keep class com.example.aprajitafoundation.model.** { *; }
+
+# Ensure Retrofit doesn't obfuscate these
+-keep class * extends retrofit2.Call { *; }
+-keep class * extends retrofit2.Response { *; }

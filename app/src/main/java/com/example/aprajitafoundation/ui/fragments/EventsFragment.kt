@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.databinding.FragmentEventsBinding
-import com.example.aprajitafoundation.utility.handleLoadingState
-import com.example.aprajitafoundation.utility.hideProgressDialog
-import com.example.aprajitafoundation.utility.showToast
 
 class EventsFragment : BaseFragment() {
 
@@ -45,11 +42,11 @@ class EventsFragment : BaseFragment() {
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireContext(), requireView())
+            if (isLoading) handleLoadingState(requireView())
             else hideProgressDialog()
         }
         viewModel.error.observe(viewLifecycleOwner){
-            showToast(requireContext(), it)
+            showToast( it)
         }
 
         // Fetch the all events

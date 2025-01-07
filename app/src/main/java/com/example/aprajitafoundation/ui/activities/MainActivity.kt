@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId){
                 R.id.home -> { replaceFragment(HomeFragment(), getString(R.string.home_fragment_tag))
                     true}
-                R.id.events -> {    replaceFragment(EventsFragment(), getString(R.string.events_fragment_tag))
+                R.id.events -> {    replaceFragment(EventsFragment(), this.getString(R.string.events_fragment_tag))
                     true}
                 R.id.gallery -> {   replaceFragment(GalleryFragment(), getString(R.string.gallery_fragment_tag))
                     true}
@@ -68,22 +68,9 @@ class MainActivity : AppCompatActivity() {
             updateBottomNavHighlight()
         }
         else if (mAuth.currentUser == null) finish()
-        else showExitAppDialog()
+        else super.onBackPressed()
     }
 
-    private fun showExitAppDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("Exit App")
-            .setMessage("Do you really want to exit the app?")
-            .setPositiveButton("Yes") { dialog, _ ->
-                dialog.dismiss()
-                finish()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
 
     private fun replaceFragment(fragment: Fragment, tag:String){
         val fragmentManager = supportFragmentManager
