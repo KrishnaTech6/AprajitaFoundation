@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -17,14 +18,19 @@ import com.example.aprajitafoundation.utility.afterTextChanged
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.utility.saveInputToPreferences
 import com.example.aprajitafoundation.utility.showSnackBar
+import dev.shreyaspatil.easyupipayment.EasyUpiPayment
+import dev.shreyaspatil.easyupipayment.listener.PaymentStatusListener
+import dev.shreyaspatil.easyupipayment.model.PaymentApp
+import dev.shreyaspatil.easyupipayment.model.TransactionDetails
+import dev.shreyaspatil.easyupipayment.model.TransactionStatus
 
-class UpiPaymentActivity: BaseActivity() {
+class UpiPaymentActivity: BaseActivity(), PaymentStatusListener {
     private lateinit var binding: ActivityUpiPaymentBinding
     private lateinit var sharedPreferences: SharedPreferences
 
-    private val upiPayment = 0
     private val upiId = Constants.upiId
     private val upiName = Constants.name
+    private lateinit var easyUpiPayment: EasyUpiPayment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,15 +74,7 @@ class UpiPaymentActivity: BaseActivity() {
         // Call this function when you want to start the payment
         binding.payButton.setOnClickListener{
             if (isDetailsFilled()){
-                payUsingUpi(
-                    amount = binding.paymentAmount.text.toString(),
-                    upiId = upiId,
-                    name = upiName,
-                    note= "Donation by \n" +
-                            "Name : ${binding.userName.text.toString()}" +
-                            "\nPhone : ${binding.userContact.text.toString()}"
-                )
-
+                pay()
             }
         }
 
@@ -124,92 +122,80 @@ class UpiPaymentActivity: BaseActivity() {
         return sharedPreferences.getString(key, null)
     }
 
-    //payment via UPI method
-    private fun payUsingUpi(amount: String, upiId: String, name: String, note: String) {
+    private fun pay() {
+        val payeeVpa = upiId
+        val payeeName = upiName
+        val transactionId = "TID" + System.currentTimeMillis()
+        val transactionRefId = "TID" + System.currentTimeMillis()
+//        note - if payments are not completed leave the merchant code empty.
+        val payeeMerchantCode = "demo merchant code"
+        val description = "Donation by \n" +
+                "Name : ${binding.userName.text.toString()}" +
+                "\nPhone : ${binding.userContact.text.toString()}"
+        val amount = binding.paymentAmount.text.toString()
+//        val paymentAppChoice = radioAppChoice
 
-        //URL build with query and its value (CURRENCY : INR)
-        val uri = Uri.parse("upi://pay").buildUpon()
-            .appendQueryParameter("pa", upiId)
-            .appendQueryParameter("pn", name)
-            .appendQueryParameter("tn", note)
-            .appendQueryParameter("am", amount)
-            .appendQueryParameter("cu", "INR")
-            .build()
+        val paymentApp =  PaymentApp.ALL
 
-        // start payment from existing app
-        val upiPayIntent = Intent(Intent.ACTION_VIEW)
-        upiPayIntent.data = uri
 
-        // chooser dialog to pay via all UPI app available in system
-        val chooser = Intent.createChooser(upiPayIntent, getString(R.string.pay_with))
-
-        // check if intent resolves or not
-        if (null != chooser.resolveActivity(packageManager)) {
-            startActivityForResult(chooser, upiPayment)
-        } else {
-            Toast.makeText(
-                this,
-                getString(R.string.no_upi_app_found_error),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            upiPayment -> if (RESULT_OK == resultCode || resultCode == 11) {
-                if (data != null) {
-                    val text = data.getStringExtra("response")
-                    val dataList = ArrayList<String>()
-                    dataList.add(text!!)
-                    upiPaymentDataOperation(dataList)
-                } else {
-                    val dataList = ArrayList<String>()
-                    dataList.add("nothing")
-                    upiPaymentDataOperation(dataList)
-                }
-            } else {
-                val dataList = ArrayList<String>()
-                dataList.add("nothing")
-                upiPaymentDataOperation(dataList)
+        try {
+            // START PAYMENT INITIALIZATION
+            easyUpiPayment = EasyUpiPayment(this) {
+                this.paymentApp = paymentApp
+                this.payeeVpa = payeeVpa
+                this.payeeName = payeeName
+                this.transactionId = transactionId
+                this.transactionRefId = transactionRefId
+                this.payeeMerchantCode = payeeMerchantCode
+                this.description = description
+                this.amount = amount
             }
+            // END INITIALIZATION
+
+            // Register Listener for Events
+            easyUpiPayment.setPaymentStatusListener(this)
+
+            // Start payment / transaction
+            easyUpiPayment.startPayment()
+        }
+        catch (e: Exception) {
+            e.printStackTrace()
+            showToast("Error: ${e.message}")
         }
     }
 
-    @SuppressLint("DefaultLocale")
-    private fun upiPaymentDataOperation(data: ArrayList<String>) {
-        if (isInternetAvailable(this)) {
-            var str: String? = data[0]
-            var paymentCancel = ""
-            if (str == null) str = "discard"
-            var status = ""
-            val response = str.split("&".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            for (i in response.indices) {
-                val equalStr =
-                    response[i].split("=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                if (equalStr.size >= 2) {
-                    if (equalStr[0].toLowerCase() == "Status".toLowerCase()) {
-                        status = equalStr[1].toLowerCase()
-                    }
+    override fun onTransactionCompleted(transactionDetails: TransactionDetails) {
+        // Transaction Completed
+        Log.d("TransactionDetails", transactionDetails.toString())
 
-                } else {
-                    paymentCancel = getString(R.string.payment_cancelled_by_user)
-                }
-            }
+        when (transactionDetails.transactionStatus) {
+            TransactionStatus.SUCCESS -> onTransactionSuccess(transactionDetails)
+            TransactionStatus.FAILURE -> onTransactionFailed(transactionDetails)
+            TransactionStatus.SUBMITTED -> onTransactionSubmitted()
+        }
+    }
 
-            when {
-                status == "success" -> //Code to handle successful transaction here.
-                    showToast( getString(R.string.payment_success))
-                getString(R.string.payment_cancelled_by_user) == paymentCancel ->
-                    showToast( getString(R.string.payment_cancelled_by_user))
-                else ->
-                    showToast( getString(R.string.transaction_failed))
-            }
-        } else
-            showToast(getString(R.string.no_internet_available_error))
+    override fun onTransactionCancelled() {
+        // Payment Cancelled by User
+        showSnackBar(binding.root, "Cancelled by user")
+    }
+
+    private fun onTransactionSuccess(transactionDetails: TransactionDetails) {
+        // Payment Success
+        showSnackBar(binding.root, "Success")
+        Log.d("TransactionDetails", transactionDetails.toString())
+    }
+
+    private fun onTransactionSubmitted() {
+        // Payment Pending
+        showSnackBar(binding.root, "Pending | Submitted")
+    }
+
+    private fun onTransactionFailed(transactionDetails: TransactionDetails) {
+        // Payment Failed
+        showSnackBar(binding.root, "Failed")
+        Log.d("TransactionDetails", transactionDetails.toString())
 
     }
+
 }
