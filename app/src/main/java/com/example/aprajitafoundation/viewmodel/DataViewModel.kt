@@ -2,11 +2,9 @@ package com.example.aprajitafoundation.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.ImagesRequest
@@ -89,11 +87,9 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                     _paymentVerificationStatus.value = "Payment Verified Successfully"
                 } else {
                     _error.value = "Error verifying payment: ${response.message()}"
-                    Log.e("DataViewModel", "Response: ${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
                 _error.value = "Exception: ${e.message}"
-                Log.e("DataViewModel", e.message, e)
             } finally {
                 _loading.value = false
             }
@@ -124,7 +120,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
 
-                Log.d("ViewModel", "$token")
                 val response = apiService.addEvent(token, event)
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
@@ -177,7 +172,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }
-                Log.d("ViewModel", "$token")
                 if (response.isSuccessful) {
                     _updateResponse.value = response.body()
                 } else {
@@ -224,7 +218,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
             _loading.value = true
             try {
                 val response = apiCall()
-                Log.d("DataViewModel", "Response class: ${response.body()!!::class.java}")
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }
@@ -252,8 +245,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 val token = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
                     .getString("token", "") ?: ""
                 val response = apiCall(token)
-                Log.d("DataViewModel", "Response class: ${response.body()!!::class.java}")
-
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }
@@ -272,7 +263,6 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun handleError(message: String, details: String? = null) {
         _error.value = "$message: $details"
-        Log.e("DataViewModel", "$message: $details")
     }
 
     fun uploadGalleryImages(context: Context, images: ImagesRequest) {
@@ -286,15 +276,11 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 if (response.raw().cacheResponse != null) {
                     _loading.value = false
                 }
-//                val jsonString = Gson().toJson(images)
-//                Log.d("RequestBody", jsonString)
                 if (response.isSuccessful) {
                     // Handle success for each file
                     _uploadResponse.value = response.body()
                 } else {
                     handleError("Error uploading image", response.message())
-
-                    Log.d("ViewModel" , response.errorBody()?.string() ?: "Error body empty")
                 }
             } catch (e: Exception) {
                 handleError("Exception: ${e.message}")

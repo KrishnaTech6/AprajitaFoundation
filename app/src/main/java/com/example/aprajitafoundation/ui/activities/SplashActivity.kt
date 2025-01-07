@@ -50,14 +50,15 @@ class SplashActivity : AppCompatActivity() {
 
 
         val sharedPreferences = getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
-        val theme = sharedPreferences.getString(getString(R.string.apptheme), getString(R.string.light_mode))
+        val isDarkTheme = sharedPreferences.getBoolean(getString(R.string.apptheme), false)
 
         // Check if the current mode does not match the stored theme
-        if (theme == getString(R.string.dark_mode) && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_YES) {
+        if (isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else if (theme == getString(R.string.light_mode) && AppCompatDelegate.getDefaultNightMode() != AppCompatDelegate.MODE_NIGHT_NO) {
+        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+
         val adminLogin = sharedPreferences.getString(getString(R.string.token_login_admin), "")
 
 

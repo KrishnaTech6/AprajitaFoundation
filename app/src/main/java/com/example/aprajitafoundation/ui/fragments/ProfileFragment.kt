@@ -131,8 +131,9 @@ class ProfileFragment : BaseFragment() {
 
         val themeItem = popupMenu.menu.findItem(R.id.app_theme)
 
-        val theme = sharedPreferences.getString(getString(R.string.apptheme), getString(R.string.light_mode))
-        themeItem.title = if (theme == getString(R.string.light_mode)) getString(R.string.dark_mode) else getString(R.string.light_mode)
+        val isDarkTheme = sharedPreferences.getBoolean(getString(R.string.apptheme), false)
+
+        themeItem.title = if (isDarkTheme) getString(R.string.light_mode)  else getString(R.string.dark_mode)
 
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
@@ -182,18 +183,15 @@ class ProfileFragment : BaseFragment() {
                 }
 
                 R.id.app_theme -> {
-                    val currentMode = AppCompatDelegate.getDefaultNightMode()
 
-                    if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                    if (isDarkTheme) {
                         // Switch to light mode
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                        saveInputToPreferences(requireContext(), getString(R.string.apptheme), getString(R.string.light_mode))
-                        themeItem.title = getString(R.string.dark_mode)
+                        saveThemePreference( getString(R.string.apptheme), false)
                     } else {
                         // Switch to dark mode
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                        saveInputToPreferences(requireContext(), getString(R.string.apptheme), getString(R.string.dark_mode))
-                        themeItem.title = getString(R.string.light_mode)
+                        saveThemePreference(getString(R.string.apptheme), true)
                     }
 
                     activity?.recreate()
@@ -205,6 +203,12 @@ class ProfileFragment : BaseFragment() {
 
         }
         popupMenu.show()
+    }
+
+    private fun saveThemePreference(key:String, isDarkTheme: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(key, isDarkTheme)
+        editor.apply()
     }
 
 
