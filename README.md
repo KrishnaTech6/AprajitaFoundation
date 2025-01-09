@@ -5,7 +5,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 
 ## App Screenshots
 ***User***
-<p align="center">
+<p>
     <img src="https://github.com/user-attachments/assets/164bb127-efd7-479f-a9a9-cf9afe3ced25" width="100" />
     <img src="https://github.com/user-attachments/assets/de30d433-0a29-4a8d-807b-0042d673848c" width="100" />
     <img src="https://github.com/user-attachments/assets/3746c297-5341-4c57-a620-0fbc7b53a62b" width="100" />
@@ -19,7 +19,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 
 ***Admin***
 
-<p align="center">
+<p>
   <img src="https://github.com/user-attachments/assets/19f7eaa2-8443-4236-a1d0-2975fe0ebcb2" width="100" />
   <img src="https://github.com/user-attachments/assets/71f66042-b7d2-4f1e-88e0-df07c210bde3" width="100" />
   <img src="https://github.com/user-attachments/assets/4babc2da-9c90-4727-a380-9f8b8e179a5f" width="100" />
@@ -29,7 +29,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
   <img src="https://github.com/user-attachments/assets/a7e79476-9644-436e-bba1-817120263e8a" width="100" />
  </p>
  
-<p align="center">
+<p>
        <img src="https://github.com/user-attachments/assets/61d7cd02-e386-4d54-8ad0-d03a3f449e4d" width="100" />
   <img src="https://github.com/user-attachments/assets/65c602de-9e2e-4d80-8be6-d55821a494b8" width="100" />
     <img src="https://github.com/user-attachments/assets/d711c5e6-7312-44ff-bd66-3a223fb319c6" width="100" />
@@ -41,7 +41,7 @@ This Android application is developed for the **Aprajita Foundation**, aimed at 
 
 ***Dark Mode***
 
-<p align="center">
+<p>
 
 <img src="https://github.com/user-attachments/assets/3ec21ee7-4065-4eff-821c-983688b8a942" width="100" />
 <img src="https://github.com/user-attachments/assets/42d6cae8-5f56-41b3-9009-02f7cac6b667" width="100" />
