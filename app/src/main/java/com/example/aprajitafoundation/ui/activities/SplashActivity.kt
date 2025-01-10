@@ -19,6 +19,7 @@ import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.databinding.ActivitySplashBinding
 import com.example.aprajitafoundation.utility.isInternetAvailable
 import com.example.aprajitafoundation.viewmodel.DataViewModel
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
 class SplashActivity : AppCompatActivity() {
@@ -29,7 +30,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        // Ensure Firebase is initialized
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this)
+        }
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 

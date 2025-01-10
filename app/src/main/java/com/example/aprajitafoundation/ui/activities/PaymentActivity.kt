@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -160,6 +159,10 @@ class PaymentActivity : BaseActivity(), PaymentResultWithDataListener, ExternalW
             }
             !binding.userContact.text.toString().matches(phonePattern) -> {
                 showSnackBar(binding.root,getString(R.string.enter_a_valid_10_digit_phone_number))
+                false
+            }
+            binding.paymentAmount.text.toString().toInt() <= 0  -> {
+                showSnackBar(binding.root, getString(R.string.enter_valid_amount))
                 false
             }
             binding.paymentAmount.text.toString().isEmpty() -> {

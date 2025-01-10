@@ -3,16 +3,19 @@ package com.example.aprajitafoundation.ui.activities
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
 import com.example.aprajitafoundation.model.UserData
 import com.example.aprajitafoundation.admin.LoginAdminActivity
 import com.example.aprajitafoundation.utility.saveInputToPreferences
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -31,6 +34,7 @@ class LoginActivity : BaseActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var viewModel: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,7 @@ class LoginActivity : BaseActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -100,6 +105,13 @@ class LoginActivity : BaseActivity() {
                             account?.displayName,
                             account?.photoUrl.toString()
                         )
+
+                        viewModel.error.observe(this){
+                            Log.d("LoginActivity", it)
+                        }
+                        //Sending userData to Server
+                        viewModel.sendUserData(userData)
+
                         val gson = Gson()
                         val userDataJson = gson.toJson(userData)
                         saveInputToPreferences(this, getString(R.string.google_user_data), userDataJson)

@@ -26,6 +26,8 @@
 
 -keepattributes JavascriptInterface
 -keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exceptions
 
 -dontwarn com.razorpay.**
 -keep class com.razorpay.** {*;}
@@ -53,6 +55,8 @@
 
 # Keep the generic types (for reflection purposes)
 -keep class com.example.aprajitafoundation.model.** { *; }
+-keep class com.example.aprajitafoundation.viewmodel.DataViewModel.** { *; }
+-keep class com.example.aprajitafoundation.viewmodel.AdminAuthViewModel.** { *; }
 
 # Ensure Retrofit doesn't obfuscate these
 -keep class * extends retrofit2.Call { *; }
