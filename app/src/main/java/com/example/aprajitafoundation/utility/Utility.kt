@@ -16,6 +16,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.snackbar.Snackbar
+import org.bouncycastle.crypto.params.Blake3Parameters.context
 
 
 fun saveInputToPreferences(context: Context, key: String, value: String) {
@@ -70,7 +71,7 @@ object CloudinaryManager{
     }
 }
 
-fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onSuccess: (String) -> Unit) {
+fun uploadToCloudinary(context: Context, uri: Uri, view: View,progressReport:(Int)-> Unit={}, onSuccess: (String) -> Unit) {
     val transformation = Transformation<Transformation<*>>()
         .quality("auto:best") // Automatically adjust the quality
         .fetchFormat("auto") // Automatically determine the best format
@@ -81,19 +82,21 @@ fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onS
         .option("transformation", transformation) // Apply the transformation
         .callback(object : UploadCallback {
             override fun onStart(requestId: String) {
-                progressBar.visibility = View.VISIBLE
+                view.visibility = View.VISIBLE
             }
 
             override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
+                val progress = (bytes.toFloat() / totalBytes.toFloat() * 100).toInt()
+                progressReport(progress)
                 // Upload progress
                 if (!isInternetAvailable(context)) {
-                    progressBar.visibility = View.GONE
+                    view.visibility = View.GONE
                     Toast.makeText(context, "No Internet Connection!", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onSuccess(requestId: String, resultData: Map<*, *>) {
-                progressBar.visibility = View.GONE
+                view.visibility = View.GONE
                 val secureUrl = resultData["secure_url"].toString()
                 Log.d("Cloud", "URL: $secureUrl")
                 onSuccess(secureUrl)
@@ -101,7 +104,7 @@ fun uploadToCloudinary(context: Context, uri: Uri, progressBar: ProgressBar, onS
 
             override fun onError(requestId: String, error: ErrorInfo) {
                 // Handle error
-                progressBar.visibility = View.GONE
+                view.visibility = View.GONE
                 Toast.makeText(context, "Error: ${error.description}", Toast.LENGTH_SHORT).show()
             }
 

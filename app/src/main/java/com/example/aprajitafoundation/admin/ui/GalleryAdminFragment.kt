@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation.admin.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -72,14 +73,14 @@ class GalleryAdminFragment : BaseFragment() {
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->
-            showToast( response.message)
+            showToast(response.message)
             hideProgressDialog()
             viewModel.fetchAllGalleryImages() // Fetch updated images
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
             if (isSwitched) {
-                showToast( it.message)
+                showToast(it.message)
                 hideProgressDialog()
                 viewModel.fetchAllGalleryImages()
                 isSwitched = false // Reset after upload is processed
@@ -87,12 +88,12 @@ class GalleryAdminFragment : BaseFragment() {
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
+            if (isLoading) handleLoadingState(requireView())
             else hideProgressDialog()
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            showToast( it)
+            showToast(it)
         }
     }
 
@@ -138,9 +139,15 @@ class GalleryAdminFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun suspendUploadToCloudinary(context: Context, uri: Uri): String =
         suspendCoroutine { continuation ->
-            uploadToCloudinary(context, uri, binding.progressBar) { cloudUrl ->
+            uploadToCloudinary(context, uri, binding.loadingScreen,
+                progressReport = {
+                    binding.progressBar.progress = it
+                    binding.progressText.text = "$it%"
+                }
+            ) { cloudUrl ->
                 continuation.resume(cloudUrl)
             }
         }
