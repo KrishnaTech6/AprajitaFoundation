@@ -42,7 +42,7 @@ class EditMemberFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentEditMemberBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed member data
         memberModel = arguments?.getParcelable(getString(R.string.member_parcelable))
@@ -111,6 +111,11 @@ class EditMemberFragment : BaseFragment() {
         binding.editTwitter.afterTextChanged { text ->
             memberModel?.socials?.twitter = text
         }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            showSnackBar(binding.root, error)
+        }
+
         viewModel.updateResponse.observe(viewLifecycleOwner) {
             showToast( it.message)
             Log.d("EditMember", it.message)
@@ -126,6 +131,13 @@ class EditMemberFragment : BaseFragment() {
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
+
+        // Observe the loading LiveData
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) handleLoadingState( requireView())
+            else hideProgressDialog()
+        }
+
         binding.btnSelectImage.setOnClickListener {
             checkStoragePermissionAndOpenGallery()
         }

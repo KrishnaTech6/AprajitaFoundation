@@ -43,7 +43,6 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
     private lateinit var binding: ActivityAdminBinding
 
     private lateinit var viewModel: AdminAuthViewModel
-    private lateinit var dataViewModel: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +67,6 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
         }
 
         viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]//to get admin data
-        dataViewModel = ViewModelProvider(this)[DataViewModel::class.java] //to get normal user data
-        // Fetching done in activity
-        dataViewModel.fetchTeamMembers()
-        dataViewModel.fetchAllEvents()
-        dataViewModel.fetchAllGalleryImages()
-        dataViewModel.getAllPayments(this)
 
 
         viewModel.error.observe(this) {
@@ -82,15 +75,6 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
 
         // Observe the loading LiveData
         viewModel.loading.observe(this) { isLoading ->
-            if (isLoading) handleLoadingState(binding.root)
-            else hideProgressDialog()
-        }
-        dataViewModel.error.observe(this) {
-            showToast( it)
-        }
-
-        // Observe the loading LiveData
-        dataViewModel.loading.observe(this) { isLoading ->
             if (isLoading) handleLoadingState(binding.root)
             else hideProgressDialog()
         }

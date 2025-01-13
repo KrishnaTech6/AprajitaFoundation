@@ -43,7 +43,7 @@ class EditEventFragment : BaseFragment() {
     ): View {
         binding = FragmentEditEventBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
+        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
         // Retrieve the passed event data
         eventModel = arguments?.getParcelable(getString(R.string.event_parcelable))
@@ -51,7 +51,7 @@ class EditEventFragment : BaseFragment() {
         // Set default title
         val isEditing = eventModel != null
         (activity as AppCompatActivity).supportActionBar?.title =
-            if (isEditing) "Edit Team Member" else "Add Team Member"
+            if (isEditing) "Edit Event" else "Add Event"
 
         eventModel?.let { event ->
             binding.editEventTitle.setText(event.title)
@@ -77,6 +77,14 @@ class EditEventFragment : BaseFragment() {
 
         // Initialise with default values in add member screen
         if (!isEditing) eventModel = EventModel("", "", "", Date(), "", "")
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) handleLoadingState(binding.root)
+            else hideProgressDialog()
+        }
+        viewModel.error.observe(viewLifecycleOwner) {
+            showToast( it)
+        }
+
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
             showToast( it.message)

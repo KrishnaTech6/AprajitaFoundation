@@ -97,6 +97,8 @@ class PaymentsFragment : BaseFragment() {
     }
 
     private fun setupObservers() {
+        viewModel.getAllPayments(requireContext())
+
         viewModel.allPayments.observe(viewLifecycleOwner) {
             paymentsList = it.payments
             parentPaymentsList = it.payments
