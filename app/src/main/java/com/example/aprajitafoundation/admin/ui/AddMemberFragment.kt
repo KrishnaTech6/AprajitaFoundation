@@ -55,17 +55,6 @@ class AddMemberFragment : BaseFragment() {
 
         }
 
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            showToast(it)
-        }
-
-
         binding.btnAddMember.setOnClickListener{
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigate(R.id.action_nav_team_member_to_editMemberFragment)

@@ -55,17 +55,6 @@ class HomeFragment : BaseFragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
-        // Observe the loading LiveData
-
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast(it)
-        }
-
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
             if(images!=null){

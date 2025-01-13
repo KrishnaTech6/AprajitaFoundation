@@ -85,6 +85,15 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
             if (isLoading) handleLoadingState(binding.root)
             else hideProgressDialog()
         }
+        dataViewModel.error.observe(this) {
+            showToast( it)
+        }
+
+        // Observe the loading LiveData
+        dataViewModel.loading.observe(this) { isLoading ->
+            if (isLoading) handleLoadingState(binding.root)
+            else hideProgressDialog()
+        }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

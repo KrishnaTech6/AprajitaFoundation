@@ -83,20 +83,11 @@ class RegisterAdminFragment : BaseFragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            showSnackBar(binding.root, error)
-        }
-
         viewModel.genericResponse.observe(viewLifecycleOwner) {
             showToast(it.message)
             val navController =
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
-        }
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
         }
     }
 

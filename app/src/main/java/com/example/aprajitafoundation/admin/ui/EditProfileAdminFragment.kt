@@ -97,11 +97,6 @@ class EditProfileAdminFragment : BaseFragment() {
             navController.navigateUp()
         }
 
-
-        viewModel.error.observe(viewLifecycleOwner){
-            showSnackBar(binding.root, it)
-        }
-
         viewModel.genericResponse.observe(viewLifecycleOwner){
             showToast( it.message)
 
@@ -110,11 +105,6 @@ class EditProfileAdminFragment : BaseFragment() {
             viewModel.fetchProfile(requireContext())
         }
 
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
 
         viewModel.authResponse.observe(viewLifecycleOwner){
             showToast(it.message)

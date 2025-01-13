@@ -17,7 +17,7 @@ import com.example.aprajitafoundation.ui.fragments.ProfileFragment
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
     private lateinit var viewModel: DataViewModel
@@ -41,9 +41,17 @@ class MainActivity : AppCompatActivity() {
         viewModel= ViewModelProvider(this)[DataViewModel::class.java]
         // Fetch the gallery images and members
         viewModel.fetchGalleryImages()
+        viewModel.fetchAllGalleryImages()
         viewModel.fetchTeamMembers()
         viewModel.fetchAllEvents()
-        viewModel.fetchAllGalleryImages()
+        // Observe the loading LiveData
+        viewModel.loading.observe(this) { isLoading ->
+            if (isLoading) handleLoadingState(binding.root)
+            else hideProgressDialog()
+        }
+        viewModel.error.observe(this){
+            showToast( it)
+        }
 
 
         mAuth = FirebaseAuth.getInstance()

@@ -40,14 +40,6 @@ class EventsFragment : BaseFragment() {
 // SCROLL TO POSITION NOT WORKING
             Handler().postDelayed({ eventPosition?.let { binding.rvEvents.scrollToPosition(it) } }, 2500)
         }
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireView())
-            else hideProgressDialog()
-        }
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast( it)
-        }
 
         return binding.root
     }

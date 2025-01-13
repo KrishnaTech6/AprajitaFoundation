@@ -102,16 +102,6 @@ class PaymentsFragment : BaseFragment() {
             parentPaymentsList = it.payments
             populateTable(paymentsList)
         }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            showToast( it)
-        }
-
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireView())
-            else hideProgressDialog()
-        }
     }
 
     private fun populateTable(paymentsList: List<Payment>) {

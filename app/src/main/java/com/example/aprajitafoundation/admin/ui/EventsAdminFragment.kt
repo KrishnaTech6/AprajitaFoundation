@@ -49,15 +49,6 @@ class EventsAdminFragment : BaseFragment() {
             binding.rvEvents.adapter = imageEventAdapter
             imageEventAdapter.notifyDataSetChanged()
         }
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast(it)
-        }
 
         binding.btnAddEvent.setOnClickListener{
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)

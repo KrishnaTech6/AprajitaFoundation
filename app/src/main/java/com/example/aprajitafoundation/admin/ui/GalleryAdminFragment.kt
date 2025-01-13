@@ -82,15 +82,6 @@ class GalleryAdminFragment : BaseFragment() {
                 isSwitched = false // Reset after upload is processed
             }
         }
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            showToast( it)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

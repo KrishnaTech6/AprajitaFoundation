@@ -35,16 +35,6 @@ class GalleryFragment : BaseFragment() {
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.rvGallery.layoutManager = staggeredGridLayoutManager
 
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner) {
-            showToast(it)
-        }
-
         return binding.root
     }
 }
