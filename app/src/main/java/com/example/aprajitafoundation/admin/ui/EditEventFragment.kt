@@ -51,7 +51,7 @@ class EditEventFragment : BaseFragment() {
         // Set default title
         val isEditing = eventModel != null
         (activity as AppCompatActivity).supportActionBar?.title =
-            if (isEditing) "Edit Team Member" else "Add Team Member"
+            if (isEditing) "Edit Event" else "Add Event"
 
         eventModel?.let { event ->
             binding.editEventTitle.setText(event.title)
@@ -77,10 +77,14 @@ class EditEventFragment : BaseFragment() {
 
         // Initialise with default values in add member screen
         if (!isEditing) eventModel = EventModel("", "", "", Date(), "", "")
-
-        viewModel.error.observe(viewLifecycleOwner) { error ->
-            showSnackBar(binding.root, error)
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) handleLoadingState(binding.root)
+            else hideProgressDialog()
         }
+        viewModel.error.observe(viewLifecycleOwner) {
+            showToast( it)
+        }
+
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
             showToast( it.message)
@@ -95,13 +99,6 @@ class EditEventFragment : BaseFragment() {
                 requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigateUp()
         }
-
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireView())
-            else hideProgressDialog()
-        }
-
         binding.btnSelectImage.setOnClickListener {
             checkStoragePermissionAndOpenGallery()
         }

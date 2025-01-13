@@ -25,7 +25,7 @@ class AddMemberFragment : BaseFragment() {
         binding = FragmentAddMemberBinding.inflate(layoutInflater)
 
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
         val memberAdapter =
@@ -64,7 +64,6 @@ class AddMemberFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             showToast(it)
         }
-
 
         binding.btnAddMember.setOnClickListener{
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)

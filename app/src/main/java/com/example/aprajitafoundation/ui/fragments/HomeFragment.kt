@@ -53,22 +53,7 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
-        // Fetch the gallery images and members
-        viewModel.fetchGalleryImages()
-        viewModel.fetchTeamMembers()
-        viewModel.fetchAllEvents()
-
-        // Observe the loading LiveData
-
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState(requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast(it)
-        }
+        viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->

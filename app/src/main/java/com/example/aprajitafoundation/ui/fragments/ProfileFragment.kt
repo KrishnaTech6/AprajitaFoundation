@@ -51,7 +51,7 @@ class ProfileFragment : BaseFragment() {
 
 
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         sharedPreferences = requireContext().getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
         // Retrieve JSON string from SharedPreferences

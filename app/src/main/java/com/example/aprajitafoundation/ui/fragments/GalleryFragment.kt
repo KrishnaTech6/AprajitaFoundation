@@ -20,7 +20,7 @@ class GalleryFragment : BaseFragment() {
     ): View? {
         binding = FragmentGalleryBinding.inflate(layoutInflater)
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvGallery.setHasFixedSize(true)
@@ -34,19 +34,6 @@ class GalleryFragment : BaseFragment() {
         val staggeredGridLayoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.rvGallery.layoutManager = staggeredGridLayoutManager
-
-        // Observe the loading LiveData
-        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
-            if (isLoading) handleLoadingState( requireView())
-            else hideProgressDialog()
-        }
-
-        viewModel.error.observe(viewLifecycleOwner){
-            showToast(it)
-        }
-
-        // Fetch the all images
-        viewModel.fetchAllGalleryImages()
 
         return binding.root
     }

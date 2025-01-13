@@ -33,6 +33,7 @@ import com.example.aprajitafoundation.ui.activities.BaseActivity
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.CloudinaryManager
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -65,7 +66,7 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
             )
         }
 
-        viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]//to get admin data
 
 
         viewModel.error.observe(this) {
