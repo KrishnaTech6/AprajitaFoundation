@@ -4,12 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -36,7 +33,7 @@ class RegisterAdminFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentRegisterAdminBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this)[AdminAuthViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[AdminAuthViewModel::class.java]
 
         setupUI()
         observeViewModel()

@@ -44,7 +44,7 @@ class EditProfileAdminFragment : BaseFragment() {
     ): View {
         binding = FragmentEditAdminProfileBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this).get(AdminAuthViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(AdminAuthViewModel::class.java)
 
         // Retrieve user data from shared preferences
         val gson = Gson()

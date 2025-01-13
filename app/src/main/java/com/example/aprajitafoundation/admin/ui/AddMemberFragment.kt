@@ -25,7 +25,7 @@ class AddMemberFragment : BaseFragment() {
         binding = FragmentAddMemberBinding.inflate(layoutInflater)
 
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         /*THIS IS THE CODE FOR NAME, IMAGE, DESIGNATION  RECYCLERVIEW */
         val memberAdapter =
@@ -71,9 +71,6 @@ class AddMemberFragment : BaseFragment() {
             navController.navigate(R.id.action_nav_team_member_to_editMemberFragment)
 
         }
-
-        // Fetch the all events
-        viewModel.fetchTeamMembers()
 
         return binding.root
     }

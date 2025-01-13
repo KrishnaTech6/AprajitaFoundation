@@ -42,7 +42,7 @@ class EditMemberFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentEditMemberBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         // Retrieve the passed member data
         memberModel = arguments?.getParcelable(getString(R.string.member_parcelable))

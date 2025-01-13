@@ -1,6 +1,5 @@
 package com.example.aprajitafoundation.ui.activities
 
-import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,17 +7,20 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.databinding.ActivityMainBinding
 import com.example.aprajitafoundation.ui.fragments.HomeFragment
 import com.example.aprajitafoundation.ui.fragments.EventsFragment
 import com.example.aprajitafoundation.ui.fragments.GalleryFragment
 import com.example.aprajitafoundation.ui.fragments.ProfileFragment
+import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var viewModel: DataViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -35,6 +37,14 @@ class MainActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
+
+        viewModel= ViewModelProvider(this)[DataViewModel::class.java]
+        // Fetch the gallery images and members
+        viewModel.fetchGalleryImages()
+        viewModel.fetchTeamMembers()
+        viewModel.fetchAllEvents()
+        viewModel.fetchAllGalleryImages()
+
 
         mAuth = FirebaseAuth.getInstance()
 

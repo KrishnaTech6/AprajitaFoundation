@@ -26,7 +26,7 @@ class EventsAdminFragment : BaseFragment() {
 
         binding = FragmentEvents2Binding.inflate(layoutInflater)
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         //if item deleted then result is obtained here
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
@@ -63,9 +63,6 @@ class EventsAdminFragment : BaseFragment() {
             val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
             navController.navigate(R.id.action_nav_events_admin_to_editEventFragment)
         }
-
-        // Fetch the all events
-        viewModel.fetchAllEvents()
 
         return binding.root
     }

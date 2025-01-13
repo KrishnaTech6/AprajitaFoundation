@@ -30,7 +30,7 @@ class EventsFragment : BaseFragment() {
 
         Log.d("TAG", "onCreateView: $eventPosition")
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
         binding.rvEvents.layoutManager = LinearLayoutManager(requireContext())
 
         // Observe the images LiveData
@@ -48,9 +48,6 @@ class EventsFragment : BaseFragment() {
         viewModel.error.observe(viewLifecycleOwner){
             showToast( it)
         }
-
-        // Fetch the all events
-        viewModel.fetchAllEvents()
 
         return binding.root
     }

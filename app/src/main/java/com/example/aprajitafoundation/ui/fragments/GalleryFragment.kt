@@ -20,7 +20,7 @@ class GalleryFragment : BaseFragment() {
     ): View? {
         binding = FragmentGalleryBinding.inflate(layoutInflater)
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
         binding.rvGallery.setHasFixedSize(true)
@@ -41,12 +41,9 @@ class GalleryFragment : BaseFragment() {
             else hideProgressDialog()
         }
 
-        viewModel.error.observe(viewLifecycleOwner){
+        viewModel.error.observe(viewLifecycleOwner) {
             showToast(it)
         }
-
-        // Fetch the all images
-        viewModel.fetchAllGalleryImages()
 
         return binding.root
     }

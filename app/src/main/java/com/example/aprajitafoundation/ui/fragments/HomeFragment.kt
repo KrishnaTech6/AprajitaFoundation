@@ -53,11 +53,7 @@ class HomeFragment : BaseFragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         // Initialize the ViewModel
-        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
-        // Fetch the gallery images and members
-        viewModel.fetchGalleryImages()
-        viewModel.fetchTeamMembers()
-        viewModel.fetchAllEvents()
+        viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
         // Observe the loading LiveData
 

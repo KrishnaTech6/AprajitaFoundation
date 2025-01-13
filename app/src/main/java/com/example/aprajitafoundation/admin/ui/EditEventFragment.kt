@@ -43,7 +43,7 @@ class EditEventFragment : BaseFragment() {
     ): View {
         binding = FragmentEditEventBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         // Retrieve the passed event data
         eventModel = arguments?.getParcelable(getString(R.string.event_parcelable))

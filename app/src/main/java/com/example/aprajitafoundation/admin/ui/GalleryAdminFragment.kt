@@ -42,7 +42,7 @@ class GalleryAdminFragment : BaseFragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGallery2Binding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(this)[DataViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
         setupRecyclerView()
         observeViewModel()
@@ -51,9 +51,6 @@ class GalleryAdminFragment : BaseFragment() {
         binding.btnAddImages.setOnClickListener {
             checkStoragePermissionAndOpenGallery(isMultipleImages = true)
         }
-
-        // Fetch all images initially
-        viewModel.fetchAllGalleryImages()
 
         return binding.root
     }
