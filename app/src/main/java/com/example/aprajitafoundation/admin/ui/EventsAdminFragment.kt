@@ -30,12 +30,14 @@ class EventsAdminFragment : BaseFragment() {
 
         //if item deleted then result is obtained here
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
-            showToast( it.message)
-            //do this before calling fetch again
-            hideProgressDialog()
-            //Again fetch events
-            viewModel.fetchAllEvents()
-
+            if (it!=null) {
+                showToast( it.message)
+                //do this before calling fetch again
+                hideProgressDialog()
+                //Again fetch events
+                viewModel.fetchAllEvents()
+            }
+            viewModel.resetDeleteStatus()
         }
 
         // Observe the images LiveData

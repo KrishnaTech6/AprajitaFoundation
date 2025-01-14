@@ -117,19 +117,25 @@ class EditMemberFragment : BaseFragment() {
         }
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
-            showToast( it.message)
-            Log.d("EditMember", it.message)
-            hideProgressDialog()
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
-            navController.navigateUp()
+            if (it!=null) {
+                showToast( it.message)
+                Log.d("EditMember", it.message)
+                hideProgressDialog()
+                val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+                navController.navigateUp()
+            }
+            viewModel.resetUpdateStatus()
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            showToast( it.message)
-            Log.d("EditMember", it.message)
-            hideProgressDialog()
-            val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
-            navController.navigateUp()
+            if (it!=null) {
+                showToast( it.message)
+                Log.d("EditMember", it.message)
+                hideProgressDialog()
+                val navController = requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+                navController.navigateUp()
+            }
+            viewModel.resetUploadStatus()
         }
 
         // Observe the loading LiveData

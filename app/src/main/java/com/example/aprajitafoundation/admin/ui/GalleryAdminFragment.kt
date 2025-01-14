@@ -34,7 +34,6 @@ class GalleryAdminFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: DataViewModel
-    private var isSwitched = false
 
 
     override fun onCreateView(
@@ -73,18 +72,21 @@ class GalleryAdminFragment : BaseFragment() {
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->
-            showToast(response.message)
-            hideProgressDialog()
-            viewModel.fetchAllGalleryImages() // Fetch updated images
+            if (response!=null) {
+                showToast(response.message)
+                hideProgressDialog()
+                viewModel.fetchAllGalleryImages() // Fetch updated images
+            }
+            viewModel.resetDeleteStatus()
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            if (isSwitched) {
+            if (it!=null) {
                 showToast(it.message)
                 hideProgressDialog()
                 viewModel.fetchAllGalleryImages()
-                isSwitched = false // Reset after upload is processed
             }
+            viewModel.resetUploadStatus()
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
@@ -133,7 +135,6 @@ class GalleryAdminFragment : BaseFragment() {
                 if (uploadedUrls.isNotEmpty()) {
                     Log.d("GalleryAdminFragment", "Uploaded URLs: $uploadedUrls")
                     viewModel.uploadGalleryImages(requireContext(), ImagesRequest(uploadedUrls))
-                    isSwitched = true
                 }
             }
         }

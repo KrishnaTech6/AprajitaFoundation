@@ -11,6 +11,7 @@ import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.api.PaymentDetailResponse
 import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
+import com.example.aprajitafoundation.api.SingleLiveEvent
 import com.example.aprajitafoundation.model.*
 import kotlinx.coroutines.launch
 
@@ -38,9 +39,9 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
     private val _orderId = MutableLiveData<String>()
     private val _paymentVerificationStatus = MutableLiveData<String>()
     private val _allPayments = MutableLiveData<PaymentDetailResponse>()
-    private val _deleteResponse = MutableLiveData<GenericResponse>()
-    private val _updateResponse = MutableLiveData<GenericResponse>()
-    private val _uploadResponse = MutableLiveData<GenericResponse>()
+    private val _deleteResponse = SingleLiveEvent<GenericResponse>()
+    private val _updateResponse = SingleLiveEvent<GenericResponse>()
+    private val _uploadResponse = SingleLiveEvent<GenericResponse>()
     private val _loading = MutableLiveData<Boolean>()
     private val _error = MutableLiveData<String>()
 
@@ -125,7 +126,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _uploadResponse.value = response.body()
+                    _uploadResponse.postValue(response.body())
                 } else {
                     handleError("Error fetching response", response.message())
                 }
@@ -149,7 +150,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _uploadResponse.value = response.body()
+                    _uploadResponse.postValue(response.body())
                 } else {
                     handleError("Error fetching response", response.message())
                 }
@@ -173,7 +174,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _updateResponse.value = response.body()
+                    _updateResponse.postValue(response.body())
                 } else {
                     handleError("Error fetching response", response.message())
                 }
@@ -197,7 +198,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _updateResponse.value = response.body()
+                    _updateResponse.postValue(response.body())
                 } else {
                     handleError("Error fetching response", response.message())
                 }
@@ -278,7 +279,7 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 if (response.isSuccessful) {
                     // Handle success for each file
-                    _uploadResponse.value = response.body()
+                    _uploadResponse.postValue(response.body())
                 } else {
                     handleError("Error uploading image", response.message())
                 }
@@ -288,6 +289,17 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
                 _loading.value = false
             }
         }
+    }
+
+// reset value to null if observed once
+    fun resetDeleteStatus(){
+        _deleteResponse.call()
+    }
+    fun resetUploadStatus(){
+        _uploadResponse.call()
+    }
+    fun resetUpdateStatus(){
+        _updateResponse.call()
     }
 
 }

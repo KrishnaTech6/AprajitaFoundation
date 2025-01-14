@@ -46,13 +46,15 @@ class AddMemberFragment : BaseFragment() {
             memberAdapter.updateMembers(members)
         }
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
-            showToast( it.message)
+            if (it!=null) {
+                showToast( it.message)
 
-            //do this before calling fetch again
-            hideProgressDialog()
-            //fetch updated team members from server
-            viewModel.fetchTeamMembers()
-
+                //do this before calling fetch again
+                hideProgressDialog()
+                //fetch updated team members from server
+                viewModel.fetchTeamMembers()
+            }
+            viewModel.resetDeleteStatus()
         }
 
         // Observe the loading LiveData
