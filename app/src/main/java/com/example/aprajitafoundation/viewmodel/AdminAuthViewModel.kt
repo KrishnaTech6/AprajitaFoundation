@@ -14,6 +14,7 @@ import com.example.aprajitafoundation.api.GenericResponse
 import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.api.RetrofitClient
+import com.example.aprajitafoundation.api.SingleLiveEvent
 import com.example.aprajitafoundation.api.User
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -21,12 +22,12 @@ import kotlinx.coroutines.launch
 
 class AdminAuthViewModel(application: Application) : AndroidViewModel(application ) {
 
-    private val _authResponse = MutableLiveData<AuthResponse>()
+    private val _authResponse = SingleLiveEvent<AuthResponse>()
     val authResponse: LiveData<AuthResponse> get() = _authResponse
     private val _authResponseLogin = MutableLiveData<AuthResponse>()
     val authResponseLogin: LiveData<AuthResponse> get() = _authResponseLogin
 
-    private val _genericResponse = MutableLiveData<GenericResponse>()
+    private val _genericResponse = SingleLiveEvent<GenericResponse>()
     val genericResponse: LiveData<GenericResponse> get() = _genericResponse
 
     private val _error = MutableLiveData<String>()
@@ -53,7 +54,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _genericResponse.value = response.body()
+                    _genericResponse.postValue(response.body())
                 } else {
                     _error.value = "Registration failed: ${response.message()}"
                     Log.d("Register", "${response.errorBody()?.string()}")
@@ -110,7 +111,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _genericResponse.value = response.body()
+                    _genericResponse.postValue(response.body())
                 } else {
                     _error.value = "Update failed: ${response.message()}"
                 }
@@ -132,7 +133,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     _loading.value = false
                 }
                 if (response.isSuccessful) {
-                    _authResponse.value = response.body()
+                    _authResponse.postValue(response.body())
                     response.body()?.let { authResponse ->
                         val gson = Gson()
                         val userJson = gson.toJson(authResponse.user)
@@ -171,7 +172,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                         remove(context.getString(R.string.user_data_admin))  // Change "userId" to match how you're storing user data
                         apply()
                     }
-                    _genericResponse.value = response.body()
+                    _genericResponse.postValue(response.body())
                     Log.d("ViewModel","response: "+response.body().toString())
                 } else {
                     _error.value = "Logout failed: ${response.message()}"
@@ -184,5 +185,12 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                 _loading.value = false
             }
         }
+    }
+
+    fun resetAuthResponse() {
+        _authResponse.call()
+    }
+    fun resetGenericResponse() {
+        _genericResponse.call()
     }
 }

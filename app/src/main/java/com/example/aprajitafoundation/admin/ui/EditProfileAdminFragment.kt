@@ -98,19 +98,25 @@ class EditProfileAdminFragment : BaseFragment() {
         }
 
         viewModel.genericResponse.observe(viewLifecycleOwner){
-            showToast( it.message)
+            if (it!=null) {
+                showToast( it.message)
 
-            hideProgressDialog()
-            //fetch profile from the server after updating
-            viewModel.fetchProfile(requireContext())
+                hideProgressDialog()
+                //fetch profile from the server after updating
+                viewModel.fetchProfile(requireContext())
+            }
+            viewModel.resetGenericResponse()
         }
 
 
         viewModel.authResponse.observe(viewLifecycleOwner){
-            showToast(it.message)
-            // Notify activity to update header
-            hideProgressDialog()
-            profileUpdatedListener?.onProfileUpdated(it.user.name, it.user.email, it.user.profileImg)
+            if (it!=null) {
+                showToast(it.message)
+                // Notify activity to update header
+                hideProgressDialog()
+                profileUpdatedListener?.onProfileUpdated(it.user.name, it.user.email, it.user.profileImg)
+            }
+            viewModel.resetAuthResponse()
         }
 
         return binding.root

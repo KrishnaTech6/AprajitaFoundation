@@ -85,10 +85,13 @@ class RegisterAdminFragment : BaseFragment() {
 
     private fun observeViewModel() {
         viewModel.genericResponse.observe(viewLifecycleOwner) {
-            showToast(it.message)
-            val navController =
-                requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
-            navController.navigateUp()
+            if (it!=null) {
+                showToast(it.message)
+                val navController =
+                    requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
+                navController.navigateUp()
+            }
+            viewModel.resetGenericResponse()
         }
     }
 
