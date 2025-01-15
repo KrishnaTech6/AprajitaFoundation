@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
@@ -206,7 +207,11 @@ class EditEventFragment : BaseFragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-            uploadToCloudinary(requireContext(), imageUri, binding.progressBar) { cloudUrl ->
+            uploadToCloudinary(requireContext(), imageUri, binding.progressBar,
+                onStart = {
+                    binding.btnSelectImage.isVisible= false
+                }) { cloudUrl ->
+                binding.btnSelectImage.isVisible= true
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.editEventImage)

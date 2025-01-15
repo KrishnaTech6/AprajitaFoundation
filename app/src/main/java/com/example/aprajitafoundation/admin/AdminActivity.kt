@@ -2,6 +2,7 @@ package com.example.aprajitafoundation.admin
 
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
@@ -21,6 +22,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +45,7 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
     private lateinit var binding: ActivityAdminBinding
 
     private lateinit var viewModel: AdminAuthViewModel
+    private lateinit var sharedPreferences : SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,8 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.appBarAdmin.toolbar)
+
+        sharedPreferences= getSharedPreferences(getString(R.string.apppreferences), MODE_PRIVATE)
 
         //to hide statusbar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
@@ -140,6 +145,11 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.admin, menu)
 
+        // set title to dark if light else light theme
+        val isDarkTheme = sharedPreferences.getBoolean(getString(R.string.apptheme), false)
+        val themeItem = menu.findItem(R.id.action_theme)
+        themeItem?.title = if (isDarkTheme) getString(R.string.light_mode) else getString(R.string.dark_mode)
+
         // Set the text color (e.g., to black)
         for (i in 0 until menu.size()) {
             val menuItem = menu.getItem(i) // Get each menu item
@@ -152,6 +162,7 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val isDarkTheme = sharedPreferences.getBoolean(getString(R.string.apptheme), false)
         return when (item.itemId) {
             R.id.action_signout -> {
                 viewModel.logout(this@AdminActivity)
@@ -166,8 +177,26 @@ class AdminActivity : BaseActivity(), EditProfileAdminFragment.OnProfileUpdatedL
                 }
                 true
             }
+            R.id.action_theme -> {
+                if (isDarkTheme) {
+                    // Switch to light mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    saveThemePreference( getString(R.string.apptheme), false)
+                } else {
+                    // Switch to dark mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    saveThemePreference(getString(R.string.apptheme), true)
+                }
+                recreate()
+                true
+            }
             else->super.onOptionsItemSelected(item)
         }
+    }
+    private fun saveThemePreference(key:String, isDarkTheme: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(key, isDarkTheme)
+        editor.apply()
     }
 
 

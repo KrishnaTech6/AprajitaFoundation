@@ -135,10 +135,14 @@ class EditProfileAdminFragment : BaseFragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
             val imageUri: Uri = data.data!!
-            uploadToCloudinary(requireContext(), imageUri , binding.progressBar) { cloudUrl ->
+            uploadToCloudinary(requireContext(), imageUri , binding.progressBar,
+                onStart = {
+                    binding.btnSelectImage.isVisible= false
+                }) { cloudUrl ->
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.profileImage)
+                binding.btnSelectImage.isVisible= true
                 user?.profileImg = cloudUrl
             }
         }

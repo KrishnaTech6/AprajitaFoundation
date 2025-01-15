@@ -88,7 +88,7 @@ class SplashActivity : AppCompatActivity() {
                         Log.d("SplashActivity", "onCreate: ${mAuth.currentUser}")
                         gotoActivity(LoginActivity::class.java)
                     }
-                }, 2500
+                }, 1500
             )
         }
     }

@@ -217,7 +217,11 @@ class EditMemberFragment : BaseFragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri: Uri = data.data!!
-            uploadToCloudinary(requireContext(), imageUri , binding.progressBar) { cloudUrl ->
+            uploadToCloudinary(requireContext(), imageUri , binding.progressBar,
+                    onStart = {
+                binding.btnSelectImage.isVisible= false
+            }) { cloudUrl ->
+                binding.btnSelectImage.isVisible= true
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.editMemberImage)

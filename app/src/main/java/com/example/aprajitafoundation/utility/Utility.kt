@@ -71,7 +71,7 @@ object CloudinaryManager{
     }
 }
 
-fun uploadToCloudinary(context: Context, uri: Uri, view: View,progressReport:(Int)-> Unit={}, onSuccess: (String) -> Unit) {
+fun uploadToCloudinary(context: Context, uri: Uri, view: View,progressReport:(Int)-> Unit={}, onStart:()->Unit ={}  , onSuccess: (String) -> Unit) {
     val transformation = Transformation<Transformation<*>>()
         .quality("auto:best") // Automatically adjust the quality
         .fetchFormat("auto") // Automatically determine the best format
@@ -83,6 +83,7 @@ fun uploadToCloudinary(context: Context, uri: Uri, view: View,progressReport:(In
         .callback(object : UploadCallback {
             override fun onStart(requestId: String) {
                 view.visibility = View.VISIBLE
+                onStart()
             }
 
             override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {
