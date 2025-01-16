@@ -28,6 +28,13 @@ class EventsAdminFragment : BaseFragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(this)[DataViewModel::class.java]
 
+        val imageEventAdapter = ImageEventAdapter(
+            requireContext(),
+            viewModel = viewModel,
+            isAdmin = true
+        )
+        binding.rvEvents.adapter = imageEventAdapter
+
         //if item deleted then result is obtained here
         viewModel.deleteResponse.observe(viewLifecycleOwner) {
             if (it!=null) {
@@ -42,14 +49,7 @@ class EventsAdminFragment : BaseFragment() {
 
         // Observe the images LiveData
         viewModel.events.observe(viewLifecycleOwner) { events ->
-            val imageEventAdapter = ImageEventAdapter(
-                requireContext(),
-                eventItems = events,
-                viewModel = viewModel,
-                isAdmin = true
-            )
-            binding.rvEvents.adapter = imageEventAdapter
-            imageEventAdapter.notifyDataSetChanged()
+            imageEventAdapter.updateEvents(events)
         }
         // Observe the loading LiveData
         viewModel.loading.observe(viewLifecycleOwner) { isLoading ->

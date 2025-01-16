@@ -22,18 +22,14 @@ class GalleryFragment : BaseFragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
 
-        binding.rvGallery.adapter = ImageEventAdapter(requireContext(), listOf(), viewModel = viewModel)
+        val imageEventAdapter = ImageEventAdapter(requireContext(), viewModel = viewModel)
+        binding.rvGallery.adapter = imageEventAdapter
+        binding.rvGallery.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.rvGallery.setHasFixedSize(true)
-
         // Observe the images LiveData
         viewModel.allImages.observe(viewLifecycleOwner){ images ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), imageItems =  images, viewModel = viewModel)
-            binding.rvGallery.adapter = imageEventAdapter
-            imageEventAdapter.notifyDataSetChanged()
+            imageEventAdapter.updateImages(images)
         }
-        val staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        binding.rvGallery.layoutManager = staggeredGridLayoutManager
 
         return binding.root
     }

@@ -33,12 +33,17 @@ class EventsFragment : BaseFragment() {
         viewModel = ViewModelProvider(requireActivity())[DataViewModel::class.java]
         binding.rvEvents.layoutManager = LinearLayoutManager(requireContext())
 
+        val imageEventAdapter= ImageEventAdapter(requireContext(), viewModel = viewModel)
+        binding.rvEvents.adapter = imageEventAdapter
+
         // Observe the images LiveData
         viewModel.events.observe(viewLifecycleOwner){ events ->
-            val imageEventAdapter= ImageEventAdapter(requireContext(), eventItems =  events, viewModel = viewModel)
-            binding.rvEvents.adapter = imageEventAdapter
-// SCROLL TO POSITION NOT WORKING
-            Handler().postDelayed({ eventPosition?.let { binding.rvEvents.scrollToPosition(it) } }, 2500)
+            imageEventAdapter.updateEvents(events)
+            // SCROLL TO POSITION NOT WORKING
+            Handler().postDelayed({
+                eventPosition?.let { binding.rvEvents.smoothScrollToPosition(it)
+                } }, 300)
+
         }
 
         return binding.root

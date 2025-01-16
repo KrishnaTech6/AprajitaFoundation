@@ -1,24 +1,17 @@
 package com.example.aprajitafoundation.admin.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
@@ -59,16 +52,15 @@ class GalleryAdminFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
+        val adapter = ImageEventAdapter(requireContext(),isAdmin = true, viewModel = viewModel)
+        binding.rvGalleryAdmin.adapter = adapter
         binding.rvGalleryAdmin.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
     private fun observeViewModel() {
         viewModel.allImages.observe(viewLifecycleOwner) { images ->
-            val adapter =
-                ImageEventAdapter(requireContext(), images, isAdmin = true, viewModel = viewModel)
-            binding.rvGalleryAdmin.adapter = adapter
-            adapter.notifyDataSetChanged()
+            (binding.rvGalleryAdmin.adapter as? ImageEventAdapter)?.updateImages(images)
         }
 
         viewModel.deleteResponse.observe(viewLifecycleOwner) { response ->

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.utility.AnimationUtils
 import com.example.aprajitafoundation.model.EventModel
 import com.example.aprajitafoundation.model.ImageModel
 import com.example.aprajitafoundation.model.MemberModel
@@ -29,13 +28,26 @@ import java.util.Locale
 
 class ImageEventAdapter(
     private val context: Context,
-    private val imageItems: List<ImageModel> = emptyList(),
-    private val eventItems: List<EventModel> = emptyList(),
     private val isSlider: Boolean = false,
     private val isAdmin: Boolean = false,
     private val viewModel: DataViewModel,
     private val onItemClickListener: (Int) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var imageItems: MutableList<ImageModel> = mutableListOf()
+    private var eventItems: MutableList<EventModel> = mutableListOf()
+
+    fun updateImages(newImages: List<ImageModel>) {
+        imageItems.clear()
+        imageItems.addAll(newImages)
+        notifyDataSetChanged()
+    }
+
+    fun updateEvents(newEvents: List<EventModel>) {
+        eventItems.clear()
+        eventItems.addAll(newEvents)
+        notifyDataSetChanged()
+    }
 
 
     companion object {
@@ -105,7 +117,6 @@ class ImageEventAdapter(
             TYPE_IMAGE -> {
                 val item = imageItems.getOrNull(position)
                 val imageHolder = holder as ImageViewHolder
-                AnimationUtils.slideInFromBottom(imageHolder.imageView, 500)
 
                 if (isAdmin) {
                     imageHolder.deleteImage.visibility = View.VISIBLE
@@ -156,7 +167,6 @@ class ImageEventAdapter(
                 val item = eventItems.getOrNull(position - imageItems.size)
                 val formattedDate = formatDate(item?.date)
                 val eventHolder = holder as EventViewHolder
-                AnimationUtils.slideInFromBottom(eventHolder.eventImage, 500)
 
                 if (isAdmin) {
                     eventHolder.llDelEditEvents.visibility = View.VISIBLE

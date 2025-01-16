@@ -55,16 +55,32 @@ class HomeFragment : BaseFragment() {
         // Initialize the ViewModel
         viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
 
+        val imageEventAdapter = ImageEventAdapter(requireContext(), viewModel = viewModel)
+        binding.rvImageItem.adapter = imageEventAdapter
+        val staggeredGridLayoutManager =
+            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        binding.rvImageItem.layoutManager = staggeredGridLayoutManager
+        binding.rvImageItem.setHasFixedSize(true)
+
         // Observe the images LiveData
         viewModel.images.observe(viewLifecycleOwner) { images ->
             if(images!=null){
-                val imageEventAdapter = ImageEventAdapter(requireContext(), images, viewModel = viewModel)
-                binding.rvImageItem.adapter = imageEventAdapter
-                val staggeredGridLayoutManager =
-                    StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
-                binding.rvImageItem.layoutManager = staggeredGridLayoutManager
-                binding.rvImageItem.setHasFixedSize(true)
+                imageEventAdapter.updateImages(images)
             }
+        }
+        val adapter = ImageEventAdapter(requireContext(), isSlider = true, viewModel = viewModel){
+
+            val bundle = Bundle()
+            bundle.putInt("position", it) // Put the object into the bundle
+
+            val eventsFragment = EventsFragment()
+            eventsFragment.arguments = bundle
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, eventsFragment, requireContext().getString(R.string.events_fragment_tag))
+                .addToBackStack(requireContext().getString(R.string.events_fragment_tag))
+                .commit()
         }
 
         viewModel.events.observe(viewLifecycleOwner){ event ->
@@ -73,20 +89,8 @@ class HomeFragment : BaseFragment() {
                 sliderDataList = event
                 /*THIS IS THE CODE FOR AUTOMATIC SLIDER */
                 viewPager = binding.viewPager
-                val adapter = ImageEventAdapter(requireContext(), eventItems = event, isSlider = true, viewModel = viewModel){
 
-                    val bundle = Bundle()
-                    bundle.putInt("position", it) // Put the object into the bundle
-
-                    val eventsFragment = EventsFragment()
-                    eventsFragment.arguments = bundle
-
-                    val fragmentManager = requireActivity().supportFragmentManager
-                    fragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, eventsFragment, requireContext().getString(R.string.events_fragment_tag))
-                        .addToBackStack(requireContext().getString(R.string.events_fragment_tag))
-                        .commit()
-                }
+                adapter.updateEvents(sliderDataList)
                 viewPager.adapter = adapter
                 createDots(binding.dotsLayout, sliderDataList.size)
             }
