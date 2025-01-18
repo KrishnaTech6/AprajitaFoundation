@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -67,8 +66,8 @@ class EditEventFragment : BaseFragment() {
             val date = formattedDate.format(event.date)
             binding.editEventDate.setText(date)
 
-            binding.editEventImage.setOnClickListener{
-                if(!eventModel?.image.isNullOrBlank()){
+            binding.editEventImage.setOnClickListener {
+                if (!eventModel?.image.isNullOrBlank()) {
                     val intent = Intent(requireContext(), FullScreenImageActivity::class.java)
                     intent.putExtra(getString(R.string.image_url_bundle), eventModel?.image)
                     requireActivity().startActivity(intent)
@@ -83,13 +82,13 @@ class EditEventFragment : BaseFragment() {
             else hideProgressDialog()
         }
         viewModel.error.observe(viewLifecycleOwner) {
-            showToast( it)
+            showToast(it)
         }
 
 
         viewModel.updateResponse.observe(viewLifecycleOwner) {
-            if (it!=null) {
-                showToast( it.message)
+            if (it != null) {
+                showToast(it.message)
                 val navController =
                     requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
                 navController.navigateUp()
@@ -98,8 +97,8 @@ class EditEventFragment : BaseFragment() {
         }
 
         viewModel.uploadResponse.observe(viewLifecycleOwner) {
-            if (it!=null) {
-                showToast( it.message)
+            if (it != null) {
+                showToast(it.message)
                 val navController =
                     requireActivity().findNavController(R.id.nav_host_fragment_content_admin)
                 navController.navigateUp()
@@ -209,9 +208,9 @@ class EditEventFragment : BaseFragment() {
             val imageUri: Uri = data.data!!
             uploadToCloudinary(requireContext(), imageUri, binding.progressBar,
                 onStart = {
-                    binding.btnSelectImage.isVisible= false
+                    binding.btnSelectImage.isVisible = false
                 }) { cloudUrl ->
-                binding.btnSelectImage.isVisible= true
+                binding.btnSelectImage.isVisible = true
                 Glide.with(requireContext())
                     .load(cloudUrl)
                     .into(binding.editEventImage)
