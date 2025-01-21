@@ -15,6 +15,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.BuildConfig
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.Constants
@@ -176,7 +177,7 @@ class PaymentActivity : BaseActivity(), PaymentResultWithDataListener, ExternalW
     private fun startPayment() {
         val checkout = Checkout()
         //Razor pay key_id
-        checkout.setKeyID(Constants.rpKeyId)
+        checkout.setKeyID(BuildConfig.RAZORPAY_KEY_ID)
 
         Log.d("PaymentActivity", orderId)
 

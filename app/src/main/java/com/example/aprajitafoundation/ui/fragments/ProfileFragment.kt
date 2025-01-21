@@ -13,6 +13,7 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.aprajitafoundation.BuildConfig
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.Constants
@@ -143,7 +144,7 @@ class ProfileFragment : BaseFragment() {
                         mAuth.signOut()
 
                         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                            .requestIdToken(Constants.defaultWebClientId)
+                            .requestIdToken(BuildConfig.WEB_CLIENT_ID)
                             .requestEmail()
                             .build()
 

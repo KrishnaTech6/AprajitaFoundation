@@ -15,6 +15,7 @@ import com.cloudinary.Transformation
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
+import com.example.aprajitafoundation.BuildConfig
 import com.google.android.material.snackbar.Snackbar
 import org.bouncycastle.crypto.params.Blake3Parameters.context
 
@@ -62,9 +63,9 @@ object CloudinaryManager{
     fun initCloudinary(context: Context) {
         if (!isInitialized) {
             val config: HashMap<String, String> = HashMap()
-            config["cloud_name"] = Constants.cloudName
-            config["api_key"] = Constants.cloudApiKey
-            config["api_secret"] = Constants.cloudApiKeySecret
+            config["cloud_name"] = BuildConfig.CLOUD_NAME
+            config["api_key"] = BuildConfig.CLOUD_API_KEY
+            config["api_secret"] = BuildConfig.CLOUD_API_KEY_SECRET
             MediaManager.init(context, config)
             isInitialized = true
         }

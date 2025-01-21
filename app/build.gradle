@@ -6,6 +6,20 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+def localPropertiesFile = rootProject.file('local.properties')
+def localProperties = new Properties()
+
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
+def razorpayKeyId = localProperties.getProperty('RAZORPAY_KEY_ID') ?: ''
+def webClientId = localProperties.getProperty('WEB_CLIENT_ID') ?: ''
+def cloudName = localProperties.getProperty('CLOUD_NAME') ?: ''
+def cloudApiKey = localProperties.getProperty('CLOUD_API_KEY') ?: ''
+def cloudApiKeySecret = localProperties.getProperty('CLOUD_API_KEY_SECRET') ?: ''
+
+
 android {
     namespace 'com.example.aprajitafoundation'
     compileSdk 34
@@ -18,9 +32,17 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'RAZORPAY_KEY_ID', "\"${razorpayKeyId}\""
+        buildConfigField 'String', 'WEB_CLIENT_ID', "\"${webClientId}\""
+        buildConfigField 'String', 'CLOUD_NAME', "\"${cloudName}\""
+        buildConfigField 'String', 'CLOUD_API_KEY', "\"${cloudApiKey}\""
+        buildConfigField 'String', 'CLOUD_API_KEY_SECRET', "\"${cloudApiKeySecret}\""
+
     }
     buildFeatures{
         viewBinding = true
+        buildConfig= true
     }
 
     buildTypes {

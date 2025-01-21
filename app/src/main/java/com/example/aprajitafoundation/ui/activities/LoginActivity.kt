@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.BuildConfig
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.databinding.ActivityLoginBinding
@@ -61,7 +62,7 @@ class LoginActivity : BaseActivity() {
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(Constants.defaultWebClientId)
+            .requestIdToken(BuildConfig.WEB_CLIENT_ID)
             .requestEmail()
             .build()
 
