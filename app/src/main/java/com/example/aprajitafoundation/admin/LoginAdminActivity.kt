@@ -9,8 +9,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.api.LoginRequest
 import com.example.aprajitafoundation.databinding.ActivityLoginAdminBinding
+import com.example.aprajitafoundation.model.LoginRequest
 import com.example.aprajitafoundation.ui.activities.BaseActivity
 import com.example.aprajitafoundation.ui.activities.LoginActivity
 import com.example.aprajitafoundation.utility.showSnackBar

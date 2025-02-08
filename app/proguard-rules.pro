@@ -26,8 +26,6 @@
 
 -keepattributes JavascriptInterface
 -keepattributes *Annotation*
--keepattributes Signature
--keepattributes Exceptions
 
 -dontwarn com.razorpay.**
 -keep class com.razorpay.** {*;}
@@ -37,27 +35,18 @@
 -keepclasseswithmembers class * {
   public void onPayment*(...);
 }
-# Allow full obfuscation of the Constants class and its fields
--dontwarn com.example.aprajitafoundation.utility.Constants
-
 -dontwarn org.slf4j.impl.StaticLoggerBinder
 
-# Gson serialization
--keep class com.google.gson.** { *; }
+-keep class com.example.aprajitafoundation.model.**{*;}
 
-# Retrofit interface
--keep interface com.example.aprajitafoundation.api.UserAdminApi { *; }
--keep interface com.example.aprajitafoundation.api.AdminAuthApi { *; }
+# With R8 full mode generic signatures are stripped for classes that are not
+ # kept. Suspend functions are wrapped in continuations where the type argument
+ # is used.
+ -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 
-# Keep classes used by Retrofit
--keep class retrofit2.** { *; }
--keep class okhttp3.** { *; }
+ # R8 full mode strips generic signatures from return types if not kept.
+ -if interface * { @retrofit2.http.* public *** *(...); }
+ -keep,allowoptimization,allowshrinking,allowobfuscation class <3>
 
-# Keep the generic types (for reflection purposes)
--keep class com.example.aprajitafoundation.model.** { *; }
--keep class com.example.aprajitafoundation.viewmodel.DataViewModel.** { *; }
--keep class com.example.aprajitafoundation.viewmodel.AdminAuthViewModel.** { *; }
-
-# Ensure Retrofit doesn't obfuscate these
--keep class * extends retrofit2.Call { *; }
--keep class * extends retrofit2.Response { *; }
+ # With R8 full mode generic signatures are stripped for classes that are not kept.
+ -keep,allowobfuscation,allowshrinking class retrofit2.Response

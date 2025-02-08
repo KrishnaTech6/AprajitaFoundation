@@ -6,16 +6,15 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.api.AuthResponse
-import com.example.aprajitafoundation.api.GenericResponse
-import com.example.aprajitafoundation.api.LoginRequest
-import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.api.SingleLiveEvent
-import com.example.aprajitafoundation.api.User
+import com.example.aprajitafoundation.model.AuthResponse
+import com.example.aprajitafoundation.model.GenericResponse
+import com.example.aprajitafoundation.model.LoginRequest
+import com.example.aprajitafoundation.model.RegisterRequest
+import com.example.aprajitafoundation.model.User
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
@@ -68,6 +67,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun loginAdmin(request: LoginRequest, context: Context) {
+        Log.d("TAG", request.toString())
         viewModelScope.launch {
             _loading.value = true
             try {
@@ -92,6 +92,7 @@ class AdminAuthViewModel(application: Application) : AndroidViewModel(applicatio
                     }
                 } else {
                     _error.value = "Login failed: ${response.message()}"
+                    Log.d("TAG", "${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
                 _error.value = "Exception: ${e.message}"

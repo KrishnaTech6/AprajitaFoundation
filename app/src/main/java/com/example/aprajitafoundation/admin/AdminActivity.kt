@@ -21,21 +21,18 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
 import com.example.aprajitafoundation.admin.ui.EditProfileAdminFragment
-import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.ActivityAdminBinding
+import com.example.aprajitafoundation.model.User
 import com.example.aprajitafoundation.ui.activities.BaseActivity
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.utility.CloudinaryManager
 import com.example.aprajitafoundation.viewmodel.AdminAuthViewModel
-import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

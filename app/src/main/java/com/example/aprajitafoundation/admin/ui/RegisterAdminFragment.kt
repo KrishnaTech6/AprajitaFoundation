@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.api.RegisterRequest
 import com.example.aprajitafoundation.databinding.FragmentRegisterAdminBinding
+import com.example.aprajitafoundation.model.RegisterRequest
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.afterTextChanged

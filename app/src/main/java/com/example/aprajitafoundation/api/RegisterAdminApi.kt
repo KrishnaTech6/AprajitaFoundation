@@ -1,15 +1,15 @@
 package com.example.aprajitafoundation.api
 
+import com.example.aprajitafoundation.model.AuthResponse
+import com.example.aprajitafoundation.model.GenericResponse
+import com.example.aprajitafoundation.model.LoginRequest
+import com.example.aprajitafoundation.model.RegisterRequest
+import com.example.aprajitafoundation.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
 
-// Data classes to represent requests and responses
-data class RegisterRequest(var name: String, var email: String, var password: String, var profileImg: String?)
-data class LoginRequest(val email: String, val password: String)
-data class AuthResponse(val message: String, var token: String, val user: User)
-data class User(val id: String, var name: String, var email: String, var profileImg: String?)
 
 interface AdminAuthApi {
 

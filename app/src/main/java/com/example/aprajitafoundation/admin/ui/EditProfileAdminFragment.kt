@@ -13,8 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.FragmentEditAdminProfileBinding
+import com.example.aprajitafoundation.model.User
 import com.example.aprajitafoundation.ui.activities.FullScreenImageActivity
 import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.uploadToCloudinary

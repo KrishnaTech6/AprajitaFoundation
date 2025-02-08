@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.aprajitafoundation.api.ImagesRequest
 import com.example.aprajitafoundation.databinding.FragmentGallery2Binding
+import com.example.aprajitafoundation.model.ImagesRequest
 import com.example.aprajitafoundation.ui.adapter.ImageEventAdapter
 import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.*

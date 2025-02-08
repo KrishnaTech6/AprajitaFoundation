@@ -6,10 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.aprajitafoundation.api.GenericResponse
-import com.example.aprajitafoundation.api.ImagesRequest
-import com.example.aprajitafoundation.api.PaymentDetailResponse
-import com.example.aprajitafoundation.api.PaymentRequest
 import com.example.aprajitafoundation.api.RetrofitClient
 import com.example.aprajitafoundation.api.SingleLiveEvent
 import com.example.aprajitafoundation.model.*

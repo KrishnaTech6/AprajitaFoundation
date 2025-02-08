@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.aprajitafoundation.R
-import com.example.aprajitafoundation.api.User
 import com.example.aprajitafoundation.databinding.FragmentHome2Binding
+import com.example.aprajitafoundation.model.User
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat

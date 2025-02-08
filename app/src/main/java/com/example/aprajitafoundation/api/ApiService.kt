@@ -2,10 +2,15 @@ package com.example.aprajitafoundation.api
 
 import com.example.aprajitafoundation.utility.Constants
 import com.example.aprajitafoundation.model.EventModel
+import com.example.aprajitafoundation.model.GenericResponse
 import com.example.aprajitafoundation.model.ImageModel
+import com.example.aprajitafoundation.model.ImagesRequest
 import com.example.aprajitafoundation.model.MemberModel
 import com.example.aprajitafoundation.model.MemberModel2
 import com.example.aprajitafoundation.model.Payment
+import com.example.aprajitafoundation.model.PaymentDetailResponse
+import com.example.aprajitafoundation.model.PaymentRequest
+import com.example.aprajitafoundation.model.PaymentResponse
 import com.example.aprajitafoundation.model.UserData
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -99,17 +104,3 @@ interface UserAdminApi {
     suspend fun getAllPayments(@Header("Authorization") token: String?):Response<PaymentDetailResponse>
 
 }
-
-data class ImagesRequest(val images: List<String>)
-data class GenericResponse(val message: String)
-data class PaymentRequest(val amount: Double)
-data class PaymentResponse(val order: Order)
-
-data class PaymentDetailResponse(val payments: List<Payment>)
-data class Order(
-    val id: String,
-    val amount: Int,
-    val currency: String,
-    val receipt: String?,
-    val status: String?
-)

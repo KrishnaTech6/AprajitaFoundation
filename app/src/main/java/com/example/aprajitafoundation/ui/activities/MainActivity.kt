@@ -51,6 +51,7 @@ class MainActivity : BaseActivity() {
         }
         viewModel.error.observe(this){
             showToast( it)
+            Log.d("TAG", it)
         }
 
 
