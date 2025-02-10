@@ -1,6 +1,7 @@
 package com.example.aprajitafoundation.admin.ui
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,13 +19,16 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.aprajitafoundation.databinding.DialogFilterBinding
 import com.example.aprajitafoundation.databinding.FragmentPaymentsBinding
 import com.example.aprajitafoundation.model.Payment
 import com.example.aprajitafoundation.ui.fragments.BaseFragment
 import com.example.aprajitafoundation.utility.Constants
+import com.example.aprajitafoundation.utility.showSnackBar
 import com.example.aprajitafoundation.viewmodel.DataViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.io.image.ImageDataFactory
@@ -44,8 +48,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.OutputStream
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
+import com.example.aprajitafoundation.R
 
 class PaymentsFragment : BaseFragment() {
 
@@ -53,6 +60,7 @@ class PaymentsFragment : BaseFragment() {
     private var paymentsList: List<Payment> = listOf()
     private var parentPaymentsList: List<Payment> = listOf()
     private lateinit var viewModel: DataViewModel
+    private var isFiltered = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +72,15 @@ class PaymentsFragment : BaseFragment() {
         setupObservers()
         setupSearchBar()
         setupDownloadPayments()
+
+        binding.ivFilter.setOnClickListener {
+            if(isFiltered) {
+                binding.ivFilter.setImageResource(R.drawable.filter_icon)
+                populateTable(parentPaymentsList)
+                isFiltered= false
+            } else showFilterDialog()
+        }
+
 
         return binding.root
     }
@@ -317,4 +334,75 @@ class PaymentsFragment : BaseFragment() {
             showToast( "Permission Denied")
         }
     }
+
+    // Filter payment by date
+    private fun showFilterDialog() {
+        val bindingDialog = DialogFilterBinding.inflate(layoutInflater)
+
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Filter Payments by Date")
+            .setView(bindingDialog.root)
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        val calendar = Calendar.getInstance()
+        var startDate: String? = null
+        var endDate: String? = null
+
+        // Handle Start Date Selection
+        bindingDialog.startDateEditText.setOnClickListener {
+            val datePicker = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
+                startDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                bindingDialog.startDateEditText.setText(startDate)
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+            datePicker.show()
+        }
+
+        // Handle End Date Selection
+        bindingDialog.endDateEditText.setOnClickListener {
+            val datePicker = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
+                endDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                bindingDialog.endDateEditText.setText(endDate)
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+            datePicker.show()
+        }
+
+        // Apply Filter Button
+        bindingDialog.applyFilterButton.setOnClickListener {
+            if (startDate.isNullOrBlank() || endDate.isNullOrBlank()) {
+                showSnackBar(bindingDialog.root, "Please select both dates!")
+            } else {
+                filterPaymentsByDate(startDate!!, endDate!!)
+                alertDialog.dismiss()
+            }
+        }
+
+        alertDialog.show()
+    }
+
+
+    private fun filterPaymentsByDate(startDate: String, endDate: String) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+        try {
+            val start = dateFormat.parse(startDate)
+            val end = dateFormat.parse(endDate)
+
+            // Filter the payments list based on the selected date range
+            paymentsList = parentPaymentsList.filter {
+                val paymentDater = dateFormat.format(it.date)
+                val paymentDate = dateFormat.parse(paymentDater)
+                paymentDate in start..end
+            }
+            populateTable(paymentsList)
+            isFiltered=true
+            binding.ivFilter.setImageResource(R.drawable.filter_list_off)
+        } catch (e: ParseException) {
+            showSnackBar(binding.root, "Invalid Date Format")
+        }
+    }
+
+
 }
