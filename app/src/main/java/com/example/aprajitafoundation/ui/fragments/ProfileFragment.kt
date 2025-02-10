@@ -104,6 +104,10 @@ class ProfileFragment : BaseFragment() {
             openEmail(Constants.email)
         }
 
+        binding.llPrivacyPolicy.setOnClickListener{
+            openWebsite(Constants.privacyPolicy)
+        }
+
         binding.llDonate.setOnClickListener {
             //val intent = Intent(requireActivity(), PaymentActivity::class.java)
             val intent = Intent(requireActivity(), UpiPaymentActivity::class.java)

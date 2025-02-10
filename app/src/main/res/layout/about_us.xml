@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
+        android:layout_marginVertical="24dp"
+        android:layout_marginHorizontal="8dp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="wrap_content"
@@ -73,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:text="Our Vision"
+            android:text="@string/our_vision"
             android:textColor="@color/yellowDark"
             style="@style/TextAppearance.MaterialComponents.Headline6"/>
         <TextView
@@ -90,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Our Projects"
+            android:text="@string/our_projects"
             android:textColor="@color/yellowDark"
             style="@style/TextAppearance.MaterialComponents.Headline6"/>
 
@@ -102,14 +103,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vocational Training Programs"
+                android:text="@string/vocational_training_programs"
                 android:textColor="@color/yellowDark"
                 android:textStyle="bold"
                 style="@style/TextAppearance.Material3.BodyLarge"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="We offer a range of vocational training programs designed to provide women with the skills they need to start their own businesses or secure meaningful employment."
+                android:text="@string/vocational_desc"
                 android:textColor="@color/textBlack"
                 android:layout_marginTop="4dp"
                 android:gravity="fill"
@@ -125,14 +126,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cultural Preservation Initiatives"
+                android:text="@string/cultural_preservation_initiatives"
                 android:textColor="@color/yellowDark"
                 android:textStyle="bold"
                 style="@style/TextAppearance.Material3.BodyLarge"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Our cultural preservation initiatives focus on documenting, promoting, and supporting traditional crafts and practices, ensuring that they remain a vital part of our community."
+                android:text="@string/cultural_preservation_initiatives_desc"
                 android:textColor="@color/textBlack"
                 android:layout_marginTop="4dp"
                 android:gravity="fill"
@@ -148,14 +149,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Community Support Programs"
+                android:text="@string/community_support_programs"
                 android:textColor="@color/yellowDark"
                 android:textStyle="bold"
                 style="@style/TextAppearance.Material3.BodyLarge"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="We work closely with local communities to provide support services, including healthcare, education, and legal aid, to ensure that women and their families have the resources they need to thrive."
+                android:text="@string/community_support_programs_desc"
                 android:textColor="@color/textBlack"
                 android:layout_marginTop="4dp"
                 android:gravity="fill"

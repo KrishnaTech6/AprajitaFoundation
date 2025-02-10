@@ -9,7 +9,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,14 +85,19 @@ class PaymentsFragment : BaseFragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
+                val query = newText ?: ""
+                if (query.isNullOrEmpty()) {
                     paymentsList = parentPaymentsList
                 } else {
                     paymentsList = parentPaymentsList.filter {
-                        it.name.contains(newText, ignoreCase = true)
+                        it.name.contains(query, ignoreCase = true) ||
+                        it.email.contains(query, ignoreCase = true) ||
+                        it.phone.contains(query, ignoreCase = true) ||
+                        it.amount.toString().contains(query, ignoreCase = true) ||
+                        it.date.toString().contains(query, ignoreCase = true)
                     }
                 }
-                populateTable(paymentsList)
+                populateTable(paymentsList, query)
                 return true
             }
         })
@@ -106,7 +113,7 @@ class PaymentsFragment : BaseFragment() {
         }
     }
 
-    private fun populateTable(paymentsList: List<Payment>) {
+    private fun populateTable(paymentsList: List<Payment>, query: String = "") {
         val tableLayout = binding.tableLayoutPayments
 
         // Clear any existing rows (except the header)
@@ -115,35 +122,12 @@ class PaymentsFragment : BaseFragment() {
         paymentsList.forEach { payment ->
             val tableRow = TableRow(requireContext())
 
-            val nameTextView = TextView(requireContext()).apply {
-                text = payment.name
-                setPadding(8, 8, 8, 8)
-            }
-
-            val emailTextView = TextView(requireContext()).apply {
-                text = payment.email
-                setPadding(8, 8, 8, 8)
-            }
-
-            val amountTextView = TextView(requireContext()).apply {
-                text = payment.amount.toString()
-                setPadding(8, 8, 8, 8)
-            }
-
-            val dateTextView = TextView(requireContext()).apply {
-                text = payment.date.toString()
-                setPadding(8, 8, 8, 8)
-            }
-
-            val phoneTextView = TextView(requireContext()).apply {
-                text = payment.phone.toString()
-                setPadding(8, 8, 8, 8)
-            }
-
-            val paymentIDTextView = TextView(requireContext()).apply {
-                text = payment.razorpay_payment_id.toString()
-                setPadding(8, 8, 8, 8)
-            }
+            val nameTextView = createHighlightedTextView(payment.name, query)
+            val emailTextView = createHighlightedTextView(payment.email, query)
+            val amountTextView = createHighlightedTextView(payment.amount.toString(), query)
+            val dateTextView = createHighlightedTextView(payment.date.toString(), query)
+            val phoneTextView = createHighlightedTextView(payment.phone, query)
+            val paymentIDTextView = createHighlightedTextView(payment.razorpay_payment_id.toString(), query)
 
             tableRow.addView(nameTextView)
             tableRow.addView(emailTextView)
@@ -154,6 +138,26 @@ class PaymentsFragment : BaseFragment() {
 
             tableLayout.addView(tableRow)
         }
+    }
+    private fun createHighlightedTextView(text: String, query: String): TextView {
+        val textView = TextView(requireContext()).apply {
+            setPadding(8, 8, 8, 8)
+        }
+
+        if (query.isNotEmpty() && text.contains(query, ignoreCase = true)) {
+            val startIndex = text.lowercase().indexOf(query.lowercase())
+            val spannable = SpannableString(text)
+            spannable.setSpan(
+                ForegroundColorSpan(ContextCompat.getColor(requireContext(), android.R.color.holo_purple)),
+                startIndex, startIndex + query.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            textView.text = spannable
+        } else {
+            textView.text = text
+        }
+
+        return textView
     }
 
     private fun savePdfFile(paymentsList: List<Payment>) {
@@ -240,7 +244,7 @@ class PaymentsFragment : BaseFragment() {
         document.add(paymentDetails)
 
         // Create and add the table
-        val table = Table(floatArrayOf(1f, 2f, 1f, 1f, 1f, 2f)).apply {
+        val table = Table(floatArrayOf(1f, 1.5f, 1f, 1.2f, 1f, 2f)).apply {
             setWidth(100f)
         }
 

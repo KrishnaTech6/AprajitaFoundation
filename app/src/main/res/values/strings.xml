@@ -113,4 +113,12 @@
     <string name="payment_cancelled_by_user">Payment cancelled by user</string>
     <string name="payment_success">Transaction successful</string>
     <string name="pay_with">Pay with</string>
+    <string name="our_vision">Our Vision</string>
+    <string name="our_projects">Our Projects</string>
+    <string name="vocational_training_programs">Vocational Training Programs</string>
+    <string name="vocational_desc">We offer a range of vocational training programs designed to provide women with the skills they need to start their own businesses or secure meaningful employment.</string>
+    <string name="cultural_preservation_initiatives">Cultural Preservation Initiatives</string>
+    <string name="cultural_preservation_initiatives_desc">Our cultural preservation initiatives focus on documenting, promoting, and supporting traditional crafts and practices, ensuring that they remain a vital part of our community.</string>
+    <string name="community_support_programs">Community Support Programs</string>
+    <string name="community_support_programs_desc">We work closely with local communities to provide support services, including healthcare, education, and legal aid, to ensure that women and their families have the resources they need to thrive.</string>
 </resources>
